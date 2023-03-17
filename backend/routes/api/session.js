@@ -45,10 +45,9 @@ router.post('/', validateLogin, async (req, res, next) => {
         id: user.id,
         email: user.email,
         username: user.username,
+        firstName: user.firstName,
+        lastName: user.lastName
     };
-
-    if (user.firstName) safeUser.firstName = user.firstName;
-    if (user.lastName) safeUser.lastName = user.lastName;
 
     await setTokenCookie(res, safeUser);
 
@@ -71,10 +70,9 @@ router.get('/', (req, res) => {
             id: user.id,
             email: user.email,
             username: user.username,
+            firstName: user.firstName,
+            lastName: user.lastName
         };
-
-        if (user.firstName) safeUser.firstName = user.firstName;
-        if (user.lastName) safeUser.lastName = user.lastName;
 
         return res.json({
             user: safeUser

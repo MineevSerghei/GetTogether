@@ -12,11 +12,13 @@ module.exports = {
     options.tableName = "Users";
 
     await queryInterface.addColumn(options, 'firstName', {
-      type: Sequelize.STRING(50)
+      type: Sequelize.STRING(50),
+      allowNull: false
     });
 
     await queryInterface.addColumn(options, 'lastName', {
-      type: Sequelize.STRING(50)
+      type: Sequelize.STRING(50),
+      allowNull: false
     });
 
   },
