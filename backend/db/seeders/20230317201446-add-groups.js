@@ -21,8 +21,8 @@ module.exports = {
         organizerId: 4,
       },
       {
-        name: "3-hour Group Coding Spree",
-        about: "Get together with fellow JS programmers and code non-stop for 3 hours.",
+        name: "JS Coders",
+        about: "Get together with fellow JS programmers and code non-stop.",
         type: "In person",
         private: true,
         city: "New York",
