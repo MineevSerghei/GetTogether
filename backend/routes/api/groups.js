@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
-const { Group, GroupImage, Membership, User } = require('../../db/models');
+const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
 const { Op } = require('sequelize');
 
 // const { check } = require('express-validator');
@@ -63,7 +63,44 @@ router.get('/current', requireAuth, async (req, res) => {
     return res.json(groupsRes);
 });
 
+router.get('/:groupId', async (req, res) => {
+    const groupInstanceObj = await Group.findByPk(req.params.groupId, {
+        include: [
+            {
+                model: GroupImage,
+                attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: User,
+                as: 'Organizer',
+                attributes: ['id', 'firstName', 'lastName']
+            },
+            {
+                model: Venue,
+                attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+            }
+        ]
+    });
 
+    if (!groupInstanceObj) {
+        res.status(404);
+        return res.json({
+            "message": "Group couldn't be found",
+        });
+    }
+
+    const group = groupInstanceObj.toJSON();
+
+    // Getting the number of members of each group
+    group.numMembers = await Membership.count({
+        where: {
+            groupId: group.id,
+            status: { [Op.ne]: 'pending' }
+        }
+    });
+
+    return res.json(group);
+});
 
 
 
