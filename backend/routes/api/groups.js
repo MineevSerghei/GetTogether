@@ -170,6 +170,24 @@ router.post('/:groupId/images', requireAuth, checkIfGroupExists, isOrganizer, va
 
 });
 
+router.put('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, validateGroup, async (req, res) => {
+
+    const group = req.group;
+
+    const { name, about, type, private, city, state } = req.body;
+
+    group.name = name;
+    group.about = about;
+    group.type = type;
+    group.private = private;
+    group.city = city;
+    group.state = state;
+
+    await group.save();
+
+    return res.json(group);
+
+});
 
 
 
