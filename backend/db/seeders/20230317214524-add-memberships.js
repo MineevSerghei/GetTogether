@@ -14,15 +14,18 @@ module.exports = {
     await queryInterface.bulkInsert(options, [
       {
         userId: 2,
-        groupId: 1
+        groupId: 1,
+        status: 'co-host'
       },
       {
         userId: 2,
-        groupId: 3
+        groupId: 3,
+        status: 'pending'
       },
       {
         userId: 1,
-        groupId: 1
+        groupId: 1,
+        status: 'member'
       }
     ]);
 

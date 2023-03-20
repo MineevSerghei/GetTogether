@@ -1,6 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { Group, GroupImage, Membership } = require('../../db/models');
+const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
+const { Group, GroupImage, Membership, User } = require('../../db/models');
 const { Op } = require('sequelize');
 
 // const { check } = require('express-validator');
@@ -23,32 +24,41 @@ router.get('/', async (req, res) => {
         }
     });
 
-    const groupsRes = [];
+    const groupsRes = await findNumOfMembersAndPreviewImg(groups);
 
-    for (let groupInstanceObj of groups) {
+    return res.json(groupsRes);
+});
 
-        const group = groupInstanceObj.toJSON();
+router.get('/current', requireAuth, async (req, res) => {
 
-        // Getting the number of members of each group
-        group.numMembers = await Membership.count({
+    const groups = await Group.findAll({
+        where: {
+            [Op.or]: [
+                {
+                    organizerId: req.user.id
+                },
+                {
+                    '$Memberships.userId$': req.user.id,
+                    '$Memberships.status$': { [Op.ne]: 'pending' }
+                }
+            ]
+        },
+        include: [{
+            model: Membership,
+            attributes: []
+        },
+        {
+            model: GroupImage,
+            attributes: ['url'],
             where: {
-                groupId: group.id,
-                status: { [Op.ne]: 'pending' }
-            }
-        });
+                preview: true
+            },
+            required: false,
+            limit: 1
+        }]
+    });
 
-        // putting the preview image url into previewImage property (if there is a preview image)
-        group.previewImage = group.GroupImages.length ? group.GroupImages[0].url : null;
-
-        // if (group.GroupImages.length) {
-        //     group.previewImage = group.GroupImages[0].url;
-        // } else {
-        //     group.previewImage = null;
-        // }
-
-        delete group.GroupImages;
-        groupsRes.push(group);
-    }
+    const groupsRes = await findNumOfMembersAndPreviewImg(groups);
 
     return res.json(groupsRes);
 });
