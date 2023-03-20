@@ -5,7 +5,7 @@ const { Group, GroupImage, Membership, User, Venue } = require('../../db/models'
 const { Op } = require('sequelize');
 
 const { check } = require('express-validator');
-const { handleValidationErrors } = require('../../utils/validation');
+const { handleValidationErrors, checkIfGroupExists, isOrganizer } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -32,6 +32,18 @@ const validateGroup = [
     check('state')
         .exists({ checkFalsy: true })
         .withMessage('State is required'),
+    handleValidationErrors
+];
+
+const validateImage = [
+    check('url')
+        .exists({ checkFalsy: true })
+        .isURL()
+        .withMessage('Valid URL is required'),
+    check('preview')
+        .exists()
+        .isBoolean()
+        .withMessage('Preview must be a boolean'),
     handleValidationErrors
 ];
 
@@ -145,6 +157,18 @@ router.post('/', requireAuth, validateGroup, async (req, res) => {
     return res.json(group);
 });
 
+router.post('/:groupId/images', requireAuth, checkIfGroupExists, isOrganizer, validateImage, async (req, res) => {
+
+    const image = await req.group.createGroupImage({
+        url: req.body.url,
+        preview: req.body.preview
+    });
+
+    const { id, url, preview } = image.toJSON();
+
+    return res.json({ id, url, preview });
+
+});
 
 
 
