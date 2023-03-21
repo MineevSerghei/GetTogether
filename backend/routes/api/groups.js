@@ -47,6 +47,29 @@ const validateImage = [
     handleValidationErrors
 ];
 
+const validateVenue = [
+    check('address')
+        .exists({ checkFalsy: true })
+        .withMessage('Address is required'),
+    check('city')
+        .exists({ checkFalsy: true })
+        .withMessage('City is required'),
+    check('state')
+        .exists({ checkFalsy: true })
+        .withMessage('State is required'),
+    check('lat')
+        .exists({ checkNull: true })
+        .notEmpty()
+        .isFloat({ min: -90, max: 90 })
+        .withMessage('Latitude is not valid'),
+    check('lng')
+        .exists({ checkNull: true })
+        .notEmpty()
+        .isFloat({ min: -180, max: 180 })
+        .withMessage('Longitude is not valid'),
+    handleValidationErrors
+];
+
 // Get all Groups
 router.get('/', async (req, res) => {
 
@@ -215,6 +238,23 @@ router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoH
 
 });
 
+
+// Create a new Venue for a Group specified by its id
+
+router.post('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, validateVenue, async (req, res) => {
+
+    const { address, city, state, lat, lng } = req.body;
+
+    const venue = await req.group.createVenue({ address, city, state, lat, lng });
+
+    const pojoVenue = venue.toJSON();
+
+    delete pojoVenue.createdAt;
+    delete pojoVenue.updatedAt;
+
+    return res.json(pojoVenue);
+
+});
 
 
 module.exports = router;
