@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
-const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
+const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
+const { Group, GroupImage, Membership, User, Venue, Event, EventImage } = require('../../db/models');
 const { Op } = require('sequelize');
 
 const { checkIfGroupExists,
@@ -30,7 +30,7 @@ router.get('/', async (req, res) => {
 
     const groupsRes = await findNumOfMembersAndPreviewImg(groups);
 
-    return res.json(groupsRes);
+    return res.json({ Groups: groupsRes });
 });
 
 router.get('/current', requireAuth, async (req, res) => {
@@ -64,7 +64,7 @@ router.get('/current', requireAuth, async (req, res) => {
 
     const groupsRes = await findNumOfMembersAndPreviewImg(groups);
 
-    return res.json(groupsRes);
+    return res.json({ Groups: groupsRes });
 });
 
 router.get('/:groupId', async (req, res) => {
@@ -175,7 +175,7 @@ router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoH
         }
     });
 
-    return res.json(venues);
+    return res.json({ Venues: venues });
 
 });
 
@@ -192,6 +192,39 @@ router.post('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCo
 
     return res.json(venue);
 
+});
+
+router.get('/:groupId/events', checkIfGroupExists, async (req, res) => {
+    const events = await Event.findAll({
+        where: {
+            groupId: req.group.id
+        },
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+        include: [
+            {
+                model: Group,
+                attributes: ['id', 'name', 'city', 'state']
+            },
+            {
+                model: Venue,
+                attributes: ['id', 'city', 'state']
+            },
+            {
+                model: EventImage,
+                attributes: ['url'],
+                where: {
+                    preview: true
+                },
+                required: false,
+                limit: 1
+            }
+        ]
+    });
+
+    const eventsRes = await findNumOfAttendeesAndPreviewImg(events);
+
+
+    return res.json({ Events: eventsRes });
 });
 
 

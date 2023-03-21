@@ -35,9 +35,11 @@ router.get('/', async (req, res) => {
 
     const eventsRes = await findNumOfAttendeesAndPreviewImg(events);
 
-    res.json(eventsRes);
+    return res.json({ Events: eventsRes });
 
 });
+
+
 
 
 
