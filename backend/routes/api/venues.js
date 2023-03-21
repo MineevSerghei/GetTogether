@@ -1,6 +1,5 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-//const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
 //const { Op } = require('sequelize');
 

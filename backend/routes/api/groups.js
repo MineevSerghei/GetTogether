@@ -187,12 +187,10 @@ router.post('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCo
 
     const venue = await req.group.createVenue({ address, city, state, lat, lng });
 
-    const pojoVenue = venue.toJSON();
+    delete venue.dataValues.createdAt;
+    delete venue.dataValues.updatedAt;
 
-    delete pojoVenue.createdAt;
-    delete pojoVenue.updatedAt;
-
-    return res.json(pojoVenue);
+    return res.json(venue);
 
 });
 
