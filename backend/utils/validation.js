@@ -38,10 +38,11 @@ const checkIfGroupExists = async (req, res, next) => {
 const isOrganizer = async (req, res, next) => {
 
     if (req.user.id !== req.group.organizerId) {
-        res.status(403);
-        return res.json({
-            "message": "Forbidden"
-        });
+        const err = new Error('Authorization required');
+        err.title = 'Forbidden';
+        err.errors = { message: "You don't have the right permissions" };
+        err.status = 403;
+        return next(err);
     } else {
         next();
     }
