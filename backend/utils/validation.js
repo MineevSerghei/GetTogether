@@ -1,6 +1,6 @@
 
 const { validationResult } = require('express-validator');
-const { Group } = require('../db/models');
+const { Group, Membership } = require('../db/models');
 
 // middleware for formatting errors from express-validator middleware
 const handleValidationErrors = (req, _res, next) => {
@@ -48,6 +48,29 @@ const isOrganizer = async (req, res, next) => {
     }
 }
 
+const isOrganizerOrCoHost = async (req, res, next) => {
+
+    const membership = await Membership.findOne({
+        where: {
+            userId: req.user.id,
+            groupId: req.group.id
+        }
+    });
+
+    const status = membership ? membership.status : null;
+
+    if (req.user.id === req.group.organizerId
+        || status === 'co-host') {
+        next();
+    } else {
+        const err = new Error('Authorization required');
+        err.title = 'Forbidden';
+        err.errors = { message: "You don't have the right permissions" };
+        err.status = 403;
+        return next(err);
+    }
+}
+
 module.exports = {
-    handleValidationErrors, checkIfGroupExists, isOrganizer
+    handleValidationErrors, checkIfGroupExists, isOrganizer, isOrganizerOrCoHost
 };

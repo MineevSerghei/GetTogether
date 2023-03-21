@@ -5,7 +5,7 @@ const { Group, GroupImage, Membership, User, Venue } = require('../../db/models'
 const { Op } = require('sequelize');
 
 const { check } = require('express-validator');
-const { handleValidationErrors, checkIfGroupExists, isOrganizer } = require('../../utils/validation');
+const { handleValidationErrors, checkIfGroupExists, isOrganizer, isOrganizerOrCoHost } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -196,6 +196,22 @@ router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (
     return res.json({
         "message": "Successfully deleted",
     });
+
+});
+
+
+// Get all Venues for a Group specified by id
+
+router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, async (req, res) => {
+
+    const venues = await Venue.findAll({
+        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng'],
+        where: {
+            groupId: req.params.groupId
+        }
+    });
+
+    return res.json(venues);
 
 });
 
