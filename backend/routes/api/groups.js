@@ -4,71 +4,14 @@ const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
 const { Op } = require('sequelize');
 
-const { check } = require('express-validator');
-const { handleValidationErrors, checkIfGroupExists, isOrganizer, isOrganizerOrCoHost } = require('../../utils/validation');
+const { checkIfGroupExists,
+    isOrganizer,
+    isOrganizerOrCoHost,
+    validateVenue,
+    validateGroup,
+    validateImage } = require('../../utils/validation');
 
 const router = express.Router();
-
-const validateGroup = [
-    check('name')
-        .exists({ checkFalsy: true })
-        .isLength({ max: 60, min: 5 })
-        .withMessage('Name must be between 5 and 60 characters'),
-    check('about')
-        .exists({ checkFalsy: true })
-        .isLength({ min: 50 })
-        .withMessage('About must be 50 characters or more'),
-    check('type')
-        .exists({ checkFalsy: true })
-        .isIn(['Online', 'In person'])
-        .withMessage("Type must be 'Online' or 'In person'"),
-    check('private')
-        .exists()
-        .isBoolean()
-        .withMessage('Private must be a boolean'),
-    check('city')
-        .exists({ checkFalsy: true })
-        .withMessage('City is required'),
-    check('state')
-        .exists({ checkFalsy: true })
-        .withMessage('State is required'),
-    handleValidationErrors
-];
-
-const validateImage = [
-    check('url')
-        .exists({ checkFalsy: true })
-        .isURL()
-        .withMessage('Valid URL is required'),
-    check('preview')
-        .exists()
-        .isBoolean()
-        .withMessage('Preview must be a boolean'),
-    handleValidationErrors
-];
-
-const validateVenue = [
-    check('address')
-        .exists({ checkFalsy: true })
-        .withMessage('Address is required'),
-    check('city')
-        .exists({ checkFalsy: true })
-        .withMessage('City is required'),
-    check('state')
-        .exists({ checkFalsy: true })
-        .withMessage('State is required'),
-    check('lat')
-        .exists({ checkNull: true })
-        .notEmpty()
-        .isFloat({ min: -90, max: 90 })
-        .withMessage('Latitude is not valid'),
-    check('lng')
-        .exists({ checkNull: true })
-        .notEmpty()
-        .isFloat({ min: -180, max: 180 })
-        .withMessage('Longitude is not valid'),
-    handleValidationErrors
-];
 
 // Get all Groups
 router.get('/', async (req, res) => {
@@ -222,13 +165,11 @@ router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (
 
 });
 
-
 // Get all Venues for a Group specified by id
 
 router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, async (req, res) => {
 
     const venues = await Venue.findAll({
-        attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng'],
         where: {
             groupId: req.params.groupId
         }
@@ -237,7 +178,6 @@ router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoH
     return res.json(venues);
 
 });
-
 
 // Create a new Venue for a Group specified by its id
 

@@ -45,6 +45,7 @@ app.use(routes); // Connect all the routes
 
 
 app.get('/', (req, res) => {
+    console.log('API Server Running....');
     res.json('API Server Running....');
 });
 
