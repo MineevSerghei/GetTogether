@@ -1,7 +1,7 @@
 const express = require('express');
 //const { requireAuth } = require('../../utils/auth');
-//const { findNumOfMembersAndPreviewImg } = require('../../utils/objects');
-const { Event, Group, Venue } = require('../../db/models');
+const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
+const { Event, Group, Venue, EventImage } = require('../../db/models');
 //const { Op } = require('sequelize');
 
 //const { checkIfVenueExists, isOrganizerOrCoHost } = require('../../utils/validation');
@@ -20,11 +20,22 @@ router.get('/', async (req, res) => {
             {
                 model: Venue,
                 attributes: ['id', 'city', 'state']
+            },
+            {
+                model: EventImage,
+                attributes: ['url'],
+                where: {
+                    preview: true
+                },
+                required: false,
+                limit: 1
             }
         ]
     });
 
-    res.json(events);
+    const eventsRes = await findNumOfAttendeesAndPreviewImg(events);
+
+    res.json(eventsRes);
 
 });
 

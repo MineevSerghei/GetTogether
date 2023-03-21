@@ -63,7 +63,6 @@ module.exports = {
   async down(queryInterface, Sequelize) {
 
     options.tableName = 'Events';
-    const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options);
   }
 };

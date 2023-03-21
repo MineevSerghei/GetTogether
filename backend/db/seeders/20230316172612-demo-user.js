@@ -56,7 +56,6 @@ module.exports = {
 
   async down(queryInterface, Sequelize) {
     options.tableName = 'Users';
-    const Op = Sequelize.Op;
     await queryInterface.bulkDelete(options);
   }
 };

@@ -1,4 +1,4 @@
-const { Membership } = require('../db/models');
+const { Membership, Attendance } = require('../db/models');
 const { Op } = require('sequelize');
 
 
@@ -27,7 +27,33 @@ const findNumOfMembersAndPreviewImg = async groups => {
     return groupsRes;
 }
 
+const findNumOfAttendeesAndPreviewImg = async events => {
+    const eventsRes = [];
+
+    for (let eventInstanceObj of events) {
+
+        const event = eventInstanceObj.toJSON();
+
+        // Getting the number of attendees of each event
+        event.numAttending = await Attendance.count({
+            where: {
+                eventId: event.id,
+                status: 'attending'
+            }
+        });
+
+        // putting the preview image url into previewImage property (if there is a preview image)
+        event.previewImage = event.EventImages.length ? event.EventImages[0].url : null;
+
+        delete event.EventImages;
+        eventsRes.push(event);
+    }
+
+    return eventsRes;
+}
+
 
 module.exports = {
-    findNumOfMembersAndPreviewImg
+    findNumOfMembersAndPreviewImg,
+    findNumOfAttendeesAndPreviewImg
 };

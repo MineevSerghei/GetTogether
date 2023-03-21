@@ -9,36 +9,36 @@ if (process.env.NODE_ENV === 'production') {
 
 module.exports = {
   async up(queryInterface, Sequelize) {
-    options.tableName = 'GroupImages';
+    options.tableName = 'EventImages';
 
     await queryInterface.bulkInsert(options, [
       {
-        groupId: 1,
+        eventId: 1,
         url: 'improvimage.com/link1.jpg',
         preview: true
       },
       {
-        groupId: 1,
+        eventId: 1,
         url: 'improvimage.com/link2.jpg',
         preview: true
       },
       {
-        groupId: 2,
+        eventId: 2,
         url: 'codingimage1.com/link1.jpg',
         preview: true
       },
       {
-        groupId: 2,
+        eventId: 2,
         url: 'codingimage1.com/link2.jpg',
         preview: false
       },
       {
-        groupId: 3,
+        eventId: 3,
         url: 'secretimage.com/link1.jpg',
         preview: true
       },
       {
-        groupId: 3,
+        eventId: 3,
         url: 'secretimage.com/link2.jpg',
         preview: false
       }
@@ -46,7 +46,7 @@ module.exports = {
   },
 
   async down(queryInterface, Sequelize) {
-    options.tableName = 'GroupImages';
+    options.tableName = 'EventImages';
     await queryInterface.bulkDelete(options);
   }
 };
