@@ -84,12 +84,12 @@ const validateVenue = [
     handleValidationErrors
 ];
 
-const venueExists = async value => {
+const venueExists = async (value, { req, location, path }) => {
 
     if (value) {
         const venue = await Venue.findByPk(value);
 
-        if (!venue) throw new Error("Venue does not exist");
+        if (!venue || venue.groupId !== req.group.id) throw new Error("Venue does not exist");
     }
 }
 
