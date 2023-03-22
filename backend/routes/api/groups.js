@@ -9,7 +9,8 @@ const { checkIfGroupExists,
     isOrganizerOrCoHost,
     validateVenue,
     validateGroup,
-    validateImage } = require('../../utils/validation');
+    validateImage,
+    validateEvent } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -225,6 +226,21 @@ router.get('/:groupId/events', checkIfGroupExists, async (req, res) => {
 
 
     return res.json({ Events: eventsRes });
+});
+
+router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, validateEvent, async (req, res) => {
+
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate });
+
+    delete event.dataValues.createdAt;
+    delete event.dataValues.updatedAt;
+
+    if (!event.dataValues.venueId) event.dataValues.venueId = null;
+
+    return res.json(event);
+
 });
 
 

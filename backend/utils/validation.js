@@ -1,10 +1,11 @@
 
 const { validationResult } = require('express-validator');
 const { Group, Membership, Venue } = require('../db/models');
-const { check } = require('express-validator');
+const { check, body } = require('express-validator');
 
 // middleware for formatting errors from express-validator middleware
 const handleValidationErrors = (req, _res, next) => {
+
     const validationErrors = validationResult(req);
 
     if (!validationErrors.isEmpty()) {
@@ -83,6 +84,67 @@ const validateVenue = [
     handleValidationErrors
 ];
 
+const venueExists = async value => {
+
+    if (value) {
+        const venue = await Venue.findByPk(value);
+
+        if (!venue) throw new Error("Venue does not exist");
+    }
+}
+
+const checkEndAfterStart = async (endDate, { req, location, path }) => {
+
+    let { startDate } = req.body;
+
+    startDate = (new Date(startDate)).getTime();
+    endDate = (new Date(endDate)).getTime();
+
+    if ((endDate - startDate) < 0) {
+        throw new Error("End date is less than start date");
+    }
+
+}
+
+const validateEvent = [
+
+    check('venueId')
+        .custom(venueExists)
+        .withMessage('Venue does not exist'), // not done
+    check('name')
+        .exists({ checkFalsy: true })
+        .isLength({ min: 5 })
+        .withMessage('Name must be at least 5 characters'),
+    check('type')
+        .exists({ checkFalsy: true })
+        .isIn(['Online', 'In person'])
+        .withMessage("Type must be Online or In person"),
+    check('capacity')
+        .exists({ checkNull: true })
+        .isInt({ min: 0 })
+        .withMessage('Capacity must be an integer'),
+    check('price')
+        .exists({ checkNull: true })
+        .isFloat({ min: 0 })
+        .withMessage('Price is invalid'),
+    check('description')
+        .exists({ checkFalsy: true })
+        .withMessage('Description is required'),
+    check('startDate')
+        .exists({ checkFalsy: true })
+        .withMessage('Start date is required'),
+    check('startDate')
+        .isAfter()
+        .withMessage('Start date must be in the future'),
+    check('endDate')
+        .exists({ checkFalsy: true })
+        .withMessage('End date is required'),
+    check('endDate')
+        .custom(checkEndAfterStart)
+        .withMessage('End date is less than start date'),
+    handleValidationErrors
+];
+
 const checkIfGroupExists = async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId);
 
@@ -119,9 +181,9 @@ const checkIfVenueExists = async (req, res, next) => {
 const isOrganizer = async (req, res, next) => {
 
     if (req.user.id !== req.group.organizerId) {
-        const err = new Error('Authorization required');
+        const err = new Error('Forbidden');
         err.title = 'Forbidden';
-        err.errors = { message: "You don't have the right permissions" };
+        err.errors = { message: "Forbidden" };
         err.status = 403;
         return next(err);
     } else {
@@ -144,9 +206,9 @@ const isOrganizerOrCoHost = async (req, res, next) => {
         || status === 'co-host') {
         next();
     } else {
-        const err = new Error('Authorization required');
+        const err = new Error('Forbidden');
         err.title = 'Forbidden';
-        err.errors = { message: "You don't have the right permissions" };
+        err.errors = { message: "Forbidden" };
         err.status = 403;
         return next(err);
     }
@@ -160,5 +222,6 @@ module.exports = {
     checkIfVenueExists,
     validateVenue,
     validateGroup,
-    validateImage
+    validateImage,
+    validateEvent
 };
