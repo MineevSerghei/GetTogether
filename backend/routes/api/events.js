@@ -1,10 +1,10 @@
 const express = require('express');
-//const { requireAuth } = require('../../utils/auth');
+const { requireAuth } = require('../../utils/auth');
 const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance } = require('../../db/models');
 //const { Op } = require('sequelize');
 
-//const { checkIfVenueExists, isOrganizerOrCoHost } = require('../../utils/validation');
+const { checkIfEventExists, isHostCohostOrAttendee, validateImage } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -77,6 +77,20 @@ router.get('/:eventId', async (req, res) => {
     });
 
     return res.json(event);
+
+});
+
+// Add an Image to a Event based on the Event's id
+router.post('/:eventId/images', requireAuth, checkIfEventExists, isHostCohostOrAttendee, validateImage, async (req, res) => {
+
+    const image = await req.event.createEventImage({
+        url: req.body.url,
+        preview: req.body.preview
+    });
+
+    const { id, url, preview } = image.toJSON();
+
+    return res.json({ id, url, preview });
 
 });
 
