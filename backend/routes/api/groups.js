@@ -4,6 +4,7 @@ const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = requi
 const { Group, GroupImage, Membership, User, Venue, Event, EventImage } = require('../../db/models');
 const { Op } = require('sequelize');
 const { isOrganizer, isOrganizerOrCoHost } = require('../../utils/roles');
+// const { run } = require('express-validator');
 
 const { checkIfGroupExists,
     validateVenue,
@@ -241,6 +242,43 @@ router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCo
     delete event.dataValues.updatedAt;
 
     return res.json(event);
+
+});
+
+// Get all Members of a Group specified by its id
+router.get('/:groupId/members', checkIfGroupExists, async (req, res, next) => {
+
+    const where = { status: { [Op.ne]: 'pending' } };
+
+    if (req.user) {
+        const membership = await Membership.findOne({
+            where: {
+                userId: req.user.id,
+                groupId: req.group.id
+            }
+        });
+
+        const status = membership ? membership.status : null;
+
+        if (req.user.id === req.group.organizerId || status === 'co-host') {
+            delete where.status;
+        }
+    }
+
+    const group = await Group.findByPk(req.params.groupId, {
+        include: {
+            attributes: ['id', 'firstName', 'lastName'],
+            model: User,
+            as: 'Member',
+            through: {
+                attributes: ['status'],
+                model: Membership,
+                where
+            }
+        }
+    });
+
+    return res.json({ Members: group.Member });
 
 });
 

@@ -26,6 +26,11 @@ module.exports = {
         userId: 1,
         groupId: 1,
         status: 'member'
+      },
+      {
+        userId: 4,
+        groupId: 2,
+        status: 'pending'
       }
     ]);
 
