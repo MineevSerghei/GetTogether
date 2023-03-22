@@ -108,9 +108,6 @@ const checkEndAfterStart = async (endDate, { req, location, path }) => {
 
 const validateEvent = [
 
-    // check('venueId')
-    //     .isInt({ min: 1 })
-    //     .withMessage('Venue does not exist'),
     check('venueId')
         .custom(venueExists)
         .withMessage('Venue does not exist'),

@@ -120,6 +120,14 @@ router.put('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, va
 
 });
 
+router.delete('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, async (req, res) => {
+    await req.event.destroy();
+
+    return res.json({
+        "message": "Successfully deleted",
+    });
+});
+
 
 
 module.exports = router;
