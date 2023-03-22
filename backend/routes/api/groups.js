@@ -3,10 +3,9 @@ const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue, Event, EventImage } = require('../../db/models');
 const { Op } = require('sequelize');
+const { isOrganizer, isOrganizerOrCoHost } = require('../../utils/roles');
 
 const { checkIfGroupExists,
-    isOrganizer,
-    isOrganizerOrCoHost,
     validateVenue,
     validateGroup,
     validateImage,

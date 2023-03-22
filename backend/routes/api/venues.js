@@ -3,7 +3,8 @@ const { requireAuth } = require('../../utils/auth');
 const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
 //const { Op } = require('sequelize');
 
-const { checkIfVenueExists, isOrganizerOrCoHost, validateVenue } = require('../../utils/validation');
+const { checkIfVenueExists, validateVenue } = require('../../utils/validation');
+const { isOrganizerOrCoHost } = require('../../utils/roles');
 
 const router = express.Router();
 

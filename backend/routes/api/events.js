@@ -4,7 +4,9 @@ const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance } = require('../../db/models');
 //const { Op } = require('sequelize');
 
-const { checkIfEventExists, isHostCohostOrAttendee, validateImage } = require('../../utils/validation');
+const { isHostCohostOrAttendee } = require('../../utils/roles');
+
+const { checkIfEventExists, validateImage } = require('../../utils/validation');
 
 const router = express.Router();
 
