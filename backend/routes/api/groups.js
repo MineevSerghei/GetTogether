@@ -229,14 +229,16 @@ router.get('/:groupId/events', checkIfGroupExists, async (req, res) => {
 
 router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, validateEvent, async (req, res) => {
 
-    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    let { venueId } = req.body;
+
+    if (!venueId) venueId = null;
 
     const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate });
 
     delete event.dataValues.createdAt;
     delete event.dataValues.updatedAt;
-
-    if (!event.dataValues.venueId) event.dataValues.venueId = null;
 
     return res.json(event);
 

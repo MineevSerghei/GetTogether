@@ -4,9 +4,9 @@ const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance } = require('../../db/models');
 //const { Op } = require('sequelize');
 
-const { isHostCohostOrAttendee } = require('../../utils/roles');
+const { isHostCohostOrAttendee, isOrganizerOrCoHost } = require('../../utils/roles');
 
-const { checkIfEventExists, validateImage } = require('../../utils/validation');
+const { checkIfEventExists, validateImage, validateEvent } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -93,6 +93,30 @@ router.post('/:eventId/images', requireAuth, checkIfEventExists, isHostCohostOrA
     const { id, url, preview } = image.toJSON();
 
     return res.json({ id, url, preview });
+
+});
+
+// Edit an Event specified by its id
+router.put('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, validateEvent, async (req, res) => {
+
+    const event = req.event;
+
+    const { venueId, name, type, capacity, price, description, startDate, endDate } = req.body;
+
+    event.venueId = venueId ? venueId : null;
+    event.name = name;
+    event.type = type;
+    event.capacity = capacity;
+    event.price = price;
+    event.description = description;
+    event.startDate = startDate;
+    event.endDate = endDate;
+
+    await event.save();
+
+    delete event.dataValues.updatedAt;
+
+    return res.json(event);
 
 });
 
