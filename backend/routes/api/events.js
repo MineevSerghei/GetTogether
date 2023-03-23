@@ -173,7 +173,7 @@ router.get('/:eventId/attendees', checkIfEventExists, async (req, res) => {
 
 
 // Request to Attend an Event based on the Event's id
-router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
 
     const eventId = parseInt(req.params.eventId, 10);
     let event = null;
