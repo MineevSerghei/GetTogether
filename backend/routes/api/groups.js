@@ -3,7 +3,7 @@ const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue, Event, EventImage } = require('../../db/models');
 const { Op } = require('sequelize');
-const { isOrganizer, isOrganizerOrCoHost } = require('../../utils/roles');
+const { isOrganizer, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 // const { run } = require('express-validator');
 
 const { checkIfGroupExists,
@@ -11,7 +11,8 @@ const { checkIfGroupExists,
     validateGroup,
     validateImage,
     validateEvent,
-    validateMembershipChange } = require('../../utils/validation');
+    validateMembershipChange,
+    validateMembershipDelete } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -373,7 +374,6 @@ router.put('/:groupId/membership', requireAuth, checkIfGroupExists, isOrganizerO
             userId: req.body.memberId
         }
     });
-    console.log(membership);
 
     if (!membership) {
         res.status(404);
@@ -396,15 +396,39 @@ router.put('/:groupId/membership', requireAuth, checkIfGroupExists, isOrganizerO
         return res.json({ id, groupId, memberId: userId, status });
 
     } else {
-
-        const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: "Forbidden" };
-        err.status = 403;
-        return next(err);
-
+        return next(throwForbidden());
     }
 
+});
+
+// Delete membership to a group specified by id
+router.delete('/:groupId/membership', requireAuth, checkIfGroupExists, validateMembershipDelete, async (req, res, next) => {
+
+    const membership = await Membership.findOne({
+        attributes: ['id', 'userId', 'groupId', 'status'],
+        where: {
+            groupId: req.group.id,
+            userId: req.body.memberId
+        }
+    });
+
+    if (!membership) {
+        res.status(404);
+        return res.json({
+            "message": "Membership does not exist for this User",
+        });
+    }
+
+    if (req.user.id === req.group.organizerId ||
+        req.user.id === req.body.memberId) {
+
+        await membership.destroy();
+        return res.json({
+            "message": "Successfully deleted membership from group"
+        });
+    } else {
+        return next(throwForbidden());
+    }
 });
 
 

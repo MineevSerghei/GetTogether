@@ -1,13 +1,17 @@
 const { Membership, Attendance } = require('../db/models');
 
+const throwForbidden = () => {
+    const err = new Error('Forbidden');
+    err.title = 'Forbidden';
+    err.errors = { message: "Forbidden" };
+    err.status = 403;
+    return err;
+}
+
 const isOrganizer = async (req, res, next) => {
 
     if (req.user.id !== req.group.organizerId) {
-        const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: "Forbidden" };
-        err.status = 403;
-        return next(err);
+        return next(throwForbidden());
     } else {
         next();
     }
@@ -32,11 +36,7 @@ const isOrganizerOrCoHost = async (req, res, next) => {
         next();
     }
     else {
-        const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: "Forbidden" };
-        err.status = 403;
-        return next(err);
+        return next(throwForbidden());
     }
 }
 
@@ -65,16 +65,13 @@ const isHostCohostOrAttendee = async (req, res, next) => {
         || attendStatus === 'attending') {
         next();
     } else {
-        const err = new Error('Forbidden');
-        err.title = 'Forbidden';
-        err.errors = { message: "Forbidden" };
-        err.status = 403;
-        return next(err);
+        return next(throwForbidden());
     }
 }
 
 module.exports = {
     isOrganizer,
     isOrganizerOrCoHost,
-    isHostCohostOrAttendee
+    isHostCohostOrAttendee,
+    throwForbidden
 };

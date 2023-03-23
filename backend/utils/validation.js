@@ -154,6 +154,8 @@ const userExists = async (value) => {
 const validateMembershipChange = [
     check('memberId')
         .exists({ checkFalsy: true })
+        .withMessage("User couldn't be found"),
+    check('memberId')
         .custom(userExists)
         .withMessage("User couldn't be found"),
     check('status')
@@ -166,7 +168,19 @@ const validateMembershipChange = [
     handleValidationErrors
 ];
 
+const validateMembershipDelete = [
+    check('memberId')
+        .exists({ checkFalsy: true })
+        .custom(userExists)
+        .withMessage("User couldn't be found"),
+    handleValidationErrors
+]
+
 const checkIfGroupExists = async (req, res, next) => {
+
+    // CHECK IF STRING IS AN INTEGER, OTHERWISE 500 INTERNAL SERVER ERR,
+    // SAME FOR VENUES AND EVENTS
+
     const group = await Group.findByPk(req.params.groupId);
 
     if (!group) {
@@ -226,5 +240,6 @@ module.exports = {
     validateGroup,
     validateImage,
     validateEvent,
-    validateMembershipChange
+    validateMembershipChange,
+    validateMembershipDelete
 };
