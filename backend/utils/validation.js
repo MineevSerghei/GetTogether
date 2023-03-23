@@ -176,6 +176,14 @@ const validateMembershipDelete = [
     handleValidationErrors
 ]
 
+const validateAttendanceDelete = [
+    check('userId')
+        .exists({ checkFalsy: true })
+        .custom(userExists)
+        .withMessage("User couldn't be found"),
+    handleValidationErrors
+]
+
 const validateAttendanceChange = [
     check('userId')
         .exists({ checkFalsy: true })
@@ -262,5 +270,6 @@ module.exports = {
     validateEvent,
     validateMembershipChange,
     validateMembershipDelete,
-    validateAttendanceChange
+    validateAttendanceChange,
+    validateAttendanceDelete
 };

@@ -1,9 +1,9 @@
 const { Membership, Attendance } = require('../db/models');
 
-const throwForbidden = () => {
+const throwForbidden = (msg) => {
     const err = new Error('Forbidden');
     err.title = 'Forbidden';
-    err.errors = { message: "Forbidden" };
+    err.errors = { message: msg || "Forbidden" };
     err.status = 403;
     return err;
 }
