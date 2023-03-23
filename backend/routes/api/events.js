@@ -4,7 +4,7 @@ const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance, Membership, User } = require('../../db/models');
 const { Op } = require('sequelize');
 
-const { isHostCohostOrAttendee, isOrganizerOrCoHost } = require('../../utils/roles');
+const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 
 const { checkIfEventExists, validateImage, validateEvent } = require('../../utils/validation');
 
@@ -172,6 +172,87 @@ router.get('/:eventId/attendees', checkIfEventExists, async (req, res) => {
 });
 
 
+// Request to Attend an Event based on the Event's id
+router.post('/:eventId/attendance', requireAuth, async (req, res) => {
+
+    const eventId = parseInt(req.params.eventId, 10);
+    let event = null;
+
+    if (eventId)
+        event = await Event.findByPk(eventId, {
+            attributes: ['id'],
+            include: [
+                {
+                    model: Group,
+                    attributes: ['id', 'organizerId'],
+                    include: {
+                        model: Membership,
+                        attributes: ['status'],
+                        where: {
+                            userId: req.user.id
+                        },
+                        required: false
+                    }
+                },
+                {
+                    model: Attendance,
+                    attributes: ['status'],
+                    where: {
+                        userId: req.user.id
+                    },
+                    required: false
+                }
+            ]
+        });
+
+
+    if (!event) {
+        res.status(404);
+        return res.json({
+            "message": "Event couldn't be found",
+        });
+    }
+
+    let membershipStatus = null;
+
+    if (event.Group.Memberships.length) {
+        membershipStatus = event.Group.Memberships[0].status
+    } else if (event.Group.organizerId === req.user.id) {
+        membershipStatus = 'organizer';
+    }
+
+    if (membershipStatus === 'member' ||
+        membershipStatus === 'co-host' ||
+        membershipStatus === 'organizer') {
+
+        if (event.Attendances.length) {
+            const attendanceStatus = event.Attendances[0].status;
+            res.status(400);
+
+            if (attendanceStatus === 'attending')
+                return res.json({ message: "User is already an attendee of the event" });
+
+            if (attendanceStatus === 'waitlist')
+                return res.json({ message: "User is already on the waitlist for the event" });
+
+            if (attendanceStatus === 'pending')
+                return res.json({ message: "Attendance has already been requested" });
+        }
+
+
+        const request = await Attendance.create(
+            {
+                userId: req.user.id,
+                eventId: req.params.eventId,
+                status: 'pending'
+            });
+
+        return res.json({ userId: request.userId, status: request.status });
+
+    } else {
+        return next(throwForbidden());
+    }
+});
 
 
 module.exports = router;
