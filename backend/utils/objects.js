@@ -38,7 +38,7 @@ const findNumOfAttendeesAndPreviewImg = async events => {
         event.numAttending = await Attendance.count({
             where: {
                 eventId: event.id,
-                status: 'attending'
+                status: { [Op.ne]: 'pending' }
             }
         });
 

@@ -1,7 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
-const { Group, GroupImage, Membership, User, Venue, Event, EventImage } = require('../../db/models');
+const { Group, GroupImage, Membership, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
 const { Op } = require('sequelize');
 const { isOrganizer, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 // const { run } = require('express-validator');
@@ -430,6 +430,19 @@ router.delete('/:groupId/membership', requireAuth, checkIfGroupExists, validateM
         req.user.id === req.body.memberId) {
 
         await membership.destroy();
+
+        await Attendance.destroy({
+            where: {
+                userId: membership.userId
+            },
+            include: {
+                model: Event,
+                where: {
+                    groupId: membership.groupId
+                }
+            }
+        });
+
         return res.json({
             "message": "Successfully deleted membership from group"
         });
