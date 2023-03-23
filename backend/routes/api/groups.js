@@ -10,9 +10,38 @@ const { checkIfGroupExists,
     validateVenue,
     validateGroup,
     validateImage,
-    validateEvent } = require('../../utils/validation');
+    validateEvent,
+    validateMembershipChange } = require('../../utils/validation');
 
 const router = express.Router();
+
+// router.get('/test', async (req, res) => {
+
+//     const query = await Membership.findAll({
+//         attributes: ['status'],
+//         order: [[Group, 'id']],
+//         include: [
+//             {
+//                 attributes: ['username'],
+//                 model: User
+
+//             },
+//             {
+//                 attributes: ['id', 'name'],
+//                 model: Group,
+//                 include: {
+//                     attributes: ['username'],
+//                     model: User,
+//                     as: 'Organizer'
+//                 }
+//             },
+
+//         ]
+//     });
+
+//     res.json(query);
+
+// });
 
 // Get all Groups
 router.get('/', async (req, res) => {
@@ -331,6 +360,54 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     return res.json({ memberId: request.userId, status: request.status });
 
 });
+
+// Change the status of a membership for a group specified by id
+router.put('/:groupId/membership', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, validateMembershipChange, async (req, res, next) => {
+
+    const newStatus = req.body.status;
+
+    const membership = await Membership.findOne({
+        attributes: ['id', 'userId', 'groupId', 'status'],
+        where: {
+            groupId: req.group.id,
+            userId: req.body.memberId
+        }
+    });
+    console.log(membership);
+
+    if (!membership) {
+        res.status(404);
+        return res.json({
+            "message": "Membership between the user and the group does not exist",
+        });
+    }
+
+    const { role } = req.user;
+    const oldStatus = membership.status;
+
+    if ((role === 'co-host' && (oldStatus === 'pending' || oldStatus === 'member') && newStatus === 'member')
+        || (role === 'organizer' && (newStatus === 'co-host' || newStatus === 'member'))) {
+
+        membership.status = newStatus;
+        await membership.save();
+
+        const { id, groupId, userId, status } = membership;
+
+        return res.json({ id, groupId, memberId: userId, status });
+
+    } else {
+
+        const err = new Error('Forbidden');
+        err.title = 'Forbidden';
+        err.errors = { message: "Forbidden" };
+        err.status = 403;
+        return next(err);
+
+    }
+
+});
+
+
 
 
 module.exports = router;

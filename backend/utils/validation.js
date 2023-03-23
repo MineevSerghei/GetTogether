@@ -1,6 +1,6 @@
 
 const { validationResult } = require('express-validator');
-const { Group, Venue, Event } = require('../db/models');
+const { User, Group, Venue, Event } = require('../db/models');
 const { check } = require('express-validator');
 
 // middleware for formatting errors from express-validator middleware
@@ -145,6 +145,27 @@ const validateEvent = [
     handleValidationErrors
 ];
 
+const userExists = async (value) => {
+    const user = await User.findByPk(value);
+
+    if (!user) throw new Error("User couldn't be found");
+}
+
+const validateMembershipChange = [
+    check('memberId')
+        .exists({ checkFalsy: true })
+        .custom(userExists)
+        .withMessage("User couldn't be found"),
+    check('status')
+        .isIn(['member', 'co-host'])
+        .withMessage("Status value must be valid"),
+    check('status')
+        .not()
+        .equals('pending')
+        .withMessage("Cannot change a membership status to pending"),
+    handleValidationErrors
+];
+
 const checkIfGroupExists = async (req, res, next) => {
     const group = await Group.findByPk(req.params.groupId);
 
@@ -204,5 +225,6 @@ module.exports = {
     validateVenue,
     validateGroup,
     validateImage,
-    validateEvent
+    validateEvent,
+    validateMembershipChange
 };

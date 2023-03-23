@@ -24,10 +24,14 @@ const isOrganizerOrCoHost = async (req, res, next) => {
 
     const status = membership ? membership.status : null;
 
-    if (req.user.id === req.group.organizerId
-        || status === 'co-host') {
+    if (req.user.id === req.group.organizerId) {
+        req.user.role = 'organizer';
         next();
-    } else {
+    } else if (status === 'co-host') {
+        req.user.role = status;
+        next();
+    }
+    else {
         const err = new Error('Forbidden');
         err.title = 'Forbidden';
         err.errors = { message: "Forbidden" };
