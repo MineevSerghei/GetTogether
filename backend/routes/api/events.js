@@ -1,8 +1,8 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
-const { Event, Group, Venue, EventImage, Attendance } = require('../../db/models');
-//const { Op } = require('sequelize');
+const { Event, Group, Venue, EventImage, Attendance, Membership, User } = require('../../db/models');
+const { Op } = require('sequelize');
 
 const { isHostCohostOrAttendee, isOrganizerOrCoHost } = require('../../utils/roles');
 
@@ -131,6 +131,46 @@ router.delete('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost,
         "message": "Successfully deleted",
     });
 });
+
+// Get all Attendees of an Event specified by its id
+
+router.get('/:eventId/attendees', checkIfEventExists, async (req, res) => {
+
+    const where = { status: { [Op.ne]: 'pending' } };
+
+    if (req.user) {
+        const membership = await Membership.findOne({
+            where: {
+                userId: req.user.id,
+                groupId: req.group.id
+            }
+        });
+
+        const status = membership ? membership.status : null;
+
+        if (req.user.id === req.group.organizerId || status === 'co-host') {
+            delete where.status;
+        }
+    }
+
+    const event = await Event.findByPk(req.params.eventId, {
+        include: {
+            attributes: ['id', 'firstName', 'lastName'],
+            model: User,
+            as: 'Attendee',
+            through: {
+                attributes: ['status'],
+                model: Attendance,
+                where
+            }
+        }
+    });
+
+    return res.json({ Attendees: event.Attendee });
+
+
+});
+
 
 
 
