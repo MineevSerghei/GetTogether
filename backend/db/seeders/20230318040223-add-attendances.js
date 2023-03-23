@@ -41,6 +41,21 @@ module.exports = {
         eventId: 1,
         userId: 1,
         status: 'pending'
+      },
+      {
+        eventId: 2,
+        userId: 4,
+        status: 'attending'
+      },
+      {
+        eventId: 3,
+        userId: 4,
+        status: 'attending'
+      },
+      {
+        eventId: 4,
+        userId: 4,
+        status: 'attending'
       }
     ]);
 

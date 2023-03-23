@@ -431,7 +431,7 @@ router.delete('/:groupId/membership', requireAuth, checkIfGroupExists, validateM
 
         await membership.destroy();
 
-        await Attendance.destroy({
+        const atts = await Attendance.findAll({
             where: {
                 userId: membership.userId
             },
@@ -442,6 +442,8 @@ router.delete('/:groupId/membership', requireAuth, checkIfGroupExists, validateM
                 }
             }
         });
+
+        for (let att of atts) await att.destroy();
 
         return res.json({
             "message": "Successfully deleted membership from group"

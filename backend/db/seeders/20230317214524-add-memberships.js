@@ -30,7 +30,12 @@ module.exports = {
       {
         userId: 4,
         groupId: 2,
-        status: 'pending'
+        status: 'member'
+      },
+      {
+        userId: 4,
+        groupId: 3,
+        status: 'member'
       }
     ]);
 
