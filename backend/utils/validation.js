@@ -178,10 +178,9 @@ const validateMembershipDelete = [
 
 const checkIfGroupExists = async (req, res, next) => {
 
-    // CHECK IF STRING IS AN INTEGER, OTHERWISE 500 INTERNAL SERVER ERR,
-    // SAME FOR VENUES AND EVENTS
-
-    const group = await Group.findByPk(req.params.groupId);
+    const groupId = parseInt(req.params.groupId, 10);
+    let group = null;
+    if (groupId) group = await Group.findByPk(groupId);
 
     if (!group) {
         res.status(404);
@@ -195,9 +194,11 @@ const checkIfGroupExists = async (req, res, next) => {
 }
 
 const checkIfVenueExists = async (req, res, next) => {
-    const venue = await Venue.findByPk(req.params.venueId, {
-        include: Group
-    });
+
+    const venueId = parseInt(req.params.venueId, 10);
+    let venue = null;
+    if (venueId)
+        venue = await Venue.findByPk(venueId, { include: Group });
 
     if (!venue) {
         res.status(404);
@@ -213,9 +214,11 @@ const checkIfVenueExists = async (req, res, next) => {
 }
 
 const checkIfEventExists = async (req, res, next) => {
-    const event = await Event.findByPk(req.params.eventId, {
-        include: Group
-    });
+
+    const eventId = parseInt(req.params.eventId, 10);
+    let event = null;
+    if (eventId)
+        event = await Event.findByPk(eventId, { include: Group });
 
     if (!event) {
         res.status(404);
