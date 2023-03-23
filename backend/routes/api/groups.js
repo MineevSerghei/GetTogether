@@ -99,23 +99,27 @@ router.get('/current', requireAuth, async (req, res) => {
 });
 
 router.get('/:groupId', async (req, res) => {
-    const groupInstanceObj = await Group.findByPk(req.params.groupId, {
-        include: [
-            {
-                model: GroupImage,
-                attributes: ['id', 'url', 'preview']
-            },
-            {
-                model: User,
-                as: 'Organizer',
-                attributes: ['id', 'firstName', 'lastName']
-            },
-            {
-                model: Venue,
-                attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
-            }
-        ]
-    });
+
+    const groupId = parseInt(req.params.groupId, 10);
+    let groupInstanceObj = null;
+    if (groupId)
+        groupInstanceObj = await Group.findByPk(groupId, {
+            include: [
+                {
+                    model: GroupImage,
+                    attributes: ['id', 'url', 'preview']
+                },
+                {
+                    model: User,
+                    as: 'Organizer',
+                    attributes: ['id', 'firstName', 'lastName']
+                },
+                {
+                    model: Venue,
+                    attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+                }
+            ]
+        });
 
     if (!groupInstanceObj) {
         res.status(404);
@@ -315,17 +319,20 @@ router.get('/:groupId/members', checkIfGroupExists, async (req, res) => {
 // Request a Membership for a Group based on the Group's id
 router.post('/:groupId/membership', requireAuth, async (req, res) => {
 
-    const group = await Group.findByPk(req.params.groupId, {
-        attributes: ['id', 'organizerId'],
-        include: {
-            attributes: ['status'],
-            model: Membership,
-            where: {
-                userId: req.user.id
-            },
-            required: false
-        }
-    });
+    const groupId = parseInt(req.params.groupId, 10);
+    let group = null;
+    if (groupId)
+        group = await Group.findByPk(groupId, {
+            attributes: ['id', 'organizerId'],
+            include: {
+                attributes: ['status'],
+                model: Membership,
+                where: {
+                    userId: req.user.id
+                },
+                required: false
+            }
+        });
 
     if (!group) {
         res.status(404);

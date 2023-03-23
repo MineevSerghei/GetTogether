@@ -44,22 +44,26 @@ router.get('/', async (req, res) => {
 // Get details of an Event specified by its id
 router.get('/:eventId', async (req, res) => {
 
-    const eventInstanceObj = await Event.findByPk(req.params.eventId, {
-        include: [
-            {
-                model: Group,
-                attributes: ['id', 'name', 'private', 'city', 'state']
-            },
-            {
-                model: Venue,
-                attributes: ['id', 'address', 'city', 'state', 'lat', 'lng']
-            },
-            {
-                model: EventImage,
-                attributes: ['id', 'url', 'preview']
-            }
-        ]
-    });
+    const eventId = parseInt(req.params.eventId, 10);
+    let eventInstanceObj = null;
+
+    if (eventId)
+        eventInstanceObj = await Event.findByPk(eventId, {
+            include: [
+                {
+                    model: Group,
+                    attributes: ['id', 'name', 'private', 'city', 'state']
+                },
+                {
+                    model: Venue,
+                    attributes: ['id', 'address', 'city', 'state', 'lat', 'lng']
+                },
+                {
+                    model: EventImage,
+                    attributes: ['id', 'url', 'preview']
+                }
+            ]
+        });
 
     if (!eventInstanceObj) {
         res.status(404);
