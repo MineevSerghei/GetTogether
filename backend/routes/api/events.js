@@ -6,7 +6,7 @@ const { Op } = require('sequelize');
 
 const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 
-const { checkIfEventExists, validateImage, validateEvent } = require('../../utils/validation');
+const { checkIfEventExists, validateImage, validateEvent, validateAttendanceChange } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -168,7 +168,6 @@ router.get('/:eventId/attendees', checkIfEventExists, async (req, res) => {
 
     return res.json({ Attendees: event.Attendee });
 
-
 });
 
 
@@ -205,7 +204,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
             ]
         });
 
-
     if (!event) {
         res.status(404);
         return res.json({
@@ -239,7 +237,6 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
                 return res.json({ message: "Attendance has already been requested" });
         }
 
-
         const request = await Attendance.create(
             {
                 userId: req.user.id,
@@ -252,6 +249,31 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
     } else {
         return next(throwForbidden());
     }
+});
+
+// Change the status of an attendance for an event specified by id
+router.put('/:eventId/attendance', requireAuth, checkIfEventExists, isOrganizerOrCoHost, validateAttendanceChange, async (req, res) => {
+
+    const attendance = await Attendance.findOne({
+        attributes: ['id', 'userId', 'eventId', 'status'],
+        where: {
+            eventId: req.event.id,
+            userId: req.body.userId
+        }
+    });
+
+    if (!attendance) {
+        res.status(404);
+        return res.json({
+            message: "Attendance between the user and the event does not exist",
+        });
+    }
+
+    attendance.status = req.body.status;
+    await attendance.save();
+
+    const { id, eventId, userId, status } = attendance;
+    return res.json({ id, eventId, userId, status });
 });
 
 

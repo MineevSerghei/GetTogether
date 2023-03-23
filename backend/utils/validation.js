@@ -176,6 +176,23 @@ const validateMembershipDelete = [
     handleValidationErrors
 ]
 
+const validateAttendanceChange = [
+    check('userId')
+        .exists({ checkFalsy: true })
+        .withMessage("User couldn't be found"),
+    check('userId')
+        .custom(userExists)
+        .withMessage("User couldn't be found"),
+    check('status')
+        .isIn(['attending', 'waitlist'])
+        .withMessage("Status value must be valid"),
+    check('status')
+        .not()
+        .equals('pending')
+        .withMessage("Cannot change a membership status to pending"),
+    handleValidationErrors
+];
+
 const checkIfGroupExists = async (req, res, next) => {
 
     const groupId = parseInt(req.params.groupId, 10);
@@ -244,5 +261,6 @@ module.exports = {
     validateImage,
     validateEvent,
     validateMembershipChange,
-    validateMembershipDelete
+    validateMembershipDelete,
+    validateAttendanceChange
 };
