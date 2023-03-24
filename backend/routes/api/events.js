@@ -26,10 +26,8 @@ router.get('/', validateEventFilters, pagination, async (req, res) => {
     }
 
     if (startDate) {
-        //startDate = new Date(startDate);
         startDate = (new Date(startDate)).getTime()
         startDate = new Date(startDate);
-        console.log("TIME --->>>", startDate);
         filters.where.startDate = startDate;
     }
 
