@@ -1,17 +1,35 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
+const { findNumOfAttendeesAndPreviewImg, pagination } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance, Membership, User } = require('../../db/models');
 const { Op } = require('sequelize');
 
 const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 
-const { checkIfEventExists, validateImage, validateEvent, validateAttendanceChange, validateAttendanceDelete } = require('../../utils/validation');
+const { checkIfEventExists, validateImage, validateEvent, validateAttendanceChange, validateAttendanceDelete, validateEventFilters } = require('../../utils/validation');
 
 const router = express.Router();
 
 
-router.get('/', async (req, res) => {
+router.get('/', validateEventFilters, pagination, async (req, res) => {
+
+    const { name, type, startDate } = req.query;
+
+    const filters = { where: {} };
+
+    if (name) {
+        filters.where.name = { [Op.substring]: name };
+    }
+
+    if (type) {
+        filters.where.type = type;
+    }
+
+    if (startDate) {
+        filters.where.startDate = startDate;
+    }
+
+
     const events = await Event.findAll({
         attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
         include: [
@@ -32,7 +50,10 @@ router.get('/', async (req, res) => {
                 required: false,
                 limit: 1
             }
-        ]
+        ],
+        ...req.pagination,
+        ...filters
+
     });
 
     const eventsRes = await findNumOfAttendeesAndPreviewImg(events);
@@ -153,7 +174,7 @@ router.get('/:eventId/attendees', checkIfEventExists, async (req, res) => {
         }
     }
 
-    const event = await Event.findByPk(req.params.eventId, {
+    const event = await Event.findByPk(req.event.id, {
         include: {
             attributes: ['id', 'firstName', 'lastName'],
             model: User,
@@ -240,7 +261,7 @@ router.post('/:eventId/attendance', requireAuth, async (req, res, next) => {
         const request = await Attendance.create(
             {
                 userId: req.user.id,
-                eventId: req.params.eventId,
+                eventId: eventId,
                 status: 'pending'
             });
 

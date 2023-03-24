@@ -206,7 +206,7 @@ router.get('/:groupId/venues', requireAuth, checkIfGroupExists, isOrganizerOrCoH
 
     const venues = await Venue.findAll({
         where: {
-            groupId: req.params.groupId
+            groupId: req.group.id
         }
     });
 
@@ -299,7 +299,7 @@ router.get('/:groupId/members', checkIfGroupExists, async (req, res) => {
         }
     }
 
-    const group = await Group.findByPk(req.params.groupId, {
+    const group = await Group.findByPk(req.group.id, {
         include: {
             attributes: ['id', 'firstName', 'lastName'],
             model: User,
@@ -361,7 +361,7 @@ router.post('/:groupId/membership', requireAuth, async (req, res) => {
     const request = await Membership.create(
         {
             userId: req.user.id,
-            groupId: req.params.groupId,
+            groupId: groupId,
             status: 'pending'
         });
 
