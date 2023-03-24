@@ -312,7 +312,7 @@ router.delete('/:eventId/attendance', requireAuth, checkIfEventExists, validateA
     if (!attendance) {
         res.status(404);
         return res.json({
-            message: "Attendance between the user and the event does not exist",
+            message: "Attendance does not exist for this User",
         });
     }
 
@@ -321,7 +321,7 @@ router.delete('/:eventId/attendance', requireAuth, checkIfEventExists, validateA
 
         await attendance.destroy();
         return res.json({
-            "message": "Successfully deleted",
+            "message": "Successfully deleted attendance from event",
         });
     } else {
         return next(throwForbidden("Only the User or organizer may delete an Attendance"));
