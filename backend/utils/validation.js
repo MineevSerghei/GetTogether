@@ -201,36 +201,6 @@ const validateAttendanceChange = [
     handleValidationErrors
 ];
 
-const isDatetime = async value => {
-    console.log()
-    console.log()
-    console.log()
-    console.log()
-    console.log()
-    console.log('_________________________________________')
-    console.log()
-
-
-    const date = new Date(value);
-    console.log(date);
-
-    if (!Object.prototype.toString.call(date) === '[object Date]') {
-        console.log("ERROR")
-    } else {
-        console.log("good")
-    }
-
-
-    console.log()
-    console.log('_________________________________________')
-    console.log()
-    console.log()
-    console.log()
-    console.log()
-    console.log()
-
-}
-
 const validateEventFilters = [
     check('page')
         .optional()
@@ -251,7 +221,8 @@ const validateEventFilters = [
         .withMessage("Type must be 'Online' or 'In person'"),
     check('startDate')
         .optional()
-        .custom(isDatetime)
+        .toDate()
+        .exists({ checkNull: true })
         .withMessage("Start date must be a valid datetime"),
     handleValidationErrors
 ];

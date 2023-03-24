@@ -16,33 +16,6 @@ const { checkIfGroupExists,
 
 const router = express.Router();
 
-// router.get('/test', async (req, res) => {
-
-//     const query = await Membership.findAll({
-//         attributes: ['status'],
-//         order: [[Group, 'id']],
-//         include: [
-//             {
-//                 attributes: ['username'],
-//                 model: User
-
-//             },
-//             {
-//                 attributes: ['id', 'name'],
-//                 model: Group,
-//                 include: {
-//                     attributes: ['username'],
-//                     model: User,
-//                     as: 'Organizer'
-//                 }
-//             },
-
-//         ]
-//     });
-
-//     res.json(query);
-
-// });
 
 // Get all Groups
 router.get('/', async (req, res) => {
@@ -264,11 +237,14 @@ router.get('/:groupId/events', checkIfGroupExists, async (req, res) => {
 
 router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCoHost, validateEvent, async (req, res) => {
 
-    const { name, type, capacity, price, description, startDate, endDate } = req.body;
+    const { name, type, capacity, price, description } = req.body;
 
-    let { venueId } = req.body;
+    let { venueId, startDate, endDate } = req.body;
 
     if (!venueId) venueId = null;
+
+    startDate = new Date(startDate);
+    endDate = new Date(endDate);
 
     const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate });
 

@@ -13,7 +13,7 @@ const router = express.Router();
 
 router.get('/', validateEventFilters, pagination, async (req, res) => {
 
-    const { name, type, startDate } = req.query;
+    let { name, type, startDate } = req.query;
 
     const filters = { where: {} };
 
@@ -26,9 +26,12 @@ router.get('/', validateEventFilters, pagination, async (req, res) => {
     }
 
     if (startDate) {
+        //startDate = new Date(startDate);
+        startDate = (new Date(startDate)).getTime()
+        startDate = new Date(startDate);
+        console.log("TIME --->>>", startDate);
         filters.where.startDate = startDate;
     }
-
 
     const events = await Event.findAll({
         attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
