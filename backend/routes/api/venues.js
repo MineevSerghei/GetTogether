@@ -1,7 +1,6 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
-//const { Op } = require('sequelize');
 
 const { checkIfVenueExists, validateVenue } = require('../../utils/validation');
 const { isOrganizerOrCoHost } = require('../../utils/roles');
