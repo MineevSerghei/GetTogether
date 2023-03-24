@@ -1,7 +1,6 @@
 const { Membership, Attendance } = require('../db/models');
 const { Op } = require('sequelize');
 
-
 const findNumOfMembersAndPreviewImg = async groups => {
     const groupsRes = [];
 

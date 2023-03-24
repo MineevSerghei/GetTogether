@@ -2,10 +2,8 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
-const { Op } = require('sequelize');
 const { isOrganizer, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
-// const { run } = require('express-validator');
-
+const { Op } = require('sequelize');
 const { checkIfGroupExists,
     validateVenue,
     validateGroup,

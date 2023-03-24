@@ -5,7 +5,6 @@ const { throwForbidden } = require('../../utils/roles');
 
 const router = express.Router();
 
-
 router.delete('/:imageId', requireAuth, async (req, res, next) => {
 
     const imageId = parseInt(req.params.imageId, 10);
