@@ -1,9 +1,7 @@
 const express = require('express');
 const { requireAuth } = require('../../utils/auth');
-const { Group, GroupImage, Membership, User, Venue } = require('../../db/models');
-
-const { checkIfVenueExists, validateVenue } = require('../../utils/validation');
-const { isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
+const { Group, GroupImage, Membership } = require('../../db/models');
+const { throwForbidden } = require('../../utils/roles');
 
 const router = express.Router();
 
@@ -15,21 +13,19 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     if (imageId)
         image = await GroupImage.findByPk(imageId, {
             attributes: ['id'],
-            include: [
-                {
-                    model: Group,
-                    attributes: ['id', 'organizerId'],
-                    include: {
-                        attributes: ['id'],
-                        model: Membership,
-                        where: {
-                            userId: req.user.id,
-                            status: 'co-host'
-                        },
-                        required: false
-                    }
+            include: {
+                model: Group,
+                attributes: ['id', 'organizerId'],
+                include: {
+                    model: Membership,
+                    attributes: ['id'],
+                    where: {
+                        userId: req.user.id,
+                        status: 'co-host'
+                    },
+                    required: false
                 }
-            ]
+            }
         });
 
     if (!image) {

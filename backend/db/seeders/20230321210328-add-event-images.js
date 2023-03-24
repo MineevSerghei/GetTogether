@@ -18,7 +18,7 @@ module.exports = {
         preview: true
       },
       {
-        eventId: 1,
+        eventId: 4,
         url: 'improvimage.com/link2.jpg',
         preview: true
       },
@@ -28,17 +28,17 @@ module.exports = {
         preview: true
       },
       {
-        eventId: 2,
+        eventId: 4,
         url: 'codingimage1.com/link2.jpg',
         preview: false
       },
       {
-        eventId: 3,
+        eventId: 1,
         url: 'secretimage.com/link1.jpg',
         preview: true
       },
       {
-        eventId: 3,
+        eventId: 4,
         url: 'secretimage.com/link2.jpg',
         preview: false
       }
