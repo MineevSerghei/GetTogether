@@ -32,7 +32,7 @@ module.exports = {
         allowNull: false
       },
       type: {
-        type: Sequelize.STRING,
+        type: Sequelize.ENUM('Online', 'In person'),
         allowNull: false
       },
       private: {
