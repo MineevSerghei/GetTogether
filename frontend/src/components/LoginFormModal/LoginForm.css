@@ -5,3 +5,16 @@ body {
 .errors {
     color: red
 }
+
+.form {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+    margin: 30px
+}
+
+.form input {
+    width: 100%;
+}
+
+.login-form {}
