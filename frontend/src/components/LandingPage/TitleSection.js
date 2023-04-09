@@ -7,7 +7,7 @@ export default function TitleSection() {
             </div>
             <div>
                 <p>Image</p>
-                <image></image>
+                <img src='../public/images/test.jpg'></img>
             </div>
         </div>
 
