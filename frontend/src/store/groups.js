@@ -21,7 +21,7 @@ const getGroupAction = (group) => {
 export const getGroupThunk = (id) => async dispatch => {
     const res = await csrfFetch(`/api/groups/${id}`);
 
-    console.log('res of signgle group fetch, ', res);
+    // console.log('res of signgle group fetch, ', res);
 
     if (res.ok) {
         const group = await res.json();

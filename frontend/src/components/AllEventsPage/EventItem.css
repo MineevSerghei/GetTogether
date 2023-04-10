@@ -1,9 +1,10 @@
 .event-item {
     display: flex;
     flex-direction: column;
-    border: 1px solid black;
-    padding: 20px;
+    border-top: 1px solid black;
+    padding: 50px 20px;
     cursor: pointer;
+    width: 50%;
 }
 
 .event-item-head {

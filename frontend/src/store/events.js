@@ -21,7 +21,7 @@ const getEventAction = (event) => {
 export const getEventThunk = (id) => async dispatch => {
     const res = await csrfFetch(`/api/events/${id}`);
 
-    console.log('res of signgle event fetch, ', res);
+    // console.log('res of signgle event fetch, ', res);
 
     if (res.ok) {
         const event = await res.json();

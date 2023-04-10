@@ -41,7 +41,7 @@ export default function GroupDetailsPage() {
                 {future.length > 0 &&
                     <div>
                         <h2>Upcoming Events {`(${future.length})`}</h2>
-                        <div className="events-container">
+                        <div className="group-details-events-container">
                             {future.map(e => <EventItem key={e.id} event={e} />)}
                         </div>
                     </div>
@@ -50,7 +50,7 @@ export default function GroupDetailsPage() {
                 {past.length > 0 &&
                     <div>
                         <h2>Past Events {`(${past.length})`}</h2>
-                        <div className="events-container">
+                        <div className="group-details-events-container">
                             {past.map(e => <EventItem key={e.id} event={e} />)}
                         </div>
                     </div>

@@ -8,6 +8,10 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
     const image = previewImage ||
         (EventImages ? (EventImages[0] ? EventImages[0].url : undefined) : null) || "/images/event-placeholder.png";;
 
+    const dateObj = new Date(startDate);
+    const time = dateObj.toTimeString();
+    const date = dateObj.toDateString();
+
     return (
 
         <div className="event-item" onClick={() => { history.push(`/events/${id}`) }}>
@@ -17,7 +21,7 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
                 </div>
                 <div>
                     <div>
-                        <span>{startDate}</span>
+                        <span>{date + ' ' + time}</span>
                     </div>
                     <h2>{name}</h2>
                     <p>{type === 'In person' ? Venue.city + ', ' + Venue.state : 'Online'}</p>
