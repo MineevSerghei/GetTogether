@@ -1,0 +1,10 @@
+.group-item {
+    display: flex;
+    border: 1px solid black;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.group-item:hover {
+    border: 2px solid black;
+}
