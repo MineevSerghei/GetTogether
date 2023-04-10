@@ -10,7 +10,7 @@ export default function ActionItem({ link: { url, text }, sessionUser, descripti
 
     return (
         <div className='action-item-container'>
-            <img
+            <img src='./'
                 className='action-image'
             ></img>
             <Link

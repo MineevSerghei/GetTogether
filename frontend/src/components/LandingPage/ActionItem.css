@@ -2,3 +2,9 @@
     pointer-events: none;
     color: gray;
 }
+
+.action-item-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
