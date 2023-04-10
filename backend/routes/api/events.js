@@ -32,7 +32,7 @@ router.get('/', validateEventFilters, pagination, async (req, res) => {
     }
 
     const events = await Event.findAll({
-        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate'],
+        attributes: ['id', 'groupId', 'venueId', 'name', 'type', 'startDate', 'endDate', 'description'],
         include: [
             {
                 model: Group,

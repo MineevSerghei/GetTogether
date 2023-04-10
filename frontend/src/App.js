@@ -6,6 +6,7 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import AllGroupsPage from "./components/AllGroupsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
+import AllEventsPage from "./components/AllEventsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -27,6 +28,9 @@ function App() {
           </Route>
           <Route path='/groups'>
             <AllGroupsPage />
+          </Route>
+          <Route path='/events'>
+            <AllEventsPage />
           </Route>
         </Switch>
       }

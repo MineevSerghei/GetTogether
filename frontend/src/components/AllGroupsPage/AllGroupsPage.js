@@ -23,8 +23,8 @@ export default function AllGroupsPage() {
     return (
         <div>
             <div>
-                <Link>Events</Link>
-                <Link>Groups</Link>
+                <Link to='/events'><h5>Events</h5></Link>
+                <h5>Groups</h5>
             </div>
             <div className="groups-container">
                 {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}

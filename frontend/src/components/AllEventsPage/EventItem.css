@@ -1,0 +1,19 @@
+.event-item {
+    display: flex;
+    flex-direction: column;
+    border: 1px solid black;
+    padding: 20px;
+    cursor: pointer;
+}
+
+.event-item-head {
+    display: flex;
+}
+
+.event-item:hover {
+    border: 2px solid black;
+}
+
+.event-item-img {
+    max-width: 300px;
+}

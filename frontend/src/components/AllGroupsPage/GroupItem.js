@@ -1,4 +1,4 @@
-import { Link, useHistory } from 'react-router-dom';
+import { useHistory } from 'react-router-dom';
 import './GroupItem.css';
 
 export default function GroupItem({ group: { id, name, about, previewImage, city, state, type } }) {

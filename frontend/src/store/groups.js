@@ -1,3 +1,5 @@
+import { csrfFetch } from "./csrf";
+
 
 const GET_ALL_GROUPS = 'groups/GET_ALL_GROUPS';
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
@@ -17,7 +19,7 @@ const getGroupAction = (group) => {
 }
 
 export const getGroupThunk = (id) => async dispatch => {
-    const res = await fetch(`/api/groups/${id}`);
+    const res = await csrfFetch(`/api/groups/${id}`);
 
     console.log('res of signgle group fetch, ', res);
 
@@ -29,7 +31,7 @@ export const getGroupThunk = (id) => async dispatch => {
 }
 
 export const getGroupsThunk = () => async dispatch => {
-    const res = await fetch('/api/groups');
+    const res = await csrfFetch('/api/groups');
     // console.log("res after fetch on groups thunk --->", res);
 
     const groups = await res.json();
