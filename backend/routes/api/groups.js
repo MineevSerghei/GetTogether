@@ -88,9 +88,29 @@ router.get('/:groupId', async (req, res) => {
                 {
                     model: Venue,
                     attributes: ['id', 'groupId', 'address', 'city', 'state', 'lat', 'lng']
+                },
+                {
+                    model: Event,
+                    required: false,
+                    include: [
+                        {
+                            model: Venue,
+                            required: false
+                        },
+                        {
+                            model: EventImage,
+                            attributes: ['url'],
+                            where: {
+                                preview: true
+                            },
+                            required: false,
+                            limit: 1
+                        }
+                    ]
                 }
             ]
         });
+
 
     if (!groupInstanceObj) {
         res.status(404);
@@ -100,6 +120,7 @@ router.get('/:groupId', async (req, res) => {
     }
 
     const group = groupInstanceObj.toJSON();
+
 
     // Getting the number of members of each group
     group.numMembers = await Membership.count({

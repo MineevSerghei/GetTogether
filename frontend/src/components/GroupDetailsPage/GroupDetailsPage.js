@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk } from '../../store/groups';
+import EventItem from '../AllEventsPage/EventItem';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -20,6 +21,42 @@ export default function GroupDetailsPage() {
 
     const changeImg = () => {
         setImage((image + 1) % group.GroupImages.length)
+    }
+
+    const renderEvents = (events) => {
+
+        const past = [];
+        const future = [];
+
+        for (let event of events) {
+            if (Date(event.startDate) < Date.now()) {
+                past.push(event);
+            } else {
+                future.push(event);
+            }
+        }
+
+        return (
+            <>
+                {future.length > 0 &&
+                    <div>
+                        <h2>Upcoming Events {`(${future.length})`}</h2>
+                        <div className="events-container">
+                            {future.map(e => <EventItem key={e.id} event={e} />)}
+                        </div>
+                    </div>
+                }
+
+                {past.length > 0 &&
+                    <div>
+                        <h2>Past Events {`(${past.length})`}</h2>
+                        <div className="events-container">
+                            {past.map(e => <EventItem key={e.id} event={e} />)}
+                        </div>
+                    </div>
+                }
+            </>
+        )
     }
 
     if (!group || !group.Organizer) return <h3>Loading...</h3>
@@ -48,10 +85,10 @@ export default function GroupDetailsPage() {
             <div>
                 <h2>Organizer</h2>
                 <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
-                <h2>What we'are about</h2>
+                <h2>What we're about</h2>
                 <p>{group.about}</p>
             </div>
-            {/* <>Events</> */}
+            {group.Events.length > 0 && renderEvents(group.Events)}
         </div>
     )
 }
