@@ -1,6 +1,6 @@
 export default function TitleSection() {
     return (
-        <div className="landing-title-sec-container">
+        <div className="title-sec-container">
             <div className="landing-title">
                 <h1>The People Platform</h1>
                 <p>Information: </p>

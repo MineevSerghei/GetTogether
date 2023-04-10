@@ -4,8 +4,10 @@
 
 .nav-links-ul {
     display: flex;
-    gap: 40px;
-    list-style-type: none
+    justify-content: space-between;
+    margin: 20px 20px;
+    list-style-type: none;
+
 }
 
 .profile-bttn {
@@ -14,6 +16,7 @@
     width: 70px;
     height: 35px;
     cursor: pointer;
+
 }
 
 

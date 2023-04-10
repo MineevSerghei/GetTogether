@@ -1,5 +1,8 @@
 export default function SubtitleSection() {
     return (
-        <h2>How Meetup works</h2>
+        <div className="subtitle-sec-container">
+            <h2>How Meetup works</h2>
+        </div>
+
     )
 }

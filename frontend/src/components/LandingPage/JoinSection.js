@@ -1,5 +1,14 @@
+import OpenModalButton from "../OpenModalButton"
+import SignupFormModal from "../SignupFormModal"
+
 export default function JoinSection() {
+
     return (
-        <h1>JoinSection</h1>
+        <div className="join-sec-container">
+            <OpenModalButton
+                buttonText="Join Meetup"
+                modalComponent={<SignupFormModal />}
+            />
+        </div>
     )
 }
