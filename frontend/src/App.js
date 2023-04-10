@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import AllGroupsPage from "./components/AllGroupsPage";
+import GroupDetailsPage from "./components/GroupDetailsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -20,6 +21,9 @@ function App() {
         <Switch>
           <Route exact path='/'>
             <LandingPage />
+          </Route>
+          <Route path='/groups/:groupId'>
+            <GroupDetailsPage />
           </Route>
           <Route path='/groups'>
             <AllGroupsPage />
