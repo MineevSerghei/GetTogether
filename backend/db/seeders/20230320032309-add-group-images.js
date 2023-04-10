@@ -24,12 +24,12 @@ module.exports = {
       },
       {
         groupId: 2,
-        url: 'codingimage1.com/link1.jpg',
+        url: 'https://images.unsplash.com/photo-1544847558-3ccacb31ee7f?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=2670&q=80',
         preview: true
       },
       {
         groupId: 2,
-        url: 'codingimage1.com/link2.jpg',
+        url: 'https://images.unsplash.com/photo-1514996937319-344454492b37?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80',
         preview: false
       },
       {

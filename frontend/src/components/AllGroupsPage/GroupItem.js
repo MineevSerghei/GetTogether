@@ -7,8 +7,8 @@ export default function GroupItem({ group: { id, name, about, previewImage, city
 
     return (
         <div className="group-item" onClick={() => { history.push(`/groups/${id}`) }}>
-            <div>
-                <img src={previewImage}></img>
+            <div className='group-item-img-container'>
+                <img className='group-item-img' src={previewImage}></img>
             </div>
             <div>
                 <h2>{name}</h2>
