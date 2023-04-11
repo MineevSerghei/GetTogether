@@ -84,11 +84,11 @@ export const getGroupThunk = (id) => async dispatch => {
         const res = await csrfFetch(`/api/groups/${id}`);
 
         const group = await res.json();
-        console.log('data of signgle group fetch, ', group);
+        // console.log('data of signgle group fetch, ', group);
         dispatch(getGroupAction(group));
     }
     catch (e) {
-        console.log(e)
+        console.log("error in fethcing one group", e)
     }
 }
 

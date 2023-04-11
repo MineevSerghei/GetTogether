@@ -7,13 +7,14 @@ import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
 
+    const [image, setImage] = useState(0);
+
     const dispatch = useDispatch();
+
     const { groupId } = useParams();
 
-    const group = useSelector(state => state.groups.singleGroup);
     const sessionUser = useSelector((state) => state.session.user);
-
-    const [image, setImage] = useState(0);
+    const group = useSelector(state => state.groups.singleGroup);
 
     useEffect(() => {
         dispatch(getGroupThunk(groupId));
@@ -59,7 +60,7 @@ export default function GroupDetailsPage() {
         )
     }
 
-    if (!group || !group.Organizer) return <h3>Loading...</h3>
+    if (!group || !group.Organizer || +group.id !== +groupId) return null;
 
 
     return (
