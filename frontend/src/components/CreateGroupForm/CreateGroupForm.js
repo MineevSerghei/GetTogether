@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { Redirect } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { useSelector, useDispatch } from 'react-redux';
+import { createGroupThunk } from '../../store/groups';
 
 export default function CreateGroupForm() {
 
@@ -13,14 +14,34 @@ export default function CreateGroupForm() {
     const [errors, setErrors] = useState({});
 
     const sessionUser = useSelector((state) => state.session.user);
+
+    const dispatch = useDispatch();
     if (!sessionUser) return <Redirect to='/'></Redirect>;
 
 
-    const submit = e => {
+    const submit = async e => {
         e.preventDefault();
 
         const err = {};
 
+        // if (location.length >= 0) err[location] = 'Location is required';
+
+        // if (!location.includes(',')) err[location] = 'Wrong format, ';
+        const city = location.slice(0, location.indexOf(','));
+        const state = location.slice(location.indexOf(',') + 1);
+        const group = {
+            name, about, type,
+            private: isPrivate,
+            city, state
+        }
+
+        const result = await dispatch(createGroupThunk(group, { preview: true, url: imageUrl }));
+
+        if (result && result.errors) {
+            setErrors({ ...result.errors });
+        } else {
+            setErrors({})
+        }
 
     }
 

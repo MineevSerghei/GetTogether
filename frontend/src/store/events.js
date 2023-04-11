@@ -25,7 +25,6 @@ export const getEventThunk = (id) => async dispatch => {
 
     if (res.ok) {
         const event = await res.json();
-        console.log('data of signgle event fetch, ', event);
         dispatch(getEventAction(event));
     }
 }

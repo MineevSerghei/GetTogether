@@ -68,7 +68,7 @@ export default function GroupDetailsPage() {
                 <Link to='/groups'> {"<- Groups"}</Link>
                 <div>
                     <img
-                        src={group.GroupImages[image].url}
+                        src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
                         onClick={changeImg}
                         className='group-details-img'
                     ></img>
