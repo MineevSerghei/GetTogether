@@ -112,21 +112,21 @@ const initialState = {
     singleGroup: {}
 };
 
-const groupsReducer = (state = {}, action) => {
+const groupsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_GROUPS:
             {
                 const groupsObj = {};
                 for (let group of action.groups) groupsObj[group.id] = group;
-                return groupsObj;
+                return { ...state, allGroups: { ...groupsObj } };
             }
         case GET_ONE_GROUP:
             {
-                return { ...state, [action.group.id]: action.group };
+                return { ...state, singleGroup: { ...action.group } };
             }
         case CREATE_GROUP:
             {
-                return { ...state, [action.group.id]: action.group };
+                return { ...state, singleGroup: { ...action.group } };
             }
         case ADD_GROUP_IMAGE:
             {
