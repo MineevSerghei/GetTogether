@@ -1,7 +1,9 @@
 import { useState } from 'react';
-import { Redirect } from 'react-router-dom';
+import { Redirect, useHistory } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { createGroupThunk } from '../../store/groups';
+import { addGroupImageThunk } from '../../store/groups';
+
 
 export default function CreateGroupForm() {
 
@@ -14,7 +16,7 @@ export default function CreateGroupForm() {
     const [errors, setErrors] = useState({});
 
     const sessionUser = useSelector((state) => state.session.user);
-
+    const history = useHistory();
     const dispatch = useDispatch();
     if (!sessionUser) return <Redirect to='/'></Redirect>;
 
@@ -22,27 +24,50 @@ export default function CreateGroupForm() {
     const submit = async e => {
         e.preventDefault();
 
+        setErrors({});
+
         const err = {};
 
-        // if (location.length >= 0) err[location] = 'Location is required';
+        if (location.length <= 0) err.location = 'Location is required';
+        if (!location.includes(', ')) err.location = 'Wrong format, please enter [City, STATE]';
+        if (name.length <= 0) err.name = 'Name is required';
+        if (about.length < 50) err.about = 'Description must be at least 50 characters long';
+        if (type !== 'In person' && type !== 'Online') err.type = 'Group Type is required';
+        if (isPrivate !== 'false' && isPrivate !== 'true') err.isPrivate = 'Visibility Type is required';
+        if (!imageUrl.endsWith('.png') &&
+            !imageUrl.endsWith('.jpg') &&
+            !imageUrl.endsWith('.jpeg')) err.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
 
-        // if (!location.includes(',')) err[location] = 'Wrong format, ';
-        const city = location.slice(0, location.indexOf(','));
-        const state = location.slice(location.indexOf(',') + 1);
-        const group = {
-            name, about, type,
-            private: isPrivate,
-            city, state
+
+        if (Object.keys(err).length > 0) {
+            setErrors(err);
         }
+        else {
 
-        const result = await dispatch(createGroupThunk(group, { preview: true, url: imageUrl }));
+            const city = location.slice(0, location.indexOf(','));
+            const state = location.slice(location.indexOf(',') + 2);
+            const group = {
+                name, about, type,
+                private: isPrivate,
+                city, state
+            }
 
-        if (result && result.errors) {
-            setErrors({ ...result.errors });
-        } else {
-            setErrors({})
+            const groupRes = await dispatch(createGroupThunk(group));
+
+            if (groupRes && groupRes.errors) {
+                setErrors({ ...groupRes.errors });
+            } else {
+                setErrors({});
+            }
+            if (Object.keys(errors).length === 0) {
+                const imageRes = await dispatch(addGroupImageThunk(groupRes.id, { preview: true, url: imageUrl }));
+                if (imageRes && imageRes.errors) {
+                    alert("The group has been created but the image url you provided didn't work. You can add images later!");
+                }
+                console.log('groupRes.id', groupRes.id)
+                history.push(`/groups/${groupRes.id}`)
+            }
         }
-
     }
 
     return (
@@ -59,6 +84,7 @@ export default function CreateGroupForm() {
                     value={location}
                     onChange={e => setLocation(e.target.value)}
                 ></input>
+                {errors.location && <p className='errors'>{errors.location}</p>}
             </div>
             <div className='input-section'>
                 <h2>What will your group's name be?</h2>
@@ -69,6 +95,7 @@ export default function CreateGroupForm() {
                     value={name}
                     onChange={e => setName(e.target.value)}
                 ></input>
+                {errors.name && <p className='errors'>{errors.name}</p>}
             </div>
             <div className='input-section'>
                 <h2>Now describe what your group will be about</h2>
@@ -78,11 +105,12 @@ export default function CreateGroupForm() {
                     <li>Who should join?</li>
                     <li>What will you do at your events?</li>
                 </ol>
-                <input
+                <textarea
                     placeholder='Please write at least 30 characters'
                     value={about}
                     onChange={e => setAbout(e.target.value)}
-                ></input>
+                ></textarea>
+                {errors.about && <p className='errors'>{errors.about}</p>}
             </div>
             <div className='input-section'>
                 <h2>Final steps...</h2>
@@ -93,6 +121,7 @@ export default function CreateGroupForm() {
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
                 </select>
+                {errors.type && <p className='errors'>{errors.type}</p>}
 
                 <p>Is this group private or public?</p>
                 <select onChange={e => setIsPrivate(e.target.value)}>
@@ -100,6 +129,7 @@ export default function CreateGroupForm() {
                     <option value={true}>Private</option>
                     <option value={false}>Public</option>
                 </select>
+                {errors.isPrivate && <p className='errors'>{errors.isPrivate}</p>}
 
                 <p>Please add an image url for your group below:</p>
 
@@ -108,6 +138,7 @@ export default function CreateGroupForm() {
                     value={imageUrl}
                     onChange={e => setImageUrl(e.target.value)}
                 ></input>
+                {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
             </div>
             <div className='input-section'>
                 <button type='Submit'>Create group</button>

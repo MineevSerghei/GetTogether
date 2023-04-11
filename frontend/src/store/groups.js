@@ -13,10 +13,10 @@ const createGroupAction = (group) => {
     }
 }
 
-const addGroupImageAction = (url) => {
+const addGroupImageAction = (image) => {
     return {
         type: ADD_GROUP_IMAGE,
-        url
+        image
     }
 }
 
@@ -49,6 +49,7 @@ export const addGroupImageThunk = (id, image) => async dispatch => {
         return imageData;
 
     } catch (e) {
+        console.log(e)
         const errorRes = await e.json()
         return errorRes;
     }
@@ -109,7 +110,7 @@ export const getGroupsThunk = () => async dispatch => {
 
 const initialState = {
     allGroups: {},
-    singleGroup: {}
+    singleGroup: { GroupImages: [] }
 };
 
 const groupsReducer = (state = initialState, action) => {
@@ -122,15 +123,17 @@ const groupsReducer = (state = initialState, action) => {
             }
         case GET_ONE_GROUP:
             {
-                return { ...state, singleGroup: { ...action.group } };
+                return { ...state, singleGroup: { ...state.singleGroup, ...action.group } };
             }
         case CREATE_GROUP:
             {
-                return { ...state, singleGroup: { ...action.group } };
+                return { ...state, singleGroup: { ...state.singleGroup, ...action.group } };
             }
         case ADD_GROUP_IMAGE:
             {
-                return { ...state, [action.group.id]: action.group };
+                console.log('state.singleGroup  --->>> ', state.singleGroup)
+                const images = [...state.singleGroup.GroupImages, action.image];
+                return { ...state, singleGroup: { ...state.singleGroup, GroupImages: images } };
             }
         default:
             return state
