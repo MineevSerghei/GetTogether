@@ -49,7 +49,7 @@ export const addGroupImageThunk = (id, image) => async dispatch => {
         return imageData;
 
     } catch (e) {
-        console.log(e)
+        // console.log(e)
         const errorRes = await e.json()
         return errorRes;
     }
@@ -79,6 +79,28 @@ export const createGroupThunk = (group) => async dispatch => {
 
 }
 
+export const updateGroupThunk = (id, group) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/groups/${id}`, {
+            method: 'PUT',
+            body: JSON.stringify(group)
+        });
+
+        const groupData = await res.json();
+
+        dispatch(createGroupAction(groupData));
+
+        return groupData;
+
+    } catch (e) {
+
+        const errorRes = await e.json()
+        return errorRes;
+    }
+
+}
+
 export const getGroupThunk = (id) => async dispatch => {
 
     try {
@@ -89,7 +111,7 @@ export const getGroupThunk = (id) => async dispatch => {
         dispatch(getGroupAction(group));
     }
     catch (e) {
-        console.log("error in fethcing one group", e)
+        // console.log("error in fethcing one group", e)
     }
 }
 
@@ -131,7 +153,7 @@ const groupsReducer = (state = initialState, action) => {
             }
         case ADD_GROUP_IMAGE:
             {
-                console.log('state.singleGroup  --->>> ', state.singleGroup)
+                // console.log('state.singleGroup  --->>> ', state.singleGroup)
                 const images = [...state.singleGroup.GroupImages, action.image];
                 return { ...state, singleGroup: { ...state.singleGroup, GroupImages: images } };
             }

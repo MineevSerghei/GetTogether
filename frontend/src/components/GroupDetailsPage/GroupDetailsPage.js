@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom'
+import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk } from '../../store/groups';
 import EventItem from '../AllEventsPage/EventItem';
@@ -8,7 +8,7 @@ import './GroupDetailsPage.css'
 export default function GroupDetailsPage() {
 
     const [image, setImage] = useState(0);
-
+    const history = useHistory();
     const dispatch = useDispatch();
 
     const { groupId } = useParams();
@@ -22,6 +22,10 @@ export default function GroupDetailsPage() {
 
     const changeImg = () => {
         setImage((image + 1) % group.GroupImages.length)
+    }
+
+    const updateGroup = () => {
+        history.push(`/groups/${groupId}/update`);
     }
 
     const renderEvents = (events) => {
@@ -81,6 +85,10 @@ export default function GroupDetailsPage() {
                     <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                     {sessionUser && sessionUser.id !== group.Organizer.id &&
                         <button onClick={() => alert('This feature is coming soon!')}>Join this group</button>}
+                    {sessionUser && sessionUser.id === group.Organizer.id && <>
+                        <button onClick={() => alert('This feature is coming soon!')}>create event</button>
+                        <button onClick={updateGroup}>update</button>
+                        <button onClick={() => alert('This feature is coming soon!')}>delete</button></>}
                 </div>
             </div>
             <div>
