@@ -6,9 +6,10 @@ import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import AllGroupsPage from "./components/AllGroupsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
-import AllEventsPage from "./components/AllEventsPage";
 import GroupForm from "./components/GroupForm";
+import AllEventsPage from "./components/AllEventsPage";
 import EventDetailsPage from "./components/EventDetailsPage";
+import EventForm from "./components/EventForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -30,6 +31,9 @@ function App() {
           </Route>
           <Route path='/groups/create'>
             <GroupForm formType='create' />
+          </Route>
+          <Route path='/groups/:groupId/events/create'>
+            <EventForm formType='create' />
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetailsPage />

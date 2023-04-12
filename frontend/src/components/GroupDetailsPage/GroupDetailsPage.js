@@ -30,6 +30,10 @@ export default function GroupDetailsPage() {
         history.push(`/groups/${groupId}/update`);
     }
 
+    const createEvent = () => {
+        history.push(`/groups/${groupId}/events/create`);
+    }
+
     const renderEvents = (events) => {
 
         const past = [];
@@ -88,7 +92,7 @@ export default function GroupDetailsPage() {
                     {sessionUser && sessionUser.id !== group.Organizer.id &&
                         <button onClick={() => alert('This feature is coming soon!')}>Join this group</button>}
                     {sessionUser && sessionUser.id === group.Organizer.id && <>
-                        <button onClick={() => alert('This feature is coming soon!')}>create event</button>
+                        <button onClick={createEvent}>create event</button>
                         <button onClick={updateGroup}>update</button>
                         <OpenModalButton
                             buttonText="delete"

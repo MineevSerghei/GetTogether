@@ -83,7 +83,6 @@ export const addGroupImageThunk = (id, image) => async dispatch => {
 
 export const createGroupThunk = (group) => async dispatch => {
 
-
     try {
         const res = await csrfFetch('/api/groups', {
             method: 'POST',
@@ -178,7 +177,6 @@ const groupsReducer = (state = initialState, action) => {
             }
         case ADD_GROUP_IMAGE:
             {
-                // console.log('state.singleGroup  --->>> ', state.singleGroup)
                 const images = [...state.singleGroup.GroupImages, action.image];
                 return { ...state, singleGroup: { ...state.singleGroup, GroupImages: images } };
             }

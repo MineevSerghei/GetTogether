@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { createGroupThunk, getGroupThunk, updateGroupThunk, addGroupImageThunk } from '../../store/groups';
 
 
-export default function CreateGroupForm({ formType }) {
+export default function GroupForm({ formType }) {
 
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
@@ -54,7 +54,7 @@ export default function CreateGroupForm({ formType }) {
         if (location.length <= 0) err.location = 'Location is required';
         if (!location.includes(', ')) err.location = 'Wrong format, please enter [City, STATE]';
         if (name.length <= 0) err.name = 'Name is required';
-        if (about.length < 50) err.about = 'Description must be at least 50 characters long';
+        if (about.length < 30) err.about = 'Description must be at least 30 characters long';
         if (type !== 'In person' && type !== 'Online') err.type = 'Group Type is required';
         if (isPrivate !== 'false' && isPrivate !== 'true') err.isPrivate = 'Visibility Type is required';
 
