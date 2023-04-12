@@ -2,7 +2,7 @@ import { useHistory } from 'react-router-dom';
 import './EventItem.css';
 
 
-export default function EventItem({ event: { name, previewImage, startDate, id, type, description, Venue, EventImages } }) {
+export default function EventItem({ event: { name, previewImage, startDate, id, type, description, Group, EventImages }, group }) {
     const history = useHistory();
 
     const image = previewImage ||
@@ -11,6 +11,16 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
     const dateObj = new Date(startDate);
     const time = dateObj.toTimeString();
     const date = dateObj.toDateString();
+
+    let city = '?';
+    let state = '?';
+    if (Group) {
+        city = Group.city;
+        state = Group.state;
+    } else if (group) {
+        city = group.city;
+        state = group.state;
+    }
 
     return (
 
@@ -24,7 +34,7 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
                         <span>{date + ' ' + time}</span>
                     </div>
                     <h2>{name}</h2>
-                    <p>{type === 'In person' ? Venue.city + ', ' + Venue.state : 'Online'}</p>
+                    <p>{type === 'In person' ? city + ', ' + state : 'Online'}</p>
                 </div>
             </div>
             <div>

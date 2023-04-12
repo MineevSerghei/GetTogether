@@ -51,6 +51,11 @@ module.exports = (sequelize, DataTypes) => {
         isInt: true,
       }
     },
+    private: {
+      type: DataTypes.BOOLEAN,
+      allowNull: false,
+      defaultValue: false
+    },
     price: {
       type: DataTypes.DECIMAL,
       allowNull: false,

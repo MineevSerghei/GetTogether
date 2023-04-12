@@ -53,7 +53,7 @@ export default function GroupDetailsPage() {
                     <div>
                         <h2>Upcoming Events {`(${future.length})`}</h2>
                         <div className="group-details-events-container">
-                            {future.map(e => <EventItem key={e.id} event={e} />)}
+                            {future.map(e => <EventItem key={e.id} event={e} group={group} />)}
                         </div>
                     </div>
                 }
@@ -62,7 +62,7 @@ export default function GroupDetailsPage() {
                     <div>
                         <h2>Past Events {`(${past.length})`}</h2>
                         <div className="group-details-events-container">
-                            {past.map(e => <EventItem key={e.id} event={e} />)}
+                            {past.map(e => <EventItem key={e.id} event={e} group={group} />)}
                         </div>
                     </div>
                 }

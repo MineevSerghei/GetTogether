@@ -127,6 +127,10 @@ const validateEvent = [
         .exists({ checkNull: true })
         .isFloat({ min: 0 })
         .withMessage('Price is invalid'),
+    check('private')
+        .exists()
+        .isBoolean()
+        .withMessage('Private must be a boolean'),
     check('description')
         .exists({ checkFalsy: true })
         .withMessage('Description is required'),

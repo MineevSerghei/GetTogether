@@ -258,14 +258,15 @@ router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCo
 
     const { name, type, capacity, price, description } = req.body;
 
-    let { venueId, startDate, endDate } = req.body;
+    let { venueId, private, startDate, endDate } = req.body;
 
     if (!venueId) venueId = null;
+    if (!private) private = false;
 
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
-    const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, startDate, endDate });
+    const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, private, startDate, endDate });
 
     delete event.dataValues.createdAt;
     delete event.dataValues.updatedAt;

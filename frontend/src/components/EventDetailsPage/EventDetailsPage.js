@@ -66,7 +66,7 @@ export default function EventDetailsPage() {
                     </div>
                     <div>
                         <h4>{event.Group.name}</h4>
-                        <p>{event.Group.private ? "Private" : "Public"}</p>
+                        <p>{event.private ? "Private" : "Public"}</p>
                     </div>
                 </div>
                 <div className='event-info-container'>

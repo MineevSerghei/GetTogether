@@ -39,9 +39,6 @@ export default function EventForm() {
     const submit = async e => {
         e.preventDefault();
 
-        // console.log(new Date(startDate))
-        alert('coming soon!')
-        return;
         setErrors({});
 
         const err = {};
@@ -50,14 +47,14 @@ export default function EventForm() {
         if (type !== 'In person' && type !== 'Online') err.type = 'Event Type is required';
         if (isPrivate !== 'false' && isPrivate !== 'true') err.isPrivate = 'Visibility is required';
         if (price.length <= 0) err.price = 'Price is required';
-        if (Number(price) <= 0 || Number(price) === NaN) err.price = 'Price is invalid';
+        if (Number(price) < 0 || Number(price) === NaN) err.price = 'Price is invalid';
         if (startDate === '') err.startDate = 'Event start is required';
         if (endDate === '') err.endDate = 'Event end is required';
         if (!imageUrl.endsWith('.png') &&
             !imageUrl.endsWith('.jpg') &&
             !imageUrl.endsWith('.jpeg')) err.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
         if (description.length < 30) err.description = 'Description must be at least 30 characters long';
-
+        console.log('fe validation errors -->', err);
         if (Object.values(err).length > 0) {
             setErrors(err);
         }
@@ -70,13 +67,14 @@ export default function EventForm() {
                 startDate: new Date(startDate),
                 endDate: new Date(endDate),
                 description,
-                capacity: 100 // HARDCODED, capacity functionality not implemented on the frontend but it's a required key in db
+                capacity: 10000 // HARDCODED, capacity functionality not implemented on the frontend but it's a required key in db
             }
 
-            const eventRes = await dispatch(createEventThunk(group.id, eventData));
+            const eventRes = await dispatch(createEventThunk(eventData, group.id));
 
             if (eventRes && eventRes.errors) {
                 setErrors({ ...eventRes.errors });
+                console.log('backend errors -->', eventRes.errors);
             } else {
 
                 const imageRes = await dispatch(addEventImageThunk(eventRes.id, { preview: true, url: imageUrl }));
@@ -100,6 +98,7 @@ export default function EventForm() {
                         value={name}
                         onChange={e => setName(e.target.value)}
                     ></input>
+                    {errors.name && <p className='errors'>{errors.name}</p>}
                 </div>
                 <div>
                     <p>Is this an in person or online event?</p>
@@ -108,14 +107,14 @@ export default function EventForm() {
                         <option value='In person'>In person</option>
                         <option value='Online'>Online</option>
                     </select>
-
+                    {errors.type && <p className='errors'>{errors.type}</p>}
                     <p>Is this event private or public?</p>
                     <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
                         <option value=''>(select one)</option>
                         <option value='true'>Private</option>
                         <option value='false'>Public</option>
                     </select>
-
+                    {errors.isPrivate && <p className='errors'>{errors.isPrivate}</p>}
                     <p>What is the price for your event?</p>
                     <div >
                         <i>$</i><input
@@ -124,6 +123,7 @@ export default function EventForm() {
                             value={price}
                             onChange={e => setPrice(e.target.value)}
                         ></input>
+                        {errors.price && <p className='errors'>{errors.price}</p>}
                     </div>
                 </div>
                 <div>
@@ -133,12 +133,14 @@ export default function EventForm() {
                         value={startDate}
                         onChange={e => setStartDate(e.target.value)}
                     ></input>
+                    {errors.startDate && <p className='errors'>{errors.startDate}</p>}
                     <p>When does your event end?</p>
                     <input
                         type='datetime-local'
                         value={endDate}
                         onChange={e => setEndDate(e.target.value)}
                     ></input>
+                    {errors.endDate && <p className='errors'>{errors.endDate}</p>}
                 </div>
                 <div>
                     <p>Please add in image url for your event below:</p>
@@ -147,6 +149,7 @@ export default function EventForm() {
                         value={imageUrl}
                         onChange={e => setImageUrl(e.target.value)}
                     ></input>
+                    {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
                 </div>
                 <div>
                     <p>Please describe your event:</p>
@@ -155,6 +158,7 @@ export default function EventForm() {
                         value={description}
                         onChange={e => setDescription(e.target.value)}
                     ></textarea>
+                    {errors.description && <p className='errors'>{errors.description}</p>}
                 </div>
                 <div>
                     <button type='Submit'>Create Event</button>
