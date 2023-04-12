@@ -44,17 +44,22 @@ export const getEventsThunk = () => async dispatch => {
     }
 }
 
-const eventsReducer = (state = {}, action) => {
+const initialState = {
+    allEvents: {},
+    singleEvent: { EventImages: [] }
+}
+
+const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_EVENTS:
             {
                 const eventsObj = {};
                 for (let event of action.events) eventsObj[event.id] = event;
-                return eventsObj;
+                return { ...state, allEvents: { ...eventsObj } };
             }
         case GET_ONE_EVENT:
             {
-                return { ...state, [action.event.id]: action.event };
+                return { ...state, singleEvent: { ...state.singleEvent, ...action.event } };
             }
         default:
             return state
