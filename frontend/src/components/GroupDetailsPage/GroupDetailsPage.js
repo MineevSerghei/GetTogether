@@ -101,6 +101,7 @@ export default function GroupDetailsPage() {
                 <h2>What we're about</h2>
                 <p>{group.about}</p>
             </div>
+            {group.Events.length === 0 && <h2>No Upcoming Events</h2>}
             {group.Events.length > 0 && renderEvents(group.Events)}
         </div>
     )
