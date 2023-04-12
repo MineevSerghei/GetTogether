@@ -3,6 +3,8 @@ import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk } from '../../store/groups';
 import EventItem from '../AllEventsPage/EventItem';
+import OpenModalButton from '../OpenModalButton';
+import DeleteGroupModal from '../DeleteGroupModal/DeleteGroupModal';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -88,7 +90,9 @@ export default function GroupDetailsPage() {
                     {sessionUser && sessionUser.id === group.Organizer.id && <>
                         <button onClick={() => alert('This feature is coming soon!')}>create event</button>
                         <button onClick={updateGroup}>update</button>
-                        <button onClick={() => alert('This feature is coming soon!')}>delete</button></>}
+                        <OpenModalButton
+                            buttonText="delete"
+                            modalComponent={<DeleteGroupModal id={group.id} />} /></>}
                 </div>
             </div>
             <div>

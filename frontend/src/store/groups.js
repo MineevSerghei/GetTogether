@@ -5,6 +5,14 @@ const GET_ALL_GROUPS = 'groups/GET_ALL_GROUPS';
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
 const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
+const DELETE_GROUP = 'groups/DELETE_GROUP';
+
+const deleteGroupAction = (id) => {
+    return {
+        type: DELETE_GROUP,
+        id
+    }
+}
 
 const createGroupAction = (group) => {
     return {
@@ -31,6 +39,24 @@ const getGroupAction = (group) => {
     return {
         type: GET_ONE_GROUP,
         group
+    }
+}
+
+export const deleteGroupThunk = (id) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/groups/${id}`, {
+            method: 'DELETE'
+        });
+
+        const data = await res.json();
+        dispatch(deleteGroupAction(id));
+
+        return res;
+
+    } catch (errors) {
+
+        return errors;
     }
 }
 
@@ -156,6 +182,12 @@ const groupsReducer = (state = initialState, action) => {
                 // console.log('state.singleGroup  --->>> ', state.singleGroup)
                 const images = [...state.singleGroup.GroupImages, action.image];
                 return { ...state, singleGroup: { ...state.singleGroup, GroupImages: images } };
+            }
+        case DELETE_GROUP:
+            {
+                const newState = { ...state, allGroups: { ...state.allGroups }, singleGroup: { GroupImages: [] } };
+                delete newState.allGroups[action.id];
+                return newState;
             }
         default:
             return state

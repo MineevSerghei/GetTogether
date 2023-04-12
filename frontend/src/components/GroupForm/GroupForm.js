@@ -69,7 +69,7 @@ export default function CreateGroupForm({ formType }) {
             setErrors(err);
         }
         else {
-            console.log('ARE YOU IN THE ELSE????');
+            // console.log('ARE YOU IN THE ELSE????');
             const city = location.slice(0, location.indexOf(','));
             const state = location.slice(location.indexOf(',') + 2);
             const groupData = {
@@ -174,7 +174,7 @@ export default function CreateGroupForm({ formType }) {
                 }
             </div>
             <div className='input-section'>
-                <button type='Submit'>Create group</button>
+                <button type='Submit'>{formType === 'create' ? 'Create group' : 'Update group'}</button>
             </div>
         </form>
     )

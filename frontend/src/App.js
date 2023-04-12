@@ -7,7 +7,7 @@ import LandingPage from "./components/LandingPage";
 import AllGroupsPage from "./components/AllGroupsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
 import AllEventsPage from "./components/AllEventsPage";
-import CreateGroupForm from "./components/CreateGroupForm";
+import GroupForm from "./components/GroupForm";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,10 +25,10 @@ function App() {
             <LandingPage />
           </Route>
           <Route path='/groups/:groupId/update'>
-            <CreateGroupForm formType='update' />
+            <GroupForm formType='update' />
           </Route>
           <Route path='/groups/create'>
-            <CreateGroupForm formType='create' />
+            <GroupForm formType='create' />
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetailsPage />
