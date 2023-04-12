@@ -1,4 +1,4 @@
-import { NavLink } from 'react-router-dom';
+import { NavLink, Link } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import './Navigation.css';
@@ -6,11 +6,17 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
 
+    const className = sessionUser === null ? " hidden" : '';
+
     return (
         <ul className='nav-links-ul'>
             <li>
                 <NavLink exact to="/">Home</NavLink>
             </li>
+            <li><Link
+                to='/groups/create'
+                className={'action-link' + className}
+            >Start a new group</Link></li>
             {isLoaded && (
                 <li>
                     <ProfileButton user={sessionUser} />

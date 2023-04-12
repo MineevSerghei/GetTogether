@@ -8,6 +8,7 @@ import AllGroupsPage from "./components/AllGroupsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
 import AllEventsPage from "./components/AllEventsPage";
 import GroupForm from "./components/GroupForm";
+import EventDetailsPage from "./components/EventDetailsPage";
 
 function App() {
   const dispatch = useDispatch();
@@ -32,6 +33,9 @@ function App() {
           </Route>
           <Route path='/groups/:groupId'>
             <GroupDetailsPage />
+          </Route>
+          <Route path='/events/:eventId'>
+            <EventDetailsPage />
           </Route>
           <Route path='/groups'>
             <AllGroupsPage />

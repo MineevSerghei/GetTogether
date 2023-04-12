@@ -4,7 +4,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk } from '../../store/groups';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
-import DeleteGroupModal from '../DeleteGroupModal/DeleteGroupModal';
+import DeleteGroupModal from '../DeleteGroupModal';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
