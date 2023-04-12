@@ -92,7 +92,7 @@ export default function GroupDetailsPage() {
                         <button onClick={updateGroup}>update</button>
                         <OpenModalButton
                             buttonText="delete"
-                            modalComponent={<DeleteGroupModal id={group.id} />} /></>}
+                            modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} /></>}
                 </div>
             </div>
             <div>

@@ -49,7 +49,6 @@ export const deleteGroupThunk = (id) => async dispatch => {
             method: 'DELETE'
         });
 
-        const data = await res.json();
         dispatch(deleteGroupAction(id));
 
         return res;
