@@ -152,8 +152,7 @@ const eventsReducer = (state = initialState, action) => {
             }
         case ADD_EVENT_IMAGE:
             {
-                const images = [...state.singleEvent.EventImages, action.image];
-                return { ...state, singleEvent: { ...state.singleEvent, EventImages: images } };
+                return { ...state, singleEvent: { ...state.singleEvent, EventImages: [{ ...action.image }] } };
             }
         case DELETE_EVENT:
             {
