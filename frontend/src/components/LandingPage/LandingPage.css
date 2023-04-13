@@ -24,5 +24,16 @@
 }
 
 .title-img {
-    width: 500px;
+    max-width: 500px;
+}
+
+.landing-info {
+    max-width: 500px;
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+
+}
+
+.landing-title {
+    padding: 15px;
 }
