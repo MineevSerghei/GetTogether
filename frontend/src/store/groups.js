@@ -177,8 +177,7 @@ const groupsReducer = (state = initialState, action) => {
             }
         case ADD_GROUP_IMAGE:
             {
-                const images = [...state.singleGroup.GroupImages, action.image];
-                return { ...state, singleGroup: { ...state.singleGroup, GroupImages: images } };
+                return { ...state, singleGroup: { ...state.singleGroup, GroupImages: [{ ...action.image }] } };
             }
         case DELETE_GROUP:
             {

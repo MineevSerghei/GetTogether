@@ -1,3 +1,7 @@
+body {
+    margin: 0px;
+}
+
 .hidden {
     display: none
 }
@@ -5,9 +9,10 @@
 .nav-links-ul {
     display: flex;
     justify-content: space-around;
-    margin: 20px 20px;
+    margin: 0px;
+    padding: 10px;
     list-style-type: none;
-
+    border-bottom: 1px black solid;
 }
 
 .profile-bttn {
@@ -37,4 +42,12 @@
 
 .log-link:hover {
     box-shadow: 1px 3px 5px;
+}
+
+.home-bttn {
+    text-decoration: none;
+    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-weight: 700;
+    font-size: 1.7rem;
+    color: rgb(117, 172, 117);
 }
