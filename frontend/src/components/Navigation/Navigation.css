@@ -16,7 +16,7 @@ select {
 
 .nav-links-ul {
     display: flex;
-    justify-content: space-around;
+    justify-content: flex-end;
     align-items: center;
     margin: 0px;
     padding: 10px;
@@ -24,22 +24,50 @@ select {
     border-bottom: 1px grey solid;
 }
 
-.profile-bttn {
-    border: 1px solid black;
-    border-radius: 3px;
-    width: 70px;
-    height: 35px;
-    cursor: pointer;
-
+.fa-user-circle {
+    color: rgb(95, 168, 95);
+    font-size: 40px;
+    padding: 15px;
 }
 
+.fa-caret-down {
+    color: rgb(95, 168, 95);
+    font-size: 15px;
+    padding: 15px;
+}
+
+.profile-bttn {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    border-radius: 3px;
+    width: 150px;
+    height: 60px;
+    cursor: pointer;
+    background-color: inherit;
+    margin: 5px;
+}
+
+.icon-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
 
 .profile-bttn:hover {
-    box-shadow: 1px 3px 5px;
+    background-color: rgba(178, 240, 165, 0.231);
 }
 
 .profile-bttn:active {
-    box-shadow: 1px 3px 10px;
+    background-color: rgba(178, 240, 165, 0.41);
+}
+
+.profile-dropdown {
+    position: absolute;
+    right: 20px;
+    background-color: rgb(251, 251, 249);
+    border: 1px solid rgb(95, 168, 95);
 }
 
 .log-link {
@@ -53,9 +81,16 @@ select {
     box-shadow: 1px 3px 5px;
 }
 
+
+
 .home-bttn {
     text-decoration: none;
     font-family: 'BalsamiqSans-Regular';
     font-size: 1.7rem;
     color: rgb(95, 168, 95);
+
+}
+
+.home-bttn-li {
+    margin-right: auto;
 }

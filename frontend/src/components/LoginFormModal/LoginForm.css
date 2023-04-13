@@ -1,6 +1,9 @@
 body {
-    background-color: rgba(248, 243, 236, 0.231);
+    background-color: rgb(251, 251, 249);
+    /* background-color: rgba(248, 243, 236, 0.231); */
 }
+
+
 
 .errors {
     color: red

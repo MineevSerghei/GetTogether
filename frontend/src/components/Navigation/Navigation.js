@@ -10,7 +10,7 @@ function Navigation({ isLoaded }) {
 
     return (
         <ul className='nav-links-ul'>
-            <li >
+            <li className='home-bttn-li'>
                 <NavLink className='home-bttn' exact to="/"><div>Get<br></br> Together</div></NavLink>
             </li>
             <li><Link
@@ -18,7 +18,7 @@ function Navigation({ isLoaded }) {
                 className={'nav-link' + className}
             >Start a new group</Link></li>
             {isLoaded && (
-                <li>
+                <li className='user-menu-li'>
                     <ProfileButton user={sessionUser} />
                 </li>
             )}

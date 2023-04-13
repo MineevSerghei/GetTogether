@@ -19,21 +19,32 @@
 .landing-container {
     display: flex;
     flex-direction: column;
-    gap: 100px;
-    margin-top: 100px;
+    gap: 30px;
+    margin-top: 10%;
 }
 
 .title-img {
-    max-width: 500px;
+    width: 100%;
+
+}
+
+#lp-title {
+    margin: 0;
 }
 
 .landing-info {
-    max-width: 500px;
+
     font-size: 1.3rem;
     line-height: 2.2rem;
-
+    max-width: 90%;
 }
 
 .landing-title {
-    padding: 15px;
+    padding: 0px 20px 20px 30px;
+    width: 100%;
+}
+
+.get-together-span {
+
+    color: rgb(95, 168, 95);
 }

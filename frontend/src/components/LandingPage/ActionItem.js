@@ -3,14 +3,14 @@ import { Link } from 'react-router-dom'
 import './ActionItem.css';
 
 
-export default function ActionItem({ link: { url, text }, sessionUser, description }) {
+export default function ActionItem({ link: { url, text }, sessionUser, description, img }) {
 
     const className = sessionUser === null ? " disabled-link" : '';
 
 
     return (
         <div className='action-item-container'>
-            <img src='./images/test.jpg'
+            <img src={img}
                 className='action-image'
             ></img>
             <Link
