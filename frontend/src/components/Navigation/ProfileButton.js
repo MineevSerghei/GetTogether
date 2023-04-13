@@ -1,9 +1,6 @@
 import { useState, useEffect, useRef } from "react";
 import { useDispatch } from 'react-redux';
 import * as sessionActions from '../../store/session';
-import OpenModalMenuItem from './OpenModalMenuItem';
-import LoginFormModal from '../LoginFormModal';
-import SignupFormModal from '../SignupFormModal';
 
 function ProfileButton({ user }) {
     const dispatch = useDispatch();
@@ -38,9 +35,8 @@ function ProfileButton({ user }) {
     };
 
     const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
-    //<i class="fa-regular fa-user"></i>
     return (
-        <>
+        user && <>
             <button onClick={openMenu} className='profile-bttn'>
                 <div className="icon-container">
                     <i class="fa-solid fa-caret-down" />
@@ -48,29 +44,13 @@ function ProfileButton({ user }) {
                 </div>
             </button>
             <ul className={ulClassName} ref={ulRef}>
-                {user ? (
-                    <>
-                        <li>{user.username}</li>
-                        <li>{user.firstName} {user.lastName}</li>
-                        <li>{user.email}</li>
-                        <li>
-                            <button onClick={logout}>Log Out</button>
-                        </li>
-                    </>
-                ) : (
-                    <>
-                        <OpenModalMenuItem
-                            itemText="Log In"
-                            onItemClick={closeMenu}
-                            modalComponent={<LoginFormModal />}
-                        />
-                        <OpenModalMenuItem
-                            itemText="Sign Up"
-                            onItemClick={closeMenu}
-                            modalComponent={<SignupFormModal />}
-                        />
-                    </>
-                )}
+                <li>{user.firstName} {user.lastName}</li>
+                <li>{user.username}</li>
+                <li>{user.email}</li>
+                <li>
+                    <button className="logout-bttn" onClick={logout}>Log Out</button>
+                </li>
+
             </ul>
         </>
     );

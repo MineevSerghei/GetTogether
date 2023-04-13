@@ -9,7 +9,20 @@
     justify-content: space-around;
 }
 
-.subtitle-sec-container,
+.subtitle-sec-container {
+    margin: 30px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.subtitle-text {
+    width: 60%;
+    font-size: 1.3rem;
+    line-height: 2.2rem;
+    text-align: center;
+}
+
 .join-sec-container {
     margin: 30px;
     display: flex;
@@ -47,4 +60,10 @@
 .get-together-span {
 
     color: rgb(95, 168, 95);
+}
+
+.join-bttn {
+    border: 2px solid teal;
+    color: teal;
+    width: 200px;
 }

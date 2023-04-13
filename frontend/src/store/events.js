@@ -148,7 +148,7 @@ const eventsReducer = (state = initialState, action) => {
             }
         case CREATE_EVENT:
             {
-                return { ...state, singleEvent: { ...action.event } };
+                return { ...state, singleEvent: { ...state.singleEvent, ...action.event } };
             }
         case ADD_EVENT_IMAGE:
             {
