@@ -15,7 +15,7 @@ function Navigation({ isLoaded }) {
             </li>
             <li><Link
                 to='/groups/create'
-                className={'action-link' + className}
+                className={'nav-link' + className}
             >Start a new group</Link></li>
             {isLoaded && (
                 <li>

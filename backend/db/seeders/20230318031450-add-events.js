@@ -48,14 +48,24 @@ module.exports = {
       {
         venueId: 3,
         groupId: 3,
-        name: 'Stop another Goldenface\'s scheme!',
-        description: `as per the request of the President, prevent Goldenface from blowing up the NHL All-Star Game and killing hostages`,
+        name: 'BBQ Ribs and Pork Chops! ',
+        description: `Our regular planned BBQ get together!`,
         type: 'In person',
-        capacity: 2,
-        price: 1000000,
+        capacity: 20,
+        price: 50,
         startDate: new Date('2023-03-27 05:00:00'),
         endDate: new Date('2023-04-27 06:00:00')
       },
+      {
+        groupId: 2,
+        name: 'Pair Programming Sessions',
+        description: `Zoom meeting with half hour quick introductions in main room, then randomly break up into groups of two to pair program! Have the Node environment set up, git and GitHub for sharing, and be ready to write JavaScript! (all levels are welcome)`,
+        type: 'Online',
+        capacity: 100,
+        price: 0,
+        startDate: new Date('2023-03-05 06:00:00'),
+        endDate: new Date('2023-03-05 09:00:00')
+      }
     ]);
 
   },

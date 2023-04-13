@@ -32,8 +32,8 @@ module.exports = {
       {
         groupId: 3,
         address: `1111 S Figueroa St`,
-        city: 'Los Angeles',
-        state: 'CA',
+        city: 'NYC',
+        state: 'NY',
         lat: 34.0430,
         lng: 118.2673
       }

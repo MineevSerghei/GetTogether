@@ -30,12 +30,12 @@ module.exports = {
         organizerId: 2,
       },
       {
-        name: "Stop Goldenface",
-        about: "Stop Goldenface\'s schemes and prevent all his villany! Put him in jail if possible.",
+        name: "NYC Barbecue!",
+        about: "Get together on weekends in NYC Central Park to enjoy some barbecue! We meet every other weekend in spring, summer, and fall.",
         type: "In person",
-        private: true,
-        city: "Threat Level Midnight",
-        state: "PA",
+        private: false,
+        city: "NYC",
+        state: "NY",
         organizerId: 5,
       }
     ]);
