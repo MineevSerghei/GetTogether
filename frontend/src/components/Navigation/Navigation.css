@@ -1,5 +1,6 @@
 body {
     margin: 0px;
+    font-family: 'BalsamiqSans-Regular', sans-serif;
 }
 
 .hidden {
@@ -9,10 +10,11 @@ body {
 .nav-links-ul {
     display: flex;
     justify-content: space-around;
+    align-items: center;
     margin: 0px;
     padding: 10px;
     list-style-type: none;
-    border-bottom: 1px black solid;
+    border-bottom: 1px grey solid;
 }
 
 .profile-bttn {
@@ -46,7 +48,7 @@ body {
 
 .home-bttn {
     text-decoration: none;
-    font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif;
+    font-family: 'BalsamiqSans-Regular';
     font-weight: 700;
     font-size: 1.7rem;
     color: rgb(117, 172, 117);
