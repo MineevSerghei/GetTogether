@@ -2,7 +2,7 @@ import { useState, useEffect } from 'react';
 import { Redirect, useHistory, useParams } from 'react-router-dom';
 import { useSelector, useDispatch } from 'react-redux';
 import { createGroupThunk, getGroupThunk, updateGroupThunk, addGroupImageThunk } from '../../store/groups';
-
+import './GroupForm.css';
 
 export default function GroupForm({ formType }) {
 
@@ -101,8 +101,8 @@ export default function GroupForm({ formType }) {
     }
 
     return (
-        <form onSubmit={submit}>
-            <h4>BECOME AN ORGANIZER</h4>
+        <form className='create-form' onSubmit={submit}>
+            <h4 className='teal'>BECOME AN ORGANIZER</h4>
             <h2>We'll walk you through a few steps to build your local community</h2>
 
             <div className='input-section'>
@@ -113,19 +113,20 @@ export default function GroupForm({ formType }) {
                     placeholder='City, STATE'
                     value={location}
                     onChange={e => setLocation(e.target.value)}
-                ></input>
-                {errors.location && <p className='errors'>{errors.location}</p>}
+                ></input><br></br>
+                {errors.location && <span className='errors'>{errors.location}</span>}
             </div>
             <div className='input-section'>
                 <h2>What will your group's name be?</h2>
                 <p>Choose a name that will give people a clear idea of what the group is about.
                     Feel free to get creative! You can edit this later if you change your mind.</p>
                 <input
+                    className='create-group-name'
                     placeholder='What is your group name?'
                     value={name}
                     onChange={e => setName(e.target.value)}
-                ></input>
-                {errors.name && <p className='errors'>{errors.name}</p>}
+                ></input><br></br>
+                {errors.name && <span className='errors'>{errors.name}</span>}
             </div>
             <div className='input-section'>
                 <h2>Now describe what your group will be about</h2>
@@ -135,12 +136,12 @@ export default function GroupForm({ formType }) {
                     <li>Who should join?</li>
                     <li>What will you do at your events?</li>
                 </ol>
-                <textarea
+                <textarea className='create-group-about'
                     placeholder='Please write at least 30 characters'
                     value={about}
                     onChange={e => setAbout(e.target.value)}
-                ></textarea>
-                {errors.about && <p className='errors'>{errors.about}</p>}
+                ></textarea><br></br>
+                {errors.about && <span className='errors'>{errors.about}</span>}
             </div>
             <div className='input-section'>
                 <h2>Final steps...</h2>
@@ -150,32 +151,33 @@ export default function GroupForm({ formType }) {
                     <option value=''>(select one)</option>
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
-                </select>
-                {errors.type && <p className='errors'>{errors.type}</p>}
-
+                </select><br></br>
+                {errors.type && <span className='errors'>{errors.type}</span>}
+                <br></br>
                 <p>Is this group private or public?</p>
                 <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
                     <option value=''>(select one)</option>
                     <option value='true'>Private</option>
                     <option value='false'>Public</option>
-                </select>
-                {errors.isPrivate && <p className='errors'>{errors.isPrivate}</p>}
-
+                </select><br></br>
+                {errors.isPrivate && <span className='errors'>{errors.isPrivate}</span>}
+                <br></br>
 
                 {formType === 'create' && <>
                     <p>Please add an image url for your group below:</p>
                     <input
+                        className='create-group-image-url'
                         placeholder='Image Url'
                         value={imageUrl}
                         onChange={e => setImageUrl(e.target.value)}
-                    ></input>
-                    {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
+                    ></input><br></br>
+                    {errors.imageUrl && <span className='errors'>{errors.imageUrl}</span>}
                 </>
                 }
             </div>
             <div className='input-section'>
-                <button type='Submit'>{formType === 'create' ? 'Create group' : 'Update group'}</button>
+                <button className='submit-bttn' type='Submit'>{formType === 'create' ? 'Create group' : 'Update group'}</button>
             </div>
-        </form>
+        </form >
     )
 }

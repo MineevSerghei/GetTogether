@@ -6,7 +6,9 @@ body {
 
 
 .errors {
-    color: red
+    color: red;
+    font-size: .8rem;
+    position: absolute;
 }
 
 .form {

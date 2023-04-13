@@ -8,6 +8,7 @@ textarea,
 button,
 select {
     font-family: 'BalsamiqSans-Regular', sans-serif;
+    background-color: rgb(227, 248, 255);
 }
 
 
@@ -77,6 +78,9 @@ select {
 .log-link:active,
 .profile-bttn:active,
 .logout-bttn:active {
+    position: relative;
+    top: 1px;
+    left: 1px;
     background-color: rgba(178, 240, 165, 0.41);
 }
 
