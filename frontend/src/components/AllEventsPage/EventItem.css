@@ -1,20 +1,19 @@
-.event-item {
+.event-item-container {
     display: flex;
     flex-direction: column;
-    border-top: 1px solid black;
-    padding: 50px 20px;
+    border-top: 2px solid lightgray;
+    padding: 40px 20px 10px 40px;
     cursor: pointer;
-    width: 50%;
+    align-items: flex-start;
+    gap: 10px
 }
 
-.event-item-head {
+.event-item-container:hover {
+    border: 1px solid black;
+}
+
+.event-item {
     display: flex;
-}
-
-.event-item:hover {
-    border: 2px solid black;
-}
-
-.event-item-img {
-    max-width: 300px;
+    align-items: flex-start;
+    gap: 20px
 }

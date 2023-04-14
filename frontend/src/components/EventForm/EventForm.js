@@ -79,7 +79,7 @@ export default function EventForm() {
 
                 const imageRes = await dispatch(addEventImageThunk(eventRes.id, { preview: true, url: imageUrl }));
                 if (imageRes && imageRes.errors) {
-                    alert("The group has been created but the image url you provided didn't work. You can add images later!");
+                    alert("The event has been created but the image url you provided didn't work. You can add images later!");
                 }
 
                 history.push(`/events/${eventRes.id}`)

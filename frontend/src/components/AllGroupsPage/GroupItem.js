@@ -1,7 +1,7 @@
 import { useHistory } from 'react-router-dom';
 import './GroupItem.css';
 
-export default function GroupItem({ group: { id, name, about, previewImage, city, state, type, numMembers } }) {
+export default function GroupItem({ group: { id, name, about, previewImage, city, state, private: isPrivate, numMembers } }) {
 
     const image = previewImage || "/images/group-placeholder.png";
 
@@ -17,7 +17,7 @@ export default function GroupItem({ group: { id, name, about, previewImage, city
                 <p>{city + ', ' + state}</p>
                 <p>{about}</p>
                 <div>
-                    <span>{numMembers} members · {type}</span>
+                    <span>{numMembers} members · {isPrivate ? 'Private' : 'Public'}</span>
                 </div>
             </div>
         </div>

@@ -24,12 +24,12 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
 
     return (
 
-        <div className="event-item" onClick={() => { history.push(`/events/${id}`) }}>
-            <div className="event-item-head">
-                <div className='event-item-img-container'>
-                    <img className='event-item-img' src={image}></img>
+        <div className="event-item-container" onClick={() => { history.push(`/events/${id}`) }}>
+            <div className="event-item">
+                <div className='group-item-img-container'>
+                    <img className='group-item-img' src={image}></img>
                 </div>
-                <div>
+                <div className='group-item-info'>
                     <div>
                         <span>{date + ' ' + time}</span>
                     </div>
@@ -41,5 +41,6 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
                 <p>{description}</p>
             </div>
         </div>
+
     )
 }

@@ -21,12 +21,15 @@ export default function AllEventsPage() {
     }, [dispatch])
 
     return (
-        <div>
-            <div>
-                <h5>Events</h5>
-                <Link to='/groups'><h5>Groups</h5></Link>
-            </div>
-            <div className="events-container">
+        <div className="groups-page-container">
+            <div className="groups-container">
+                <div className="show-all-head">
+                    <div className="show-all-header-links">
+                        <h2 className="show-all-header">Events</h2>
+                        <Link className="show-all-header" to='/groups'><h2>Groups</h2></Link>
+                    </div>
+                    <p>Events in <span className="get-together-span">GetTogether</span></p>
+                </div>
                 {eventsArr.map(e => (<EventItem key={e.id} event={e} />))}
             </div>
         </div>
