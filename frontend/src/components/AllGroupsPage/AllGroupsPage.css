@@ -17,6 +17,16 @@
     gap: 20px;
 }
 
+.show-all-link-active {
+    color: gray;
+    text-decoration: none;
+}
+
+.show-all-link-inactive {
+    color: teal;
+    text-decoration: underline;
+}
+
 .show-all-head {
     display: flex;
     flex-direction: column;

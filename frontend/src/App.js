@@ -10,6 +10,7 @@ import GroupForm from "./components/GroupForm";
 import AllEventsPage from "./components/AllEventsPage";
 import EventDetailsPage from "./components/EventDetailsPage";
 import EventForm from "./components/EventForm";
+import NotFound from "./components/NotFound";
 
 function App() {
   const dispatch = useDispatch();
@@ -46,6 +47,9 @@ function App() {
           </Route>
           <Route path='/events'>
             <AllEventsPage />
+          </Route>
+          <Route>
+            <NotFound />
           </Route>
         </Switch>
       }

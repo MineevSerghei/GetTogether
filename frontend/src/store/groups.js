@@ -133,9 +133,10 @@ export const getGroupThunk = (id) => async dispatch => {
         const group = await res.json();
         // console.log('data of signgle group fetch, ', group);
         dispatch(getGroupAction(group));
+        return res;
     }
     catch (e) {
-        // console.log("error in fethcing one group", e)
+        if (e instanceof Response) return e;
     }
 }
 

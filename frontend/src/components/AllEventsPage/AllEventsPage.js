@@ -25,8 +25,8 @@ export default function AllEventsPage() {
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
-                        <h2 className="show-all-header">Events</h2>
-                        <Link className="show-all-header" to='/groups'><h2>Groups</h2></Link>
+                        <h2 className="show-all-link-inactive">Events</h2>
+                        <Link className="show-all-link-active" to='/groups'><h2>Groups</h2></Link>
                     </div>
                     <p>Events in <span className="get-together-span">GetTogether</span></p>
                 </div>

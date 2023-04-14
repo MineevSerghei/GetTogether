@@ -1,7 +1,7 @@
 import ActionItem from "./ActionItem";
 import { useSelector } from 'react-redux';
 
-export default function ActionSection() {
+export default function ActionSection({ redirect }) {
 
     const sessionUser = useSelector((state) => state.session.user);
 
@@ -17,12 +17,12 @@ export default function ActionSection() {
                 heading="Find an event"
                 img='./images/ticket.svg'
                 description="Look through what kind of events groups are hosting! Request an attendance and join in on the fun!" />
-            <ActionItem
+            {!redirect && <ActionItem
                 link={{ text: 'Start a new group', url: "/groups/create" }}
                 heading="Start a new group"
                 description="Create a new community of people with the same interest around you!"
                 img='./images/joinGroup.svg'
-                sessionUser={sessionUser} />
+                sessionUser={sessionUser} />}
         </div>
     )
 }

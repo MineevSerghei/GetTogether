@@ -19,7 +19,15 @@ export default function GroupDetailsPage() {
     const group = useSelector(state => state.groups.singleGroup);
 
     useEffect(() => {
-        dispatch(getGroupThunk(groupId));
+        const getGroup = async () => {
+            console.log('is thunk running BEFORE?')
+            const res = await dispatch(getGroupThunk(groupId));
+
+            if (res instanceof Response && res.status === 404) history.push('/404')
+            console.log('is thunk running AFTER?', res)
+        }
+        getGroup();
+
     }, [dispatch])
 
     const changeImg = () => {
