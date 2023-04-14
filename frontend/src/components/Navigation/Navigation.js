@@ -9,14 +9,12 @@ import './Navigation.css';
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
 
-    const className = sessionUser === null ? " hidden" : '';
-
     return (
         <ul className='nav-links-ul'>
             <li className='home-bttn-li'>
                 <NavLink className='home-bttn' exact to="/"><div>Get<br></br> Together</div></NavLink>
             </li>
-            {!sessionUser &&
+            {!sessionUser && isLoaded &&
                 <>
                     <OpenModalMenuItem
                         itemText="Log In"
@@ -28,14 +26,15 @@ function Navigation({ isLoaded }) {
                     />
                 </>
             }
-            <li><Link
-                to='/groups/create'
-                className={'nav-link log-link' + className}
-            >Start a new group</Link></li>
-            {isLoaded && (
+            {isLoaded && sessionUser && (<>
+                <li><Link
+                    to='/groups/create'
+                    className='nav-link log-link'
+                >Start a new group</Link></li>
+
                 <li className='user-menu-li'>
                     <ProfileButton user={sessionUser} />
-                </li>
+                </li></>
             )}
         </ul>
     );
