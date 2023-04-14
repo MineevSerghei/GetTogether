@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import * as sessionActions from "../../store/session";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
@@ -10,6 +10,17 @@ function LoginFormModal() {
     const [password, setPassword] = useState("");
     const [errors, setErrors] = useState({});
     const { closeModal } = useModal();
+
+    useEffect(() => {
+
+        const err = {};
+
+        if (credential.length < 4) err.username = 'Credential must be 4 characters or longer';
+        if (password.length < 6) err.password = 'Password must be 6 characters or longer';
+
+        setErrors(err);
+
+    }, [credential, password])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -24,9 +35,28 @@ function LoginFormModal() {
             });
     };
 
+    const handleDemo = e => {
+        e.preventDefault();
+
+        return dispatch(sessionActions.login({ credential: 'MichaelScott', password: 'password' }))
+            .then(closeModal)
+            .catch(async (res) => {
+                const data = await res.json();
+                if (data && data.errors) {
+                    setErrors(data.errors);
+                }
+            });
+
+
+    }
+
+    const bttnClassName =
+        `submit-bttn${errors.username ? ' disabled-bttn'
+            : errors.password ? ' disabled-bttn' : ''}`
+
     return (
         <>
-            <h1>Log In</h1>
+            <h1 className="log-label">Log In</h1>
             <form className="login-form form" onSubmit={handleSubmit}>
                 <label>
                     Username or Email
@@ -37,6 +67,9 @@ function LoginFormModal() {
                         required
                     />
                 </label>
+                {errors.credential && (
+                    <p className="errors login-errors">{errors.credential}</p>
+                )}
                 <label>
                     Password
                     <input
@@ -46,10 +79,10 @@ function LoginFormModal() {
                         required
                     />
                 </label>
-                {errors.credential && (
-                    <p className="errors">{errors.credential}</p>
-                )}
-                <button type="submit">Log In</button>
+                <div>
+                    <button className={bttnClassName} type="submit">Log In</button>
+                    <button className='submit-bttn demo-bttn' onClick={handleDemo}>Demo</button>
+                </div>
             </form>
         </>
     );

@@ -6,7 +6,7 @@ export default function JoinSection() {
     return (
         <div className="join-sec-container">
             <OpenModalButton
-                buttonText="Join Meetup"
+                buttonText="Join GetTogether"
                 modalComponent={<SignupFormModal />}
             />
         </div>

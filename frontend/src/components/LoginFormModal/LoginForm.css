@@ -4,11 +4,53 @@ body {
 }
 
 
+.submit-bttn {
+    position: relative;
+    color: white;
+    background-color: brown;
+    border: 2px solid black;
+    box-shadow: 10px 5px black;
+    height: 50px;
+    width: 150px;
+    border-radius: 5px;
+    font-size: 1.1rem;
+    margin: 20px
+}
+
+.submit-bttn:hover {
+    cursor: pointer;
+    background-color: rgb(197, 65, 65);
+}
+
+.submit-bttn:active {
+    background-color: brown;
+    top: 1px;
+    left: 1px;
+}
+
+
+.disabled-bttn {
+    pointer-events: none;
+    background-color: gray;
+}
+
+.demo-bttn {
+    width: 50px;
+    padding: 5px;
+    height: 30px;
+    font-size: .7rem;
+    box-shadow: 6px 3px black;
+}
 
 .errors {
     color: red;
     font-size: .8rem;
     position: absolute;
+}
+
+.login-errors {
+    position: relative;
+    margin: 0px;
 }
 
 .form {
@@ -23,3 +65,8 @@ body {
 }
 
 .login-form {}
+
+.log-label {
+    margin: 20px;
+
+}
