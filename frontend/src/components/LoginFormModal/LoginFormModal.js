@@ -46,8 +46,6 @@ function LoginFormModal() {
                     setErrors(data.errors);
                 }
             });
-
-
     }
 
     const bttnClassName =

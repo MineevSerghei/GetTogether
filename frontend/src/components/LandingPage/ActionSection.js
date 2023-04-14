@@ -11,7 +11,7 @@ export default function ActionSection() {
                 link={{ text: 'See all groups', url: "/groups" }}
                 heading="See all groups"
                 img='./images/handsUp.svg'
-                description="Browse through the groups on Get Together and see which ones you'd join!" />
+                description="Browse through the groups on GetTogether and see which ones you'd join!" />
             <ActionItem
                 link={{ text: 'Find an event', url: "/events" }}
                 heading="Find an event"

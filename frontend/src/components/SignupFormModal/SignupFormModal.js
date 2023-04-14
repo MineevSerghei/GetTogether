@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch } from "react-redux";
 import { useModal } from "../../context/Modal";
 import * as sessionActions from "../../store/session";
@@ -13,7 +13,22 @@ function SignupFormModal() {
     const [password, setPassword] = useState("");
     const [confirmPassword, setConfirmPassword] = useState("");
     const [errors, setErrors] = useState({});
+    const [frontendErrors, setFrontendErrors] = useState({});
     const { closeModal } = useModal();
+
+    useEffect(() => {
+
+        const err = {};
+        if (email.length <= 0) err.email = 'Email field cannot be empty';
+        if (username.length < 4) err.username = 'Credential must be 4 characters or longer';
+        if (firstName.length <= 0) err.firstName = 'First name field cannot be empty';
+        if (lastName.length <= 0) err.lastName = 'Last name field cannot be empty';
+        if (password.length < 6) err.password = 'Password must be 6 characters or longer';
+        if (confirmPassword.length < 6) err.confirmPassword = 'Confirm password field cannot be empty';
+
+        setFrontendErrors(err);
+
+    }, [email, username, firstName, lastName, confirmPassword, password])
 
     const handleSubmit = (e) => {
         e.preventDefault();
@@ -33,6 +48,7 @@ function SignupFormModal() {
                     const data = await res.json();
                     if (data && data.errors) {
                         setErrors(data.errors);
+                        console.log('data---->>>', data)
                     }
                 });
         }
@@ -41,9 +57,11 @@ function SignupFormModal() {
         });
     };
 
+    const bttnClassName = `submit-bttn${Object.values(frontendErrors).length > 0 ? ' disabled-bttn' : ''}`;
+
     return (
         <>
-            <h1>Sign Up</h1>
+            <h1 className="log-label">Sign Up</h1>
             <form className="signup-form form" onSubmit={handleSubmit}>
                 <label>
                     Email
@@ -54,7 +72,7 @@ function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.email && <p className="errors">{errors.email}</p>}
+                {errors.email && <p className="errors login-errors">{errors.email}</p>}
                 <label>
                     Username
                     <input
@@ -64,7 +82,7 @@ function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.username && <p className="errors">{errors.username}</p>}
+                {errors.username && <p className="errors login-errors">{errors.username}</p>}
                 <label>
                     First Name
                     <input
@@ -74,7 +92,7 @@ function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.firstName && <p className="errors">{errors.firstName}</p>}
+                {errors.firstName && <p className="errors login-errors">{errors.firstName}</p>}
                 <label>
                     Last Name
                     <input
@@ -84,7 +102,7 @@ function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.lastName && <p className="errors">{errors.lastName}</p>}
+                {errors.lastName && <p className="errors login-errors">{errors.lastName}</p>}
                 <label>
                     Password
                     <input
@@ -94,7 +112,7 @@ function SignupFormModal() {
                         required
                     />
                 </label>
-                {errors.password && <p className="errors">{errors.password}</p>}
+                {errors.password && <p className="errors login-errors">{errors.password}</p>}
                 <label>
                     Confirm Password
                     <input
@@ -105,9 +123,9 @@ function SignupFormModal() {
                     />
                 </label>
                 {errors.confirmPassword && (
-                    <p className="errors">{errors.confirmPassword}</p>
+                    <p className="errors login-errors">{errors.confirmPassword}</p>
                 )}
-                <button type="submit">Sign Up</button>
+                <button className={bttnClassName} type="submit">Sign Up</button>
             </form>
         </>
     );
