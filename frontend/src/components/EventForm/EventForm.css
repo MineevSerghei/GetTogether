@@ -1,3 +1,10 @@
 .priceInput {
     text-align: right;
+    width: 60px;
+}
+
+.event-create-form label {
+    display: block;
+    font-size: 1.1rem;
+    padding: 17px 0 11px 0;
 }

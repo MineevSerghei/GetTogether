@@ -31,7 +31,7 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
                 </div>
                 <div className='group-item-info'>
                     <div>
-                        <span>{date + ' ' + time}</span>
+                        <span>{date + ' · ' + time}</span>
                     </div>
                     <h2>{name}</h2>
                     <p>{type === 'In person' ? city + ', ' + state : 'Online'}</p>

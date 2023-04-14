@@ -115,6 +115,8 @@ export default function GroupForm({ formType }) {
                     onChange={e => setLocation(e.target.value)}
                 ></input><br></br>
                 {errors.location && <span className='errors'>{errors.location}</span>}
+                {errors.city && <span className='errors'>{errors.city}</span>}
+                {errors.state && <span className='errors'>{errors.state}</span>}
             </div>
             <div className='input-section'>
                 <h2>What will your group's name be?</h2>
@@ -176,7 +178,7 @@ export default function GroupForm({ formType }) {
                 }
             </div>
             <div className='input-section'>
-                <button className='submit-bttn' type='Submit'>{formType === 'create' ? 'Create group' : 'Update group'}</button>
+                <button className='submit-bttn' type='Submit'>{formType === 'create' ? 'Create Group' : 'Update Group'}</button>
             </div>
         </form >
     )

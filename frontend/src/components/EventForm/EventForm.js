@@ -88,82 +88,85 @@ export default function EventForm() {
     }
 
     return (
-        <form onSubmit={submit}>
+        <form className='create-form event-create-form' onSubmit={submit}>
             <h2>Create an event for {group.name}</h2>
-            <div>
-                <div>
-                    <p>What is the name of your event?</p>
-                    <input
-                        placeholder='Event Name'
-                        value={name}
-                        onChange={e => setName(e.target.value)}
-                    ></input>
-                    {errors.name && <p className='errors'>{errors.name}</p>}
-                </div>
-                <div>
-                    <p>Is this an in person or online event?</p>
-                    <select value={type} onChange={e => setType(e.target.value)}>
-                        <option value=''>(select one)</option>
-                        <option value='In person'>In person</option>
-                        <option value='Online'>Online</option>
-                    </select>
-                    {errors.type && <p className='errors'>{errors.type}</p>}
-                    <p>Is this event private or public?</p>
-                    <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
-                        <option value=''>(select one)</option>
-                        <option value='true'>Private</option>
-                        <option value='false'>Public</option>
-                    </select>
-                    {errors.isPrivate && <p className='errors'>{errors.isPrivate}</p>}
-                    <p>What is the price for your event?</p>
-                    <div >
-                        <i>$</i><input
-                            className='priceInput'
-                            placeholder='0'
-                            value={price}
-                            onChange={e => setPrice(e.target.value)}
-                        ></input>
-                        {errors.price && <p className='errors'>{errors.price}</p>}
-                    </div>
-                </div>
-                <div>
-                    <p>When does your event start?</p>
-                    <input
-                        type='datetime-local'
-                        value={startDate}
-                        onChange={e => setStartDate(e.target.value)}
-                    ></input>
-                    {errors.startDate && <p className='errors'>{errors.startDate}</p>}
-                    <p>When does your event end?</p>
-                    <input
-                        type='datetime-local'
-                        value={endDate}
-                        onChange={e => setEndDate(e.target.value)}
-                    ></input>
-                    {errors.endDate && <p className='errors'>{errors.endDate}</p>}
-                </div>
-                <div>
-                    <p>Please add in image url for your event below:</p>
-                    <input
-                        placeholder='Image Url'
-                        value={imageUrl}
-                        onChange={e => setImageUrl(e.target.value)}
-                    ></input>
-                    {errors.imageUrl && <p className='errors'>{errors.imageUrl}</p>}
-                </div>
-                <div>
-                    <p>Please describe your event:</p>
-                    <textarea
-                        placeholder='Please write at least 30 characters'
-                        value={description}
-                        onChange={e => setDescription(e.target.value)}
-                    ></textarea>
-                    {errors.description && <p className='errors'>{errors.description}</p>}
-                </div>
-                <div>
-                    <button type='Submit'>Create Event</button>
+
+            <div className='input-section'>
+                <label>What is the name of your event?</label>
+                <input
+                    className='create-group-name'
+                    placeholder='Event Name'
+                    value={name}
+                    onChange={e => setName(e.target.value)}
+                ></input><br></br>
+                {errors.name && <span className='errors'>{errors.name}</span>}
+            </div>
+            <div className='input-section'>
+                <label>Is this an in person or online event?</label>
+                <select value={type} onChange={e => setType(e.target.value)}>
+                    <option value='' disabled>(select one)</option>
+                    <option value='In person'>In person</option>
+                    <option value='Online'>Online</option>
+                </select><br></br>
+                {errors.type && <span className='errors'>{errors.type}</span>}
+                <br></br><label>Is this event private or public?</label>
+                <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
+                    <option value='' disabled>(select one)</option>
+                    <option value='true'>Private</option>
+                    <option value='false'>Public</option>
+                </select><br></br>
+                {errors.isPrivate && <span className='errors'>{errors.isPrivate}</span>}
+                <br></br><label>What is the price for your event?</label>
+                <div >
+                    <i>$</i><input
+                        className='priceInput'
+                        placeholder='0'
+                        value={price}
+                        onChange={e => setPrice(e.target.value)}
+                    ></input><br></br>
+                    {errors.price && <span className='errors'>{errors.price}</span>}
                 </div>
             </div>
+            <div className='input-section'>
+                <label>When does your event start?</label>
+                <input
+                    type='datetime-local'
+                    value={startDate}
+                    onChange={e => setStartDate(e.target.value)}
+                ></input><br></br>
+                {errors.startDate && <span className='errors'>{errors.startDate}</span>}
+                <br></br><label>When does your event end?</label>
+                <input
+                    type='datetime-local'
+                    value={endDate}
+                    onChange={e => setEndDate(e.target.value)}
+                ></input><br></br>
+                {errors.endDate && <span className='errors'>{errors.endDate}</span>}
+            </div>
+            <div className='input-section'>
+                <label>Please add in image url for your event below:</label>
+                <input
+                    className='create-group-image-url'
+                    placeholder='Image Url'
+                    value={imageUrl}
+                    onChange={e => setImageUrl(e.target.value)}
+                ></input><br></br>
+                {errors.imageUrl && <span className='errors'>{errors.imageUrl}</span>}
+            </div>
+            <div className='input-section'>
+                <label>Please describe your event:</label>
+                <textarea
+                    className='create-group-about'
+                    placeholder='Please write at least 30 characters'
+                    value={description}
+                    onChange={e => setDescription(e.target.value)}
+                ></textarea><br></br>
+                {errors.description && <span className='errors'>{errors.description}</span>}
+            </div>
+            <div>
+                <button className='submit-bttn' type='Submit'>Create Event</button>
+            </div>
+
         </form>
     )
 }
