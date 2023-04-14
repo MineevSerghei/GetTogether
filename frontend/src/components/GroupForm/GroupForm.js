@@ -148,7 +148,7 @@ export default function GroupForm({ formType }) {
 
                 <p>Is this an in person or online group?</p>
                 <select value={type} onChange={e => setType(e.target.value)}>
-                    <option value=''>(select one)</option>
+                    <option value='' disabled>(select one)</option>
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
                 </select><br></br>
@@ -156,7 +156,7 @@ export default function GroupForm({ formType }) {
                 <br></br>
                 <p>Is this group private or public?</p>
                 <select value={isPrivate} onChange={e => setIsPrivate(e.target.value)}>
-                    <option value=''>(select one)</option>
+                    <option value='' disabled>(select one)</option>
                     <option value='true'>Private</option>
                     <option value='false'>Public</option>
                 </select><br></br>

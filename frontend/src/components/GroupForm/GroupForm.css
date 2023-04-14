@@ -3,6 +3,10 @@
     padding-bottom: 30px;
 }
 
+.gray {
+    color: gray;
+}
+
 
 .create-form {
     padding: 0px 100px;

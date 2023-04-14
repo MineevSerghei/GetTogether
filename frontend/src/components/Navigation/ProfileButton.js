@@ -37,6 +37,11 @@ function ProfileButton({ user }) {
         history.push('/');
     };
 
+    const viewGroups = e => {
+        closeMenu();
+        history.push('/groups');
+    }
+
     const ulClassName = "profile-dropdown" + (showMenu ? "" : " hidden");
     return (
         <>
@@ -49,6 +54,9 @@ function ProfileButton({ user }) {
             <ul className={ulClassName} ref={ulRef}>
                 <li>Hello, {user.firstName}!</li>
                 <li>{user.email}</li>
+                <li>
+                    <button className="logout-bttn" onClick={viewGroups}>View groups</button>
+                </li>
                 <li>
                     <button className="logout-bttn" onClick={logout}>Log Out</button>
                 </li>
