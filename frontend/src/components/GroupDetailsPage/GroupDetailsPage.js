@@ -52,7 +52,7 @@ export default function GroupDetailsPage() {
         return (
             <>
                 {future.length > 0 &&
-                    <div>
+                    <div className='events-list-groups'>
                         <h2>Upcoming Events {`(${future.length})`}</h2>
                         <div className="group-details-events-container">
                             {future.map(e => <EventItem key={e.id} event={e} group={group} />)}
@@ -61,7 +61,7 @@ export default function GroupDetailsPage() {
                 }
 
                 {past.length > 0 &&
-                    <div>
+                    <div className='events-list-groups'>
                         <h2>Past Events {`(${past.length})`}</h2>
                         <div className="group-details-events-container">
                             {past.map(e => <EventItem key={e.id} event={e} group={group} />)}
@@ -76,10 +76,10 @@ export default function GroupDetailsPage() {
 
 
     return (
-        <div>
+        <div className='details-page'>
             <div className="group-details-container">
-                <Link to='/groups'> {"<- Groups"}</Link>
-                <div>
+                <div className='details-img-container'>
+                    <Link to='/groups'> {"< Groups"}</Link>
                     <img
                         src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
                         onClick={changeImg}
@@ -89,20 +89,23 @@ export default function GroupDetailsPage() {
                 <div>
                     <h2>{group.name}</h2>
                     <p>{group.city + ', ' + group.state}</p>
-                    <p>events . type</p>
+                    <p>{group.numMembers > 1 ? `${group.numMembers} members` : group.numMembers <= 0 ? 'no members' : `${group.numMembers} member`} · {group.private ? 'Private' : 'Public'}</p>
                     <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                     {sessionUser && sessionUser.id !== group.Organizer.id &&
-                        <button onClick={() => alert('This feature is coming soon!')}>Join this group</button>}
-                    {sessionUser && sessionUser.id === group.Organizer.id && <>
-                        <button onClick={createEvent}>create event</button>
-                        <button onClick={updateGroup}>update</button>
-                        <OpenModalButton
-                            buttonText="delete"
-                            modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} /></>}
+                        <button className='submit-bttn' onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                    {sessionUser && sessionUser.id === group.Organizer.id &&
+                        <div className='manage-bttns-container'>
+                            <button className="manage-bttn" onClick={createEvent}>Create event</button>
+                            <button className="manage-bttn" onClick={updateGroup}>Update</button>
+                            <OpenModalButton
+                                buttonText="Delete"
+                                className="manage-bttn"
+                                modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
+                        </div>}
                 </div>
             </div>
             <div>
-                <h2>Organizer</h2>
+                <h2>Organized by:</h2>
                 <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                 <h2>What we're about</h2>
                 <p>{group.about}</p>

@@ -7,7 +7,7 @@ body {
 .submit-bttn {
     position: relative;
     color: white;
-    background-color: rgb(95, 168, 95);
+    background-color: brown;
     border: 2px solid black;
     box-shadow: 10px 5px black;
     height: 50px;
@@ -19,11 +19,11 @@ body {
 
 .submit-bttn:hover {
     cursor: pointer;
-    background-color: rgb(119, 169, 119);
+    background-color: rgb(197, 65, 65);
 }
 
 .submit-bttn:active {
-    background-color: rgb(95, 168, 95);
+    background-color: brown;
     top: 1px;
     left: 1px;
 }

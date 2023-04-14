@@ -17,7 +17,7 @@ export default function GroupItem({ group: { id, name, about, previewImage, city
                 <p>{city + ', ' + state}</p>
                 <p>{about}</p>
                 <div>
-                    <span>{numMembers} members · {isPrivate ? 'Private' : 'Public'}</span>
+                    <span>{numMembers > 1 ? `${numMembers} members` : numMembers <= 0 ? 'no members' : `${numMembers} member`} · {isPrivate ? 'Private' : 'Public'}</span>
                 </div>
             </div>
         </div>
