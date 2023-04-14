@@ -40,7 +40,7 @@ export default function GroupDetailsPage() {
         const future = [];
 
         for (let event of events) {
-            if (Date.parse(Date(event.startDate)) < Date.now()) {
+            if ((new Date(event.startDate).getTime()) < Date.now()) {
 
                 past.push(event);
             } else {

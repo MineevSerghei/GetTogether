@@ -103,7 +103,7 @@ export default function GroupForm({ formType }) {
     return (
         <form className='create-form' onSubmit={submit}>
             <h4 className='teal'>BECOME AN ORGANIZER</h4>
-            <h2>We'll walk you through a few steps to build your local community</h2>
+            <h2>{formType === 'create' ? 'Start a New Group' : 'Update your Group'}</h2>
 
             <div className='input-section'>
                 <h2>First, set your group's location.</h2>
