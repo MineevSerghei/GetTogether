@@ -104,13 +104,15 @@ export const deleteEventThunk = (id) => async dispatch => {
 }
 
 export const getEventThunk = (id) => async dispatch => {
-    const res = await csrfFetch(`/api/events/${id}`);
 
-    // console.log('res of signgle event fetch, ', res);
-
-    if (res.ok) {
+    try {
+        const res = await csrfFetch(`/api/events/${id}`);
         const event = await res.json();
         dispatch(getEventAction(event));
+        return res;
+    }
+    catch (e) {
+        if (e instanceof Response) return e;
     }
 }
 

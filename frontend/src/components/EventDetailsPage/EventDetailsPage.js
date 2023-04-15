@@ -18,17 +18,25 @@ export default function EventDetailsPage() {
     const sessionUser = useSelector((state) => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
 
-
     const getTime = (timeDate) => {
         const dateObj = new Date(timeDate);
-        const time = dateObj.toTimeString();
+        const timeZone = dateObj.toTimeString();
+        const time = timeZone.slice(0, 8);
+        const zone = timeZone.slice(9);
         const date = dateObj.toDateString();
-
-        return date + ' · ' + time;
+        return { time, date, zone };
     }
 
+    const start = getTime(event.startDate);
+    const end = getTime(event.endDate);
+
     useEffect(() => {
-        dispatch(getEventThunk(eventId));
+        const getEvent = async () => {
+            const res = await dispatch(getEventThunk(eventId));
+            if (res instanceof Response && res.status === 404) history.push('/404')
+        }
+        getEvent();
+
     }, [dispatch])
 
     const changeImg = () => {
@@ -43,52 +51,60 @@ export default function EventDetailsPage() {
     if (!event || !event.Group.Organizer || +event.id !== +eventId || !event.Group.GroupImages) return null;
 
     return (
-        <div>
-            <div>
-                <Link to='/events'> {"<- Events"}</Link>
-                <h2>{event.name}</h2>
-                <p>Hosted by {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
-            </div>
-            <div>
-                <div>
-                    <img
-                        src={event.EventImages.length > 0 ? event.EventImages[image].url : ""}
-                        onClick={changeImg}
-                        className='event-details-img'
-                    ></img>
-                </div>
-                <div className='mini-group-container'>
-                    <div>
-                        <img
-                            src={event.Group.GroupImages.length > 0 ? event.Group.GroupImages[0].url : ''}
-                            className='mini-group-img'
-                        ></img>
-                    </div>
-                    <div>
-                        <h4>{event.Group.name}</h4>
-                        <p>{event.private ? "Private" : "Public"}</p>
-                    </div>
-                </div>
-                <div className='event-info-container'>
-                    <div>
-                        <p>START {getTime(event.startDate)}</p>
-                        <p>END {getTime(event.endDate)}</p>
-                    </div>
-                    <div>
-                        <p>{event.price <= 0 ? 'FREE' : `$${event.price}`}</p>
-                    </div>
-                    <div>
-                        <p>{event.type}</p>
-                    </div>
-                    {sessionUser && event.Group.Organizer.id === sessionUser.id &&
-                        <OpenModalButton
-                            buttonText="delete"
-                            modalComponent={<DeleteGroupModal eventId={event.id} groupId={event.Group.id} target='event' />} />}
+        <div className='details-page-events'>
+            <div className='details-page-header-wrapper'>
+                <div className='details-page-events-header'>
+                    <Link to='/events'> {"<- Events"}</Link>
+                    <h2>{event.name}</h2>
+                    <p>Hosted by {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
                 </div>
             </div>
-            <div>
-                <h2>Details</h2>
-                <p>{event.description}</p>
+            <div className='details-page-gray-wrapper'>
+                <div className='events-event-container'>
+                    <div className='event-image-info-container'>
+                        <div className='event-img-wrapper'>
+                            <img
+                                src={event.EventImages.length > 0 ? event.EventImages[image].url : ""}
+                                onClick={changeImg}
+                                className='event-details-img'
+                            ></img>
+                        </div>
+                        <div className='event-info-group-container'>
+                            <div className='mini-group-container'>
+                                <div >
+                                    <img
+                                        src={event.Group.GroupImages.length > 0 ? event.Group.GroupImages[0].url : ''}
+                                        className='mini-group-img'
+                                    ></img>
+                                </div>
+                                <div>
+                                    <h3>{event.Group.name}</h3>
+                                    <p>{event.private ? "Private" : "Public"}</p>
+                                </div>
+                            </div>
+                            <div className='event-info-container'>
+                                <div title={start.zone}>
+                                    <p>START {start.date + ' · ' + start.time}</p>
+                                    <p>END {end.date + ' · ' + end.time}</p>
+                                </div>
+                                <div>
+                                    <p>{event.price <= 0 ? 'FREE' : `$${event.price}`}</p>
+                                </div>
+                                <div>
+                                    <p>{event.type}</p>
+                                    {sessionUser && event.Group.Organizer.id === sessionUser.id &&
+                                        <OpenModalButton
+                                            buttonText="delete"
+                                            modalComponent={<DeleteGroupModal eventId={event.id} groupId={event.Group.id} target='event' />} />}
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+                        <h2>Details</h2>
+                        <p>{event.description}</p>
+                    </div>
+                </div>
             </div>
         </div>
     )
