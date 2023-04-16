@@ -18,14 +18,6 @@ export default function EventDetailsPage() {
     const sessionUser = useSelector((state) => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
 
-    const getTime = (timeDate) => {
-        const dateObj = new Date(timeDate);
-        const timeZone = dateObj.toTimeString();
-        const time = timeZone.slice(0, 8);
-        const zone = timeZone.slice(9);
-        const date = dateObj.toDateString();
-        return { time, date, zone };
-    }
 
     const start = getTime(event.startDate);
     const end = getTime(event.endDate);
@@ -84,13 +76,16 @@ export default function EventDetailsPage() {
                             </div>
                             <div className='event-info-container'>
                                 <div title={start.zone}>
+                                    <i className="fa-regular fa-clock"></i>
                                     <p>START {start.date + ' · ' + start.time}</p>
                                     <p>END {end.date + ' · ' + end.time}</p>
                                 </div>
                                 <div>
+                                    <i className="fa-solid fa-dollar-sign"></i>
                                     <p>{event.price <= 0 ? 'FREE' : `$${event.price}`}</p>
                                 </div>
                                 <div>
+                                    <i className="fa-solid fa-map-pin"></i>
                                     <p>{event.type}</p>
                                     {sessionUser && event.Group.Organizer.id === sessionUser.id &&
                                         <OpenModalButton
@@ -108,4 +103,13 @@ export default function EventDetailsPage() {
             </div>
         </div>
     )
+}
+
+export function getTime(timeDate) {
+    const dateObj = new Date(timeDate);
+    const timeZone = dateObj.toTimeString();
+    const time = timeZone.slice(0, 8);
+    const zone = timeZone.slice(9);
+    const date = dateObj.toDateString();
+    return { time, date, zone };
 }

@@ -1,6 +1,6 @@
 import { useHistory } from 'react-router-dom';
+import { getTime } from '../EventDetailsPage/EventDetailsPage';
 import './EventItem.css';
-
 
 export default function EventItem({ event: { name, previewImage, startDate, id, type, description, Group, EventImages }, group }) {
     const history = useHistory();
@@ -8,9 +8,7 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
     const image = previewImage ||
         (EventImages ? (EventImages[0] ? EventImages[0].url : undefined) : null) || "/images/event-placeholder.png";;
 
-    const dateObj = new Date(startDate);
-    const time = dateObj.toTimeString();
-    const date = dateObj.toDateString();
+    const start = getTime(startDate);
 
     let city = '?';
     let state = '?';
@@ -31,7 +29,7 @@ export default function EventItem({ event: { name, previewImage, startDate, id, 
                 </div>
                 <div className='group-item-info'>
                     <div>
-                        <span>{date + ' · ' + time}</span>
+                        <span title={start.zone}>{start.date + ' · ' + start.time}</span>
                     </div>
                     <h2>{name}</h2>
                     <p>{type === 'In person' ? city + ', ' + state : 'Online'}</p>
