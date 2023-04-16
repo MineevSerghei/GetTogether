@@ -48,7 +48,7 @@ export default function EventDetailsPage() {
                 <div className='details-page-events-header'>
                     <Link to='/events'> {"<- Events"}</Link>
                     <h2>{event.name}</h2>
-                    <p>Hosted by {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
+                    <p className='no-top-margin'>Hosted by {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
                 </div>
             </div>
             <div className='details-page-gray-wrapper'>
@@ -70,26 +70,33 @@ export default function EventDetailsPage() {
                                     ></img>
                                 </div>
                                 <div>
-                                    <h3>{event.Group.name}</h3>
+                                    <h3><Link className='black-link' to={`/groups/${event.Group.id}`}>{event.Group.name}</Link></h3>
                                     <p>{event.private ? "Private" : "Public"}</p>
                                 </div>
                             </div>
                             <div className='event-info-container'>
-                                <div title={start.zone}>
+                                <div className='event-time-div' title={start.zone}>
                                     <i className="fa-regular fa-clock"></i>
-                                    <p>START {start.date + ' · ' + start.time}</p>
-                                    <p>END {end.date + ' · ' + end.time}</p>
+                                    <div className='event-time-wrapper'>
+                                        <p className='event-time'>START </p>
+                                        <p className='event-time'>END </p>
+                                    </div>
+                                    <div>
+                                        <p className='event-time teal'> {start.date + ' · ' + start.time}</p>
+                                        <p className='event-time teal'> {end.date + ' · ' + end.time}</p>
+                                    </div>
                                 </div>
-                                <div>
+                                <div className='event-time-div'>
                                     <i className="fa-solid fa-dollar-sign"></i>
-                                    <p>{event.price <= 0 ? 'FREE' : `$${event.price}`}</p>
+                                    <p className='event-time'>{event.price <= 0 ? 'FREE' : `$${event.price}`}</p>
                                 </div>
-                                <div>
+                                <div className='event-time-div'>
                                     <i className="fa-solid fa-map-pin"></i>
-                                    <p>{event.type}</p>
+                                    <p className='event-time'>{event.type}</p>
                                     {sessionUser && event.Group.Organizer.id === sessionUser.id &&
                                         <OpenModalButton
-                                            buttonText="delete"
+                                            buttonText="Delete"
+                                            className='manage-bttn bttn-right'
                                             modalComponent={<DeleteGroupModal eventId={event.id} groupId={event.Group.id} target='event' />} />}
                                 </div>
                             </div>

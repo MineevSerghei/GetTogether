@@ -5,7 +5,8 @@
     padding: 40px 20px 10px 20px;
     cursor: pointer;
     align-items: flex-start;
-    gap: 10px
+    gap: 10px;
+    width: 100%;
 }
 
 .event-item-container:hover {
@@ -16,4 +17,9 @@
     display: flex;
     align-items: flex-start;
     gap: 20px
+}
+
+.fa-dollar-sign,
+.fa-map-pin {
+    padding: 0 3px
 }

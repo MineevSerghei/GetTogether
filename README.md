@@ -1,4 +1,4 @@
-# Meetup Clone
+# Meetup Clone, GetTogether!
 
 ## Database Schema Design
 
