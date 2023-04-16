@@ -48,7 +48,7 @@ export default function EventDetailsPage() {
                 <div className='details-page-events-header'>
                     <Link to='/events'> {"<- Events"}</Link>
                     <h2>{event.name}</h2>
-                    <p className='no-top-margin'>Hosted by {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
+                    <p className='no-top-margin'>Hosted by: {event.Group.Organizer.firstName + ' ' + event.Group.Organizer.lastName}</p>
                 </div>
             </div>
             <div className='details-page-gray-wrapper'>
@@ -94,10 +94,12 @@ export default function EventDetailsPage() {
                                     <i className="fa-solid fa-map-pin"></i>
                                     <p className='event-time'>{event.type}</p>
                                     {sessionUser && event.Group.Organizer.id === sessionUser.id &&
-                                        <OpenModalButton
-                                            buttonText="Delete"
-                                            className='manage-bttn bttn-right'
-                                            modalComponent={<DeleteGroupModal eventId={event.id} groupId={event.Group.id} target='event' />} />}
+                                        <>
+                                            <button onClick={() => alert('Feature coming soon')} className='manage-bttn bttn-right update-bttn'>Update</button>
+                                            <OpenModalButton
+                                                buttonText="Delete"
+                                                className='manage-bttn bttn-right'
+                                                modalComponent={<DeleteGroupModal eventId={event.id} groupId={event.Group.id} target='event' />} /> </>}
                                 </div>
                             </div>
                         </div>

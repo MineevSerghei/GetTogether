@@ -109,7 +109,7 @@ export default function GroupDetailsPage() {
                         </div>}
                 </div>
             </div>
-            <div>
+            <div >
                 <h2>Organized by:</h2>
                 <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                 <h2>What we're about</h2>
