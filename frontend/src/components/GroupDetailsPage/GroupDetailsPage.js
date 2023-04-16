@@ -41,10 +41,14 @@ export default function GroupDetailsPage() {
 
     const renderEvents = (events) => {
 
+        const sortedEvents = events.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+
         const past = [];
         const future = [];
 
-        for (let event of events) {
+
+
+        for (let event of sortedEvents) {
             if ((new Date(event.startDate).getTime()) < Date.now()) {
 
                 past.push(event);

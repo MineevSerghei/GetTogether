@@ -14,6 +14,8 @@ export default function AllEventsPage() {
 
     const eventsArr = Object.values(events);
 
+    const sortedEvents = eventsArr.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+
     useEffect(() => {
 
         dispatch(getEventsThunk());
@@ -30,7 +32,7 @@ export default function AllEventsPage() {
                     </div>
                     <p>Events in <span className="get-together-span">GetTogether</span></p>
                 </div>
-                {eventsArr.map(e => (<EventItem key={e.id} event={e} />))}
+                {sortedEvents.map(e => (<EventItem key={e.id} event={e} />))}
             </div>
         </div>
     )
