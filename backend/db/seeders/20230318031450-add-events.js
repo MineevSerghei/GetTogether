@@ -21,8 +21,8 @@ module.exports = {
         type: 'In person',
         capacity: 15,
         price: 0,
-        startDate: new Date("2023-04-07 18:00:00"),
-        endDate: new Date('2023-04-07 20:00:00')
+        startDate: new Date("2023-04-07 22:00:00"),
+        endDate: new Date('2023-04-08 00:00:00')
       },
       {
         venueId: 2,
@@ -32,8 +32,8 @@ module.exports = {
         type: 'In person',
         capacity: 20,
         price: 15,
-        startDate: new Date('2023-04-01 15:00:00'),
-        endDate: new Date('2023-04-01 20:00:00')
+        startDate: new Date('2023-04-01 19:00:00'),
+        endDate: new Date('2023-04-02 00:00:00')
       },
       {
         groupId: 2,
@@ -42,8 +42,8 @@ module.exports = {
         type: 'Online',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-04-05 18:00:00'),
-        endDate: new Date('2023-04-05 21:00:00')
+        startDate: new Date('2023-04-05 22:00:00'),
+        endDate: new Date('2023-04-06 01:00:00')
       },
       {
         venueId: 3,
@@ -53,8 +53,8 @@ module.exports = {
         type: 'In person',
         capacity: 20,
         price: 50,
-        startDate: new Date('2023-03-27 17:00:00'),
-        endDate: new Date('2023-03-27 20:00:00')
+        startDate: new Date('2023-03-27 21:00:00'),
+        endDate: new Date('2023-03-28 00:00:00')
       },
       {
         groupId: 2,
@@ -63,8 +63,8 @@ module.exports = {
         type: 'Online',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-03-05 18:00:00'),
-        endDate: new Date('2023-03-05 21:00:00')
+        startDate: new Date('2023-03-05 22:00:00'),
+        endDate: new Date('2023-03-06 01:00:00')
       },
       {
         groupId: 2,
@@ -73,8 +73,8 @@ module.exports = {
         type: 'Online',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-05-05 18:00:00'),
-        endDate: new Date('2023-05-05 21:00:00')
+        startDate: new Date('2023-05-05 22:00:00'),
+        endDate: new Date('2023-05-06 01:00:00')
       },
       {
         groupId: 2,
@@ -83,8 +83,8 @@ module.exports = {
         type: 'In person',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-04-15 9:00:00'),
-        endDate: new Date('2023-04-15 11:00:00')
+        startDate: new Date('2023-04-15 13:00:00'),
+        endDate: new Date('2023-04-15 15:00:00')
       },
       {
         groupId: 2,
@@ -93,8 +93,8 @@ module.exports = {
         type: 'In person',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-04-23 9:00:00'),
-        endDate: new Date('2023-04-23 11:00:00')
+        startDate: new Date('2023-04-23 13:00:00'),
+        endDate: new Date('2023-04-23 15:00:00')
       },
       {
         groupId: 4,
@@ -103,8 +103,8 @@ module.exports = {
         type: 'In person',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-04-08 8:00:00'),
-        endDate: new Date('2023-04-08 12:00:00')
+        startDate: new Date('2023-04-08 12:00:00'),
+        endDate: new Date('2023-04-08 16:00:00')
       },
       {
         groupId: 4,
@@ -113,8 +113,8 @@ module.exports = {
         type: 'In person',
         capacity: 100,
         price: 0,
-        startDate: new Date('2023-05-06 8:00:00'),
-        endDate: new Date('2023-05-06 12:00:00')
+        startDate: new Date('2023-05-06 12:00:00'),
+        endDate: new Date('2023-05-06 16:00:00')
       },
     ]);
 
