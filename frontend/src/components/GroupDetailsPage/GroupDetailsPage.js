@@ -96,7 +96,7 @@ export default function GroupDetailsPage() {
                     <h2>{group.name}</h2>
                     <p>{group.city + ', ' + group.state}</p>
                     <p>{group.numMembers > 1 ? `${group.numMembers} members` : group.numMembers <= 0 ? 'no members' : `${group.numMembers} member`} · {group.private ? 'Private' : 'Public'}</p>
-                    <p>{group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
+                    <p>{'Organized by ' + group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                     {sessionUser && sessionUser.id !== group.Organizer.id &&
                         <button className='submit-bttn' onClick={() => alert('Feature coming soon')}>Join this group</button>}
                     {sessionUser && sessionUser.id === group.Organizer.id &&
