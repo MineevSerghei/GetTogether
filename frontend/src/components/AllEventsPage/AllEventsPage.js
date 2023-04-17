@@ -14,7 +14,19 @@ export default function AllEventsPage() {
 
     const eventsArr = Object.values(events);
 
-    const sortedEvents = eventsArr.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    const pastUnsorted = [];
+    const futureUnsorted = [];
+
+    for (let event of eventsArr) {
+        if ((new Date(event.startDate).getTime()) < Date.now()) {
+            pastUnsorted.push(event);
+        } else {
+            futureUnsorted.push(event);
+        }
+    }
+
+    const past = pastUnsorted.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+    const future = futureUnsorted.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
     useEffect(() => {
 
@@ -23,7 +35,7 @@ export default function AllEventsPage() {
     }, [dispatch])
 
     return (
-        sortedEvents.length > 0 && <div className="groups-page-container">
+        (past.length > 0 || future.length > 0) && <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
@@ -32,7 +44,10 @@ export default function AllEventsPage() {
                     </div>
                     <p>Events in <span className="get-together-span">GetTogether</span></p>
                 </div>
-                {sortedEvents.map(e => (<EventItem key={e.id} event={e} />))}
+                {future.map(e => (<EventItem key={e.id} event={e} />))}
+
+                {past.length > 0 && <h2>Past Events</h2>}
+                {past.map(e => (<EventItem key={e.id} event={e} />))}
             </div>
         </div>
     )

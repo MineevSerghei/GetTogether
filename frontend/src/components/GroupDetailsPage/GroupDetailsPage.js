@@ -41,22 +41,19 @@ export default function GroupDetailsPage() {
 
     const renderEvents = (events) => {
 
-        const sortedEvents = events.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+        const pastUnsorted = [];
+        const futureUnsorted = [];
 
-        const past = [];
-        const future = [];
-
-
-
-        for (let event of sortedEvents) {
+        for (let event of events) {
             if ((new Date(event.startDate).getTime()) < Date.now()) {
-
-                past.push(event);
+                pastUnsorted.push(event);
             } else {
-
-                future.push(event);
+                futureUnsorted.push(event);
             }
         }
+
+        const past = pastUnsorted.sort((a, b) => new Date(b.startDate).getTime() - new Date(a.startDate).getTime());
+        const future = futureUnsorted.sort((a, b) => new Date(a.startDate).getTime() - new Date(b.startDate).getTime());
 
         return (
             <>
