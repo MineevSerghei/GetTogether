@@ -36,6 +36,31 @@ module.exports = {
         eventId: 4,
         url: 'https://images.unsplash.com/photo-1529262365544-55d1707e64e6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80.jpeg',
         preview: true
+      },
+      {
+        eventId: 6,
+        url: 'https://images.unsplash.com/photo-1514996937319-344454492b37?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80.jpeg',
+        preview: true
+      },
+      {
+        eventId: 7,
+        url: 'https://images.unsplash.com/photo-1599666520394-50d845fe09c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80.jpeg',
+        preview: true
+      },
+      {
+        eventId: 8,
+        url: 'https://images.unsplash.com/photo-1599666520394-50d845fe09c6?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80.jpeg',
+        preview: true
+      },
+      {
+        eventId: 9,
+        url: 'https://images.unsplash.com/photo-1485809052957-5113b0ff51af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80.jpeg',
+        preview: true
+      },
+      {
+        eventId: 10,
+        url: 'https://images.unsplash.com/photo-1485809052957-5113b0ff51af?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1035&q=80.jpeg',
+        preview: true
       }
     ]);
   },

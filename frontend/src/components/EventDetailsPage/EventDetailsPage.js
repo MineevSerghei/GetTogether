@@ -119,7 +119,7 @@ export function getTime(timeDate) {
     const timeZone = dateObj.toTimeString();
 
     const year = dateObj.getFullYear();
-    const monthInteger = dateObj.getMonth();
+    const monthInteger = dateObj.getMonth() + 1;
     const dayInteger = dateObj.getDate();
     const month = String(monthInteger).length === 1 ? `0${monthInteger}` : `${monthInteger}`;
     const day = String(dayInteger).length === 1 ? `0${dayInteger}` : `${dayInteger}`;

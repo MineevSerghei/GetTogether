@@ -41,6 +41,11 @@ module.exports = {
         groupId: 3,
         url: 'https://images.unsplash.com/photo-1626323107890-cce0b8c2c641?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80.jpeg',
         preview: false
+      },
+      {
+        groupId: 4,
+        url: 'https://images.unsplash.com/uploads/141148589884100082977/a816dbd7?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1470&q=80.jpeg',
+        preview: true
       }
     ]);
   },

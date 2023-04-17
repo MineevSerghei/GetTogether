@@ -37,6 +37,15 @@ module.exports = {
         city: "NYC",
         state: "NY",
         organizerId: 5,
+      },
+      {
+        name: "Hikers of Suffield",
+        about: "Hiking is incredible, especially in Virginia mountains!  We have kid-friendly and animal-friendly hikes as well as adult only. Join us for a hike!",
+        type: "In person",
+        private: false,
+        city: "Suffield",
+        state: "VA",
+        organizerId: 3,
       }
     ]);
   },
