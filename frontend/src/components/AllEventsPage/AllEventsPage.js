@@ -23,7 +23,7 @@ export default function AllEventsPage() {
     }, [dispatch])
 
     return (
-        <div className="groups-page-container">
+        sortedEvents.length > 0 && <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">

@@ -1,8 +1,9 @@
-import GroupItem from "./GroupItem";
 import { useEffect } from 'react';
 import { getGroupsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
+import GroupItem from "./GroupItem";
+import PlaceholderItem from "./PlaceholderItem";
 import './AllGroupsPage.css';
 
 
@@ -21,7 +22,7 @@ export default function AllGroupsPage() {
     }, [dispatch])
 
     return (
-        <div className="groups-page-container">
+        groupsArr.length > 0 && <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">

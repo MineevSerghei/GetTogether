@@ -104,7 +104,7 @@ export default function EventDetailsPage() {
                             </div>
                         </div>
                     </div>
-                    <div>
+                    <div className='event-details-container'>
                         <h2>Details</h2>
                         <p>{event.description}</p>
                     </div>
@@ -117,8 +117,27 @@ export default function EventDetailsPage() {
 export function getTime(timeDate) {
     const dateObj = new Date(timeDate);
     const timeZone = dateObj.toTimeString();
-    const time = timeZone.slice(0, 8);
+
+    const year = dateObj.getFullYear();
+    const monthInteger = dateObj.getMonth();
+    const dayInteger = dateObj.getDate();
+    const month = String(monthInteger).length === 1 ? `0${monthInteger}` : `${monthInteger}`;
+    const day = String(dayInteger).length === 1 ? `0${dayInteger}` : `${dayInteger}`;
+
+    const militaryHours = dateObj.getHours();
+    const minutesInteger = dateObj.getMinutes();
+    const minutes = String(minutesInteger).length === 1
+        ? `0${minutesInteger}` : String(minutesInteger).length === 0
+            ? `00` : `${minutesInteger}`;
+
+    const suffix = militaryHours >= 12 ? 'PM' : 'AM';
+    const hours = ((militaryHours + 11) % 12 + 1);
+
     const zone = timeZone.slice(9);
-    const date = dateObj.toDateString();
-    return { time, date, zone };
+
+    return {
+        time: `${hours}:${minutes} ${suffix}`,
+        date: `${year}-${month}-${day}`,
+        zone
+    };
 }

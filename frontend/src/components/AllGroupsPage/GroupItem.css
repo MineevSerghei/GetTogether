@@ -23,3 +23,8 @@
     max-width: 100%;
 
 }
+
+.placeholder-item {
+    border-top: 2px solid lightgray;
+    width: 80%;
+}

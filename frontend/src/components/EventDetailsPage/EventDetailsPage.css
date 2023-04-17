@@ -119,3 +119,7 @@
 .manage-bttn.update-bttn:active {
     left: 21px;
 }
+
+.event-details-container {
+    max-width: 800px;
+}
