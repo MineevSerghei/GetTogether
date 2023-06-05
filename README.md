@@ -2,7 +2,9 @@
 
 GetTogether is a clone of Meetup. on GetTogether, you can be a part of your groups of interest, or create your own! Also, each group can host on-site and online events for members to attend.
 
-# Technologies used
+<a href='https://get-together.onrender.com/' target='_blank'><img src="https://img.shields.io/badge/Live%20Demo-5fa85f?style=for-the-badge" /></a>
+
+## Technologies used
 
 <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
@@ -16,6 +18,14 @@ GetTogether is a clone of Meetup. on GetTogether, you can be a part of your grou
 
 <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
 <img src="https://img.shields.io/badge/Render-323330?style=for-the-badge&logo=render&logoColor=#46E3B7" />
+
+<p></p>
+
+## Launch locally
+
+
+
+# Documentation
 
 ## Database Schema Design
 
