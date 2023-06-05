@@ -1,5 +1,22 @@
 # Meetup Clone, GetTogether!
 
+GetTogether is a clone of Meetup. on GetTogether, you can be a part of your groups of interest, or create your own! Also, each group can host on-site and online events for members to attend.
+
+# Technologies used
+
+<img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
+<img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
+<img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
+<img src="https://img.shields.io/badge/Sequelize-323330?style=for-the-badge&logo=sequelize&logoColor=#52B0E7" />
+
+<img src="https://img.shields.io/badge/React-20232A?style=for-the-badge&logo=react&logoColor=61DAFB" />
+<img src="https://img.shields.io/badge/Redux-593D88?style=for-the-badge&logo=redux&logoColor=white" />
+<img src="https://img.shields.io/badge/HTML5-E34F26?style=for-the-badge&logo=html5&logoColor=white" />
+<img src="https://img.shields.io/badge/CSS3-1572B6?style=for-the-badge&logo=css3&logoColor=white" />
+
+<img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
+<img src="https://img.shields.io/badge/Render-323330?style=for-the-badge&logo=render&logoColor=#46E3B7" />
+
 ## Database Schema Design
 
 ![meetup-dbdiagram]
