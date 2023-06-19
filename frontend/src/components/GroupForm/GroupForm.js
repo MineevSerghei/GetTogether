@@ -47,7 +47,6 @@ export default function GroupForm({ formType }) {
     const submit = async e => {
         e.preventDefault();
         setErrors({});
-        // console.log('ENTER USEEFFECT, setErrors({}) ---> ', errors);
 
         const err = {};
 
@@ -63,7 +62,6 @@ export default function GroupForm({ formType }) {
                 !imageUrl.endsWith('.jpg') &&
                 !imageUrl.endsWith('.jpeg')) err.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
 
-        //console.log(Object.values(errors).length);
 
         if (Object.values(err).length > 0) {
             setErrors(err);

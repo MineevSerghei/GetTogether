@@ -39,6 +39,10 @@ export default function GroupDetailsPage() {
         history.push(`/groups/${groupId}/events/create`);
     }
 
+    const sendRequest = () => {
+        
+    }
+
     const renderEvents = (events) => {
 
         const pastUnsorted = [];
@@ -98,7 +102,7 @@ export default function GroupDetailsPage() {
                     <p>{group.numMembers > 1 ? `${group.numMembers} members` : group.numMembers <= 0 ? 'no members' : `${group.numMembers} member`} · {group.private ? 'Private' : 'Public'}</p>
                     <p>{'Organized by ' + group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                     {sessionUser && sessionUser.id !== group.Organizer.id &&
-                        <button className='submit-bttn' onClick={() => alert('Feature coming soon')}>Join this group</button>}
+                        <button className='submit-bttn' onClick={sendRequest}>Join this group</button>}
                     {sessionUser && sessionUser.id === group.Organizer.id &&
                         <div className='manage-bttns-container'>
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>

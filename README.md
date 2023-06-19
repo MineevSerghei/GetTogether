@@ -19,38 +19,7 @@ GetTogether is a clone of Meetup. on GetTogether, you can be a part of your grou
 <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
 <img src="https://img.shields.io/badge/Render-323330?style=for-the-badge&logo=render&logoColor=#46E3B7" />
 
-<p></p>
-
-## Launch locally
-
-
-
-### Run 2 terminals, *terminal 1*, *terminal 2*
-
-### *Terminal 1*:
-
-1. Navigate into the backend folder:
-    * `cd backend`
-2. Install dependancies:
-    * `npm install`
-3. Create a `.env` file using the `.envexample` provided
-4. Create and seed the database:
-    * `npx dotenv sequelize db:create`
-    * `npx dotenv sequelize db:migrate`
-    * `npx dotenv sequelize db:seed:all`
-5. Start the backend server:
-    * `npm start`
-
-### *Terminal 2*:
-
-1. Navigate into the frontend folder:
-    * `cd frontend`
-2. Install dependancies:
-    * `npm install`
-3. Start the frontend server:
-    * `npm start`
-
-Congratulations! The app is running on `port 3000`.
+<br>
 
 # Documentation
 
