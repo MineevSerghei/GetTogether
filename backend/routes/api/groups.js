@@ -314,7 +314,11 @@ router.get('/:groupId/members', checkIfGroupExists, async (req, res) => {
 
 // ------------------------- Current Work -----------------------------------
 
-router.get('/:groupId/status', requireAuth, checkIfGroupExists, async (req, res) => {
+router.get('/:groupId/status', checkIfGroupExists, async (req, res) => {
+
+    if (!req.user) return res.json({ status: null })
+
+    if (req.user.id === req.group.organizerId) return res.json({ status: 'organizer' })
 
     const membership = await Membership.findOne({
         attributes: ['id', 'userId', 'groupId', 'status'],

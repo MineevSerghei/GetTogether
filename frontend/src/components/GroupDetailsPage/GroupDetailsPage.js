@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import { getGroupThunk } from '../../store/groups';
+import { getGroupThunk, requestMembershipThunk } from '../../store/groups';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
@@ -39,8 +39,8 @@ export default function GroupDetailsPage() {
         history.push(`/groups/${groupId}/events/create`);
     }
 
-    const sendRequest = () => {
-        
+    const sendRequest = async () => {
+        await dispatch(requestMembershipThunk(groupId));
     }
 
     const renderEvents = (events) => {
@@ -101,9 +101,9 @@ export default function GroupDetailsPage() {
                     <p>{group.city + ', ' + group.state}</p>
                     <p>{group.numMembers > 1 ? `${group.numMembers} members` : group.numMembers <= 0 ? 'no members' : `${group.numMembers} member`} · {group.private ? 'Private' : 'Public'}</p>
                     <p>{'Organized by ' + group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
-                    {sessionUser && sessionUser.id !== group.Organizer.id &&
+                    {sessionUser && group.status === 'none' &&
                         <button className='submit-bttn' onClick={sendRequest}>Join this group</button>}
-                    {sessionUser && sessionUser.id === group.Organizer.id &&
+                    {sessionUser && group.status === 'organizer' &&
                         <div className='manage-bttns-container'>
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>
                             <button className="manage-bttn" onClick={updateGroup}>Update</button>
@@ -111,6 +111,18 @@ export default function GroupDetailsPage() {
                                 buttonText="Delete"
                                 className="manage-bttn"
                                 modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
+                        </div>}
+                    {sessionUser && group.status === 'co-host' &&
+                        <div className='manage-bttns-container'>
+                            <button className="manage-bttn" onClick={createEvent}>Create event</button>
+                        </div>}
+                    {sessionUser && group.status === 'pending' &&
+                        <div className='manage-bttns-container'>
+                            <h3>The join request was sent!</h3>
+                        </div>}
+                    {!sessionUser &&
+                        <div className='manage-bttns-container'>
+                            <h3>Sign in to join!</h3>
                         </div>}
                 </div>
             </div>

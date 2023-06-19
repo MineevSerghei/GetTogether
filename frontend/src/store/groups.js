@@ -6,6 +6,7 @@ const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
 const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
 const DELETE_GROUP = 'groups/DELETE_GROUP';
+const REQUEST_MEMBERSHIP = 'groups/REQUEST_MEMBERSHIP';
 
 const deleteGroupAction = (id) => {
     return {
@@ -39,6 +40,27 @@ const getGroupAction = (group) => {
     return {
         type: GET_ONE_GROUP,
         group
+    }
+}
+const requestMembershipAction = () => {
+    return {
+        type: REQUEST_MEMBERSHIP
+    }
+}
+
+export const requestMembershipThunk = (id) => async dispatch => {
+    try {
+        const res = await csrfFetch(`/api/groups/${id}/membership`, {
+            method: 'POST'
+        });
+
+        dispatch(requestMembershipAction());
+
+        return res;
+
+    } catch (errors) {
+
+        return errors;
     }
 }
 
@@ -131,8 +153,15 @@ export const getGroupThunk = (id) => async dispatch => {
         const res = await csrfFetch(`/api/groups/${id}`);
 
         const group = await res.json();
+
+        const res2 = await csrfFetch(`/api/groups/${id}/status`);
+
+        const membershipStatus = await res2.json();
+        group.status = membershipStatus.status;
+
         dispatch(getGroupAction(group));
         return res;
+
     }
     catch (e) {
         if (e instanceof Response) return e;
@@ -184,6 +213,10 @@ const groupsReducer = (state = initialState, action) => {
                 const newState = { ...state, allGroups: { ...state.allGroups }, singleGroup: { GroupImages: [] } };
                 delete newState.allGroups[action.id];
                 return newState;
+            }
+        case REQUEST_MEMBERSHIP:
+            {
+                return { ...state, singleGroup: { ...state.singleGroup, status: 'pending' } };
             }
         default:
             return state
