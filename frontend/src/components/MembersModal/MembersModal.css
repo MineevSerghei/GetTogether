@@ -42,7 +42,10 @@
 }
 
 .user-interactions-div {
-    display: flex;
-    align-items: center;
+
     gap: 15px;
+
+    display: grid;
+    align-items: center;
+    grid-template-columns: 2fr 1fr 1fr;
 }

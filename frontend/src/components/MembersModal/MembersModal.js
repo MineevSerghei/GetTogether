@@ -10,7 +10,13 @@ export default function MembersModal({ user, groupId }) {
     const dispatch = useDispatch();
     const members = useSelector(state => state.members.membersOfCurrentGroup);
 
-    const membersArr = Object.values(members);
+    const membersArr = [];
+    const requestsArr = [];
+
+    for (let i in members) {
+        if (members[i].Membership.status === 'pending') requestsArr.push(members[i]);
+        else membersArr.push(members[i]);
+    }
 
     useEffect(() => {
 
@@ -40,7 +46,7 @@ export default function MembersModal({ user, groupId }) {
         {openTab === 'members' && membersArr.map(member => <Member user={user} member={member} groupId={groupId} />)}
 
 
-        {openTab === 'requests' && <p> requests here</p>}
+        {openTab === 'requests' && requestsArr.map(member => <Member type='request' user={user} member={member} groupId={groupId} />)}
 
 
         <p>I'm a {user}</p>

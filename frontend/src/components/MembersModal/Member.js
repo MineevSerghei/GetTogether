@@ -1,10 +1,9 @@
 import { useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { changeMembershipStatusThunk } from "../../store/members";
 
-export default function Member({ user, member, groupId }) {
+export default function Member({ type, user, member, groupId }) {
 
-    // const member = useSelector(state => state.members.membersOfCurrentGroup[memberId]);
     const [changeStatusModeOn, setChangeStatusModeOn] = useState(false)
     const [status, setStatus] = useState(member.Membership.status);
     const dispatch = useDispatch();
@@ -14,9 +13,15 @@ export default function Member({ user, member, groupId }) {
 
     const submitChange = async () => {
 
-        await dispatch(changeMembershipStatusThunk(groupId, member.id, status));
+        await dispatch(changeMembershipStatusThunk(
+            groupId, member.id, type === 'request' ? 'member' : status));
 
-        setChangeStatusModeOn(false);
+        if (type !== 'request')
+            setChangeStatusModeOn(false);
+    }
+
+    const removeUser = async () => {
+
     }
 
     return <div className="member-box">
@@ -28,15 +33,27 @@ export default function Member({ user, member, groupId }) {
                     <option value='co-host'>Co-host</option>
                 </select>
                 : <p>{member.Membership.status}</p>}
-            {user === 'organizer' && <div>
-                {changeStatusModeOn ?
+
+            {type === 'request'
+                ? <>
                     <i onClick={submitChange}
                         className="fa-solid fa-check user-manage-icon user-manage"></i>
-                    : <i onClick={() => setChangeStatusModeOn(true)}
-                        className="fa-solid fa-user-pen user-manage-icon user-manage"></i>}
-                <i
-                    className="fa-solid fa-user-xmark user-manage-icon user-remove"></i>
-            </div>}
+                    {user === 'organizer' && <i onClick={removeUser}
+                        className="fa-solid fa-xmark user-manage-icon user-remove"></i>}
+                </>
+
+                : <>
+                    {user === 'organizer' && <>
+                        {changeStatusModeOn ?
+                            <i onClick={submitChange}
+                                className="fa-solid fa-check user-manage-icon user-manage"></i>
+                            : <i onClick={() => setChangeStatusModeOn(true)}
+                                className="fa-solid fa-user-pen user-manage-icon user-manage"></i>}
+                        <i onClick={removeUser}
+                            className="fa-solid fa-user-xmark user-manage-icon user-remove"></i>
+                    </>}
+                </>
+            }
         </div>
 
     </div>
