@@ -5,6 +5,7 @@ import { getGroupThunk, requestMembershipThunk } from '../../store/groups';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
+import MembersModal from '../MembersModal';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -111,14 +112,31 @@ export default function GroupDetailsPage() {
                                 buttonText="Delete"
                                 className="manage-bttn"
                                 modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='organizer' groupId={group.id} />} />
                         </div>}
                     {sessionUser && group.status === 'co-host' &&
                         <div className='manage-bttns-container'>
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='co-host' groupId={group.id} />} />
+
                         </div>}
                     {sessionUser && group.status === 'pending' &&
                         <div className='manage-bttns-container'>
                             <h3>The join request was sent!</h3>
+                        </div>}
+                    {sessionUser && group.status === 'member' &&
+                        <div className='manage-bttns-container'>
+                            <button className="manage-bttn" onClick={() => { }}>Leave Group</button>
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='member' groupId={group.id} />} />
                         </div>}
                     {!sessionUser &&
                         <div className='manage-bttns-container'>
