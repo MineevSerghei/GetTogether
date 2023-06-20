@@ -1,7 +1,42 @@
 .members-modal-wrapper {
     padding: 1px 20px;
+    min-height: 50vh;
+    min-width: 35vw;
 }
 
 .hover:hover {
     cursor: pointer;
+}
+
+.member-box {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.user-manage-icon {
+    font-size: 1.1rem;
+    padding: 5px;
+
+}
+
+.user-manage-icon:hover {
+    cursor: pointer;
+}
+
+.user-remove {
+    color: brown;
+}
+
+.user-remove:hover {
+    color: rgb(255, 0, 0);
+}
+
+
+.user-manage {
+    color: rgb(95, 168, 95);
+}
+
+.user-manage:hover {
+    color: rgb(0, 213, 0);
 }
