@@ -2,6 +2,7 @@ import { csrfFetch } from "./csrf";
 
 
 const GET_ALL_GROUPS = 'groups/GET_ALL_GROUPS';
+const GET_MY_GROUPS = 'groups/GET_MY_GROUPS';
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
 const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
@@ -32,6 +33,13 @@ const addGroupImageAction = (image) => {
 const getGroupsAction = (groups) => {
     return {
         type: GET_ALL_GROUPS,
+        groups
+    }
+}
+
+const getMyGroupsAction = (groups) => {
+    return {
+        type: GET_MY_GROUPS,
         groups
     }
 }
@@ -183,8 +191,24 @@ export const getGroupsThunk = () => async dispatch => {
     }
 }
 
+export const getMyGroupsThunk = () => async dispatch => {
+    const res = await csrfFetch('/api/groups/current');
+    // console.log("res after fetch on groups thunk --->", res);
+
+    const groups = await res.json();
+    if (res.ok) {
+        // console.log("groups in res.ok on groups thunk --->", groups);
+        dispatch(getMyGroupsAction(groups.Groups));
+    }
+    else {
+        // console.log("res in else (errors) on groups thunk --->", res);
+        return res.errors;
+    }
+}
+
 const initialState = {
     allGroups: {},
+    myGroups: {},
     singleGroup: { GroupImages: [] }
 };
 
@@ -195,6 +219,12 @@ const groupsReducer = (state = initialState, action) => {
                 const groupsObj = {};
                 for (let group of action.groups) groupsObj[group.id] = group;
                 return { ...state, allGroups: { ...groupsObj } };
+            }
+        case GET_MY_GROUPS:
+            {
+                const groupsObj = {};
+                for (let group of action.groups) groupsObj[group.id] = group;
+                return { ...state, myGroups: { ...groupsObj } };
             }
         case GET_ONE_GROUP:
             {

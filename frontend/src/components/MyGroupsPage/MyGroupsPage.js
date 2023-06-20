@@ -1,23 +1,22 @@
 import { useEffect } from 'react';
-import { getGroupsThunk } from "../../store/groups";
+import { getMyGroupsThunk } from "../../store/groups";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
-import GroupItem from "./GroupItem";
-import PlaceholderItem from "./PlaceholderItem";
-import './AllGroupsPage.css';
+import GroupItem from '../AllGroupsPage/GroupItem';
+import './MyGroupsPage.css';
 
 
-export default function AllGroupsPage() {
+export default function MyGroupsPage() {
 
     const dispatch = useDispatch();
-    
-    const groups = useSelector((state) => state.groups.allGroups);
+
+    const groups = useSelector((state) => state.groups.myGroups);
 
     const groupsArr = Object.values(groups);
 
     useEffect(() => {
 
-        dispatch(getGroupsThunk());
+        dispatch(getMyGroupsThunk());
 
     }, [dispatch])
 
@@ -26,10 +25,9 @@ export default function AllGroupsPage() {
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
-                        <Link className="show-all-link-active" to='/events'><h2>Events</h2></Link>
-                        <h2 className="show-all-link-inactive">Groups</h2>
+                        <h2 className="show-all-link-inactive">My Groups</h2>
                     </div>
-                    <p>Groups in <span className="get-together-span">GetTogether</span></p>
+                    <p>My Groups in <span className="get-together-span">GetTogether</span></p>
                 </div>
                 {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
             </div>

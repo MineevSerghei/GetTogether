@@ -5,6 +5,7 @@ import * as sessionActions from "./store/session";
 import Navigation from "./components/Navigation";
 import LandingPage from "./components/LandingPage";
 import AllGroupsPage from "./components/AllGroupsPage";
+import MyGroupsPage from "./components/MyGroupsPage";
 import GroupDetailsPage from "./components/GroupDetailsPage";
 import GroupForm from "./components/GroupForm";
 import AllEventsPage from "./components/AllEventsPage";
@@ -41,6 +42,12 @@ function App() {
           </Route>
           <Route path='/events/:eventId'>
             <EventDetailsPage />
+          </Route>
+          <Route path='/my-groups'>
+            <MyGroupsPage />
+          </Route>
+          <Route path='/my-events'>
+            {/* <MyEventsPage /> */}
           </Route>
           <Route path='/groups'>
             <AllGroupsPage />

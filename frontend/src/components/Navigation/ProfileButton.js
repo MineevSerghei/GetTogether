@@ -37,6 +37,16 @@ function ProfileButton({ user }) {
         history.push('/');
     };
 
+    const viewMyGroups = e => {
+        closeMenu();
+        history.push('/my-groups');
+    }
+
+    const viewMyEvents = e => {
+        closeMenu();
+        history.push('/my-events');
+    }
+
     const viewGroups = e => {
         closeMenu();
         history.push('/groups');
@@ -60,10 +70,16 @@ function ProfileButton({ user }) {
                 <li>Hello, {user.firstName}!</li>
                 <li>{user.email}</li>
                 <li>
-                    <button className="logout-bttn" onClick={viewGroups}>View groups</button>
+                    <button className="logout-bttn" onClick={viewMyGroups}>My groups</button>
                 </li>
                 <li>
-                    <button className="logout-bttn" onClick={viewEvents}>View events</button>
+                    <button className="logout-bttn" onClick={viewMyEvents}>My events</button>
+                </li>
+                <li>
+                    <button className="logout-bttn" onClick={viewGroups}>All groups</button>
+                </li>
+                <li>
+                    <button className="logout-bttn" onClick={viewEvents}>All events</button>
                 </li>
                 <li>
                     <button className="logout-bttn" onClick={logout}>Log Out</button>
