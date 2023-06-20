@@ -312,8 +312,6 @@ router.get('/:groupId/members', checkIfGroupExists, async (req, res) => {
 
 });
 
-// ------------------------- Current Work -----------------------------------
-
 router.get('/:groupId/status', checkIfGroupExists, async (req, res) => {
 
     if (!req.user) return res.json({ status: null })
@@ -333,8 +331,6 @@ router.get('/:groupId/status', checkIfGroupExists, async (req, res) => {
     return res.json({ status: membership.status });
 
 });
-
-// ------------------------- Current Work -----------------------------------
 
 // Request a Membership for a Group based on the Group's id
 router.post('/:groupId/membership', requireAuth, async (req, res) => {

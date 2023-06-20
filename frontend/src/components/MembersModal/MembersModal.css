@@ -40,3 +40,9 @@
 .user-manage:hover {
     color: rgb(0, 213, 0);
 }
+
+.user-interactions-div {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
