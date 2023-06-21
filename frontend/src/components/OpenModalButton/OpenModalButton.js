@@ -18,7 +18,7 @@ function OpenModalButton({
     };
 
     if (isIcon)
-        return <i className={className} onClick={onClick}>{buttonText}</i>;
+        return <i className={className} onClick={onClick}></i>;
 
     return <button className={className || "log-link join-bttn"} onClick={onClick}>{buttonText}</button>;
 }

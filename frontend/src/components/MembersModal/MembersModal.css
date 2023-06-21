@@ -10,13 +10,34 @@
 
 .member-box {
     display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 10px;
+    align-items: center;
+    grid-template-columns: repeat(8, 1fr);
+    grid-template-rows: 3fr 1fr;
+    column-gap: 15px;
+    grid-template-areas:
+        "top1 top1 top1 top1 top2 top2 top3 top4"
+        "bot1 bot1 bot1 bot1 bot1 bot1 bot2 bot2";
+}
+
+.member-name {
+    grid-area: top1;
+}
+
+.member-status {
+    grid-area: top2;
+}
+
+.confirmation-p-tag {
+    margin: 0;
+    font-size: .7rem;
+    color: brown;
+    grid-area: bot1;
 }
 
 .user-manage-icon {
     font-size: 1.1rem;
     padding: 5px;
+    justify-self: end;
 
 }
 
@@ -26,6 +47,7 @@
 
 .user-remove {
     color: brown;
+    grid-area: top4;
 }
 
 .user-remove:hover {
@@ -35,17 +57,18 @@
 
 .user-manage {
     color: rgb(95, 168, 95);
+    grid-area: top3;
 }
 
 .user-manage:hover {
     color: rgb(0, 213, 0);
 }
 
-.user-interactions-div {
+/* .user-interactions-div {
 
     gap: 15px;
 
     display: grid;
     align-items: center;
     grid-template-columns: 2fr 1fr 1fr;
-}
+} */
