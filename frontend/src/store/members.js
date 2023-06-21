@@ -3,11 +3,19 @@ import { csrfFetch } from "./csrf";
 
 const GET_MEMBERS_OF_GROUP = 'members/GET_MEMBERS_OF_GROUP';
 const CHANGE_MEMBERSHIP_STATUS = 'members/CHANGE_MEMBERSHIP_STATUS';
+const REMOVE_MEMBER = 'members/REMOVE_MEMBER';
 
 const getMembersOfOneGroupAction = (members) => {
     return {
         type: GET_MEMBERS_OF_GROUP,
         members
+    }
+}
+
+const removeMemberAction = (memberId) => {
+    return {
+        type: REMOVE_MEMBER,
+        memberId
     }
 }
 
@@ -17,6 +25,27 @@ const changeMembershipStatusAction = (memberId, status) => {
         memberId,
         status
     }
+}
+
+export const removeMemberThunk = (groupId, memberId) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
+            method: 'DELETE',
+            body: JSON.stringify({ memberId })
+        });
+
+        const data = await res.json();
+
+        dispatch(removeMemberAction(memberId));
+
+        return data;
+
+    } catch (e) {
+        const errorRes = await e.json()
+        return errorRes;
+    }
+
 }
 
 export const changeMembershipStatusThunk = (groupId, memberId, status) => async dispatch => {
@@ -47,14 +76,11 @@ export const getMembersOfOneGroupThunk = (groupId) => async dispatch => {
 
         const members = await res.json();
 
-
-
         dispatch(getMembersOfOneGroupAction(members.Members));
 
         return members;
 
     } catch (e) {
-        console.log('ERROR ===> ', e)
         const errorRes = await e.json()
         return errorRes;
     }
@@ -78,6 +104,13 @@ const membersReducer = (state = initialState, action) => {
                 const member = { ...state.membersOfCurrentGroup[action.memberId] }
                 member.Membership = { status: action.status }
                 return { ...state, membersOfCurrentGroup: { ...state.membersOfCurrentGroup, [action.memberId]: member } };
+            }
+
+        case REMOVE_MEMBER:
+            {
+                const newState = { ...state, membersOfCurrentGroup: { ...state.membersOfCurrentGroup } };
+                delete newState.membersOfCurrentGroup[action.memberId];
+                return newState;
             }
         default:
             return state

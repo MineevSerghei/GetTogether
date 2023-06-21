@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { useDispatch } from "react-redux";
-import { changeMembershipStatusThunk } from "../../store/members";
+import { changeMembershipStatusThunk, removeMemberThunk } from "../../store/members";
 
 export default function Member({ type, user, member, groupId }) {
 
@@ -12,8 +12,9 @@ export default function Member({ type, user, member, groupId }) {
 
     if (!member) return null;
 
-    const removeMember = () => {
-        
+    const removeMember = async () => {
+        await dispatch(removeMemberThunk(groupId, member.id));
+        setRemoveModeOn(false);
     }
 
     const submitChange = async () => {
