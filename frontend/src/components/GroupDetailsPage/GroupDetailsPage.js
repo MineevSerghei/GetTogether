@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk, requestMembershipThunk } from '../../store/groups';
+import LeaveGroupModal from './LeaveGroupModal';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
@@ -90,7 +91,7 @@ export default function GroupDetailsPage() {
         <div className='details-page'>
             <div className="group-details-container">
                 <div className='details-img-container'>
-                    <Link to='/groups'> {"< Groups"}</Link>
+                    <Link to='/groups'> {"< All Groups"}</Link>
                     <img
                         src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
                         onClick={changeImg}
@@ -121,6 +122,10 @@ export default function GroupDetailsPage() {
                         <div className='manage-bttns-container'>
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>
                             <OpenModalButton
+                                buttonText="Leave Group"
+                                className="manage-bttn"
+                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
+                            <OpenModalButton
                                 buttonText="Members"
                                 className="manage-bttn"
                                 modalComponent={<MembersModal user='co-host' groupId={group.id} />} />
@@ -132,7 +137,10 @@ export default function GroupDetailsPage() {
                         </div>}
                     {sessionUser && group.status === 'member' &&
                         <div className='manage-bttns-container'>
-                            <button className="manage-bttn" onClick={() => { }}>Leave Group</button>
+                            <OpenModalButton
+                                buttonText="Leave Group"
+                                className="manage-bttn"
+                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
                             <OpenModalButton
                                 buttonText="Members"
                                 className="manage-bttn"

@@ -21,7 +21,7 @@ export default function MyGroupsPage() {
     }, [dispatch])
 
     return (
-        groupsArr.length > 0 && <div className="groups-page-container">
+        <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
@@ -29,7 +29,8 @@ export default function MyGroupsPage() {
                     </div>
                     <p>My Groups in <span className="get-together-span">GetTogether</span></p>
                 </div>
-                {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+                {groupsArr.length <= 0 ? <h2>You don't have any groups yet!</h2> : groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+
             </div>
         </div>
     )

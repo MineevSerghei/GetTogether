@@ -72,9 +72,9 @@ function ProfileButton({ user }) {
                 <li>
                     <button className="logout-bttn" onClick={viewMyGroups}>My groups</button>
                 </li>
-                <li>
+                {/* <li>
                     <button className="logout-bttn" onClick={viewMyEvents}>My events</button>
-                </li>
+                </li> */}
                 <li>
                     <button className="logout-bttn" onClick={viewGroups}>All groups</button>
                 </li>

@@ -8,6 +8,7 @@ const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
 const DELETE_GROUP = 'groups/DELETE_GROUP';
 const REQUEST_MEMBERSHIP = 'groups/REQUEST_MEMBERSHIP';
+const LEAVE_GROUP = 'groups/LEAVE_GROUP';
 
 const deleteGroupAction = (id) => {
     return {
@@ -54,6 +55,33 @@ const requestMembershipAction = () => {
     return {
         type: REQUEST_MEMBERSHIP
     }
+}
+
+const leaveGroupAction = () => {
+    return {
+        type: LEAVE_GROUP
+    }
+}
+
+export const leaveGroupThunk = (groupId, memberId) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
+            method: 'DELETE',
+            body: JSON.stringify({ memberId })
+        });
+
+        const data = await res.json();
+
+        dispatch(leaveGroupAction());
+
+        return data;
+
+    } catch (e) {
+        const errorRes = await e.json()
+        return errorRes;
+    }
+
 }
 
 export const requestMembershipThunk = (id) => async dispatch => {
@@ -247,6 +275,10 @@ const groupsReducer = (state = initialState, action) => {
         case REQUEST_MEMBERSHIP:
             {
                 return { ...state, singleGroup: { ...state.singleGroup, status: 'pending' } };
+            }
+        case LEAVE_GROUP:
+            {
+                return { ...state, singleGroup: { ...state.singleGroup, status: 'none' } };
             }
         default:
             return state
