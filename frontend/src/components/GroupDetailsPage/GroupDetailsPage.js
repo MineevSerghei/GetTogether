@@ -1,10 +1,12 @@
 import { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
-import { getGroupThunk } from '../../store/groups';
+import { getGroupThunk, requestMembershipThunk } from '../../store/groups';
+import LeaveGroupModal from './LeaveGroupModal';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
+import MembersModal from '../MembersModal';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -37,6 +39,10 @@ export default function GroupDetailsPage() {
 
     const createEvent = () => {
         history.push(`/groups/${groupId}/events/create`);
+    }
+
+    const sendRequest = async () => {
+        await dispatch(requestMembershipThunk(groupId));
     }
 
     const renderEvents = (events) => {
@@ -85,7 +91,7 @@ export default function GroupDetailsPage() {
         <div className='details-page'>
             <div className="group-details-container">
                 <div className='details-img-container'>
-                    <Link to='/groups'> {"< Groups"}</Link>
+                    <Link to='/groups'> {"< All Groups"}</Link>
                     <img
                         src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
                         onClick={changeImg}
@@ -97,9 +103,9 @@ export default function GroupDetailsPage() {
                     <p>{group.city + ', ' + group.state}</p>
                     <p>{group.numMembers > 1 ? `${group.numMembers} members` : group.numMembers <= 0 ? 'no members' : `${group.numMembers} member`} · {group.private ? 'Private' : 'Public'}</p>
                     <p>{'Organized by ' + group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
-                    {sessionUser && sessionUser.id !== group.Organizer.id &&
-                        <button className='submit-bttn' onClick={() => alert('Feature coming soon')}>Join this group</button>}
-                    {sessionUser && sessionUser.id === group.Organizer.id &&
+                    {sessionUser && group.status === 'none' &&
+                        <button className='submit-bttn' onClick={sendRequest}>Join this group</button>}
+                    {sessionUser && group.status === 'organizer' &&
                         <div className='manage-bttns-container'>
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>
                             <button className="manage-bttn" onClick={updateGroup}>Update</button>
@@ -107,6 +113,42 @@ export default function GroupDetailsPage() {
                                 buttonText="Delete"
                                 className="manage-bttn"
                                 modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='organizer' groupId={group.id} />} />
+                        </div>}
+                    {sessionUser && group.status === 'co-host' &&
+                        <div className='manage-bttns-container'>
+                            <button className="manage-bttn" onClick={createEvent}>Create event</button>
+                            <OpenModalButton
+                                buttonText="Leave Group"
+                                className="manage-bttn"
+                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='co-host' groupId={group.id} />} />
+
+                        </div>}
+                    {sessionUser && group.status === 'pending' &&
+                        <div className='manage-bttns-container'>
+                            <h3>The join request was sent!</h3>
+                        </div>}
+                    {sessionUser && group.status === 'member' &&
+                        <div className='manage-bttns-container'>
+                            <OpenModalButton
+                                buttonText="Leave Group"
+                                className="manage-bttn"
+                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='member' groupId={group.id} />} />
+                        </div>}
+                    {!sessionUser &&
+                        <div className='manage-bttns-container'>
+                            <h3>Sign in to join!</h3>
                         </div>}
                 </div>
             </div>

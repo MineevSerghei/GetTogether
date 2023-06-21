@@ -10,7 +10,7 @@ import './AllGroupsPage.css';
 export default function AllGroupsPage() {
 
     const dispatch = useDispatch();
-
+    
     const groups = useSelector((state) => state.groups.allGroups);
 
     const groupsArr = Object.values(groups);

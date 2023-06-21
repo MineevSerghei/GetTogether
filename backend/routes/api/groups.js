@@ -312,6 +312,26 @@ router.get('/:groupId/members', checkIfGroupExists, async (req, res) => {
 
 });
 
+router.get('/:groupId/status', checkIfGroupExists, async (req, res) => {
+
+    if (!req.user) return res.json({ status: null })
+
+    if (req.user.id === req.group.organizerId) return res.json({ status: 'organizer' })
+
+    const membership = await Membership.findOne({
+        attributes: ['id', 'userId', 'groupId', 'status'],
+        where: {
+            groupId: req.group.id,
+            userId: req.user.id
+        }
+    });
+
+    if (!membership) return res.json({ status: 'none' })
+
+    return res.json({ status: membership.status });
+
+});
+
 // Request a Membership for a Group based on the Group's id
 router.post('/:groupId/membership', requireAuth, async (req, res) => {
 

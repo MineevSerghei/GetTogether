@@ -2,10 +2,13 @@ import { csrfFetch } from "./csrf";
 
 
 const GET_ALL_GROUPS = 'groups/GET_ALL_GROUPS';
+const GET_MY_GROUPS = 'groups/GET_MY_GROUPS';
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
 const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
 const DELETE_GROUP = 'groups/DELETE_GROUP';
+const REQUEST_MEMBERSHIP = 'groups/REQUEST_MEMBERSHIP';
+const LEAVE_GROUP = 'groups/LEAVE_GROUP';
 
 const deleteGroupAction = (id) => {
     return {
@@ -35,10 +38,65 @@ const getGroupsAction = (groups) => {
     }
 }
 
+const getMyGroupsAction = (groups) => {
+    return {
+        type: GET_MY_GROUPS,
+        groups
+    }
+}
+
 const getGroupAction = (group) => {
     return {
         type: GET_ONE_GROUP,
         group
+    }
+}
+const requestMembershipAction = () => {
+    return {
+        type: REQUEST_MEMBERSHIP
+    }
+}
+
+const leaveGroupAction = () => {
+    return {
+        type: LEAVE_GROUP
+    }
+}
+
+export const leaveGroupThunk = (groupId, memberId) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/groups/${groupId}/membership`, {
+            method: 'DELETE',
+            body: JSON.stringify({ memberId })
+        });
+
+        const data = await res.json();
+
+        dispatch(leaveGroupAction());
+
+        return data;
+
+    } catch (e) {
+        const errorRes = await e.json()
+        return errorRes;
+    }
+
+}
+
+export const requestMembershipThunk = (id) => async dispatch => {
+    try {
+        const res = await csrfFetch(`/api/groups/${id}/membership`, {
+            method: 'POST'
+        });
+
+        dispatch(requestMembershipAction());
+
+        return res;
+
+    } catch (errors) {
+
+        return errors;
     }
 }
 
@@ -131,8 +189,15 @@ export const getGroupThunk = (id) => async dispatch => {
         const res = await csrfFetch(`/api/groups/${id}`);
 
         const group = await res.json();
+
+        const res2 = await csrfFetch(`/api/groups/${id}/status`);
+
+        const membershipStatus = await res2.json();
+        group.status = membershipStatus.status;
+
         dispatch(getGroupAction(group));
         return res;
+
     }
     catch (e) {
         if (e instanceof Response) return e;
@@ -154,8 +219,24 @@ export const getGroupsThunk = () => async dispatch => {
     }
 }
 
+export const getMyGroupsThunk = () => async dispatch => {
+    const res = await csrfFetch('/api/groups/current');
+    // console.log("res after fetch on groups thunk --->", res);
+
+    const groups = await res.json();
+    if (res.ok) {
+        // console.log("groups in res.ok on groups thunk --->", groups);
+        dispatch(getMyGroupsAction(groups.Groups));
+    }
+    else {
+        // console.log("res in else (errors) on groups thunk --->", res);
+        return res.errors;
+    }
+}
+
 const initialState = {
     allGroups: {},
+    myGroups: {},
     singleGroup: { GroupImages: [] }
 };
 
@@ -166,6 +247,12 @@ const groupsReducer = (state = initialState, action) => {
                 const groupsObj = {};
                 for (let group of action.groups) groupsObj[group.id] = group;
                 return { ...state, allGroups: { ...groupsObj } };
+            }
+        case GET_MY_GROUPS:
+            {
+                const groupsObj = {};
+                for (let group of action.groups) groupsObj[group.id] = group;
+                return { ...state, myGroups: { ...groupsObj } };
             }
         case GET_ONE_GROUP:
             {
@@ -184,6 +271,14 @@ const groupsReducer = (state = initialState, action) => {
                 const newState = { ...state, allGroups: { ...state.allGroups }, singleGroup: { GroupImages: [] } };
                 delete newState.allGroups[action.id];
                 return newState;
+            }
+        case REQUEST_MEMBERSHIP:
+            {
+                return { ...state, singleGroup: { ...state.singleGroup, status: 'pending' } };
+            }
+        case LEAVE_GROUP:
+            {
+                return { ...state, singleGroup: { ...state.singleGroup, status: 'none' } };
             }
         default:
             return state
