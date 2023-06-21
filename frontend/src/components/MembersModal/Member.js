@@ -13,7 +13,7 @@ export default function Member({ type, user, member, groupId }) {
     if (!member) return null;
 
     const removeMember = () => {
-
+        
     }
 
     const submitChange = async () => {
@@ -61,19 +61,12 @@ export default function Member({ type, user, member, groupId }) {
 
         {removeModeOn &&
             <>
-                <p className="confirmation-p-tag">Are you sure you want to remove <mark>{member.firstName} {member.lastName}</mark> from members?</p>
+                {type === 'request'
+                    ? <p className="confirmation-p-tag">Are you sure you want to decline <mark>{member.firstName} {member.lastName}'s</mark> request?</p>
+                    : <p className="confirmation-p-tag">Are you sure you want to remove <mark>{member.firstName} {member.lastName}</mark> from members?</p>}
+                <button onClick={() => setRemoveModeOn(false)} className="confirm-remove-member member-remove-not">No</button>
+                <button onClick={removeMember} className="confirm-remove-member member-remove">Yes</button>
             </>}
 
     </div>
 }
-
-
-{/* <OpenModalButton
-    className="fa-solid fa-xmark user-manage-icon user-remove"
-    isIcon={true}
-    modalComponent={<RemoveMemberModal target='request' />} /> */}
-
-{/* <OpenModalButton
-    className="fa-solid fa-user-xmark user-manage-icon user-remove"
-    isIcon={true}
-    modalComponent={<RemoveMemberModal target='member' />} /> */}

@@ -12,11 +12,11 @@
     display: grid;
     align-items: center;
     grid-template-columns: repeat(8, 1fr);
-    grid-template-rows: 3fr 1fr;
+    grid-template-rows: 2fr 1fr;
     column-gap: 15px;
     grid-template-areas:
         "top1 top1 top1 top1 top2 top2 top3 top4"
-        "bot1 bot1 bot1 bot1 bot1 bot1 bot2 bot2";
+        "bot1 bot1 bot1 bot1 bot1 bot1 bot2 bot3";
 }
 
 .member-name {
@@ -72,3 +72,33 @@
     align-items: center;
     grid-template-columns: 2fr 1fr 1fr;
 } */
+
+.confirm-remove-member {
+    background-color: inherit;
+}
+
+.confirm-remove-member:hover {
+    cursor: pointer;
+}
+
+.member-remove {
+    color: brown;
+    border: 2px solid brown;
+    grid-area: bot3;
+}
+
+.member-remove-not {
+    color: rgb(95, 168, 95);
+    border: 2px solid rgb(95, 168, 95);
+    grid-area: bot2;
+}
+
+.member-remove:hover {
+    color: rgb(255, 0, 0);
+    border: 2px solid rgb(255, 0, 0);
+}
+
+.member-remove-not:hover {
+    color: rgb(0, 213, 0);
+    border: 2px solid rgb(0, 213, 0);
+}
