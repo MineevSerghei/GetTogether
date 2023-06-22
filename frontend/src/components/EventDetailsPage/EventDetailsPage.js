@@ -5,6 +5,7 @@ import { getEventThunk } from '../../store/events';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
 import './EventDetailsPage.css';
+import { getGroupThunk } from '../../store/groups';
 
 
 export default function EventDetailsPage() {
@@ -17,7 +18,7 @@ export default function EventDetailsPage() {
 
     const sessionUser = useSelector((state) => state.session.user);
     const event = useSelector(state => state.events.singleEvent);
-
+    const group = useSelector(state => state.groups.singleGroup);
 
     const start = getTime(event.startDate);
     const end = getTime(event.endDate);
@@ -25,7 +26,11 @@ export default function EventDetailsPage() {
     useEffect(() => {
         const getEvent = async () => {
             const res = await dispatch(getEventThunk(eventId));
+
             if (res instanceof Response && res.status === 404) history.push('/404')
+
+            await dispatch(getGroupThunk(res.groupId));
+
         }
         getEvent();
 
@@ -93,9 +98,10 @@ export default function EventDetailsPage() {
                                 <div className='event-time-div'>
                                     <i className="fa-solid fa-map-pin"></i>
                                     <p className='event-time'>{event.type}</p>
-                                    {sessionUser && event.Group.Organizer.id === sessionUser.id &&
+                                    {console.log('EVENT ---> ', event)}
+                                    {sessionUser && (group.status === 'co-host' || group.status === 'organizer') &&
                                         <>
-                                            <button onClick={() => alert('Feature coming soon')} className='manage-bttn bttn-right update-bttn'>Update</button>
+                                            {/* <button onClick={() => alert('Feature coming soon')} className='manage-bttn bttn-right update-bttn'>Update</button> */}
                                             <OpenModalButton
                                                 buttonText="Delete"
                                                 className='manage-bttn bttn-right'

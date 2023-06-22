@@ -10,6 +10,8 @@ export default function EventForm() {
     const { groupId } = useParams();
     const group = useSelector(state => state.groups.singleGroup);
 
+    console.log('group ----> ', group);
+
     const [name, setName] = useState('');
     const [type, setType] = useState('');
     const [isPrivate, setIsPrivate] = useState('');
@@ -33,7 +35,7 @@ export default function EventForm() {
 
     if (!sessionUser) return <Redirect to='/'></Redirect>;
 
-    if (sessionUser.id !== group.organizerId) return <Redirect to='/'></Redirect>;
+    if (group.status !== 'co-host' && group.status !== 'organizer') return <Redirect to='/404'></Redirect>;
 
 
     const submit = async e => {
@@ -54,7 +56,6 @@ export default function EventForm() {
             !imageUrl.endsWith('.jpg') &&
             !imageUrl.endsWith('.jpeg')) err.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
         if (description.length < 30) err.description = 'Description must be at least 30 characters long';
-        console.log('fe validation errors -->', err);
         if (Object.values(err).length > 0) {
             setErrors(err);
         }

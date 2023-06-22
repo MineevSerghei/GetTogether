@@ -109,7 +109,7 @@ export const getEventThunk = (id) => async dispatch => {
         const res = await csrfFetch(`/api/events/${id}`);
         const event = await res.json();
         dispatch(getEventAction(event));
-        return res;
+        return event;
     }
     catch (e) {
         if (e instanceof Response) return e;

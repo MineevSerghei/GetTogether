@@ -43,10 +43,10 @@ export default function MembersModal({ user, groupId }) {
                 className={`hover show-all-link-${openTab === 'requests' ? 'in' : ''}active`}>Requests</h2>}
         </div>
 
-        {openTab === 'members' && membersArr.map(member => <Member user={user} member={member} groupId={groupId} />)}
+        {openTab === 'members' && membersArr.map(member => <Member key={member.id} user={user} member={member} groupId={groupId} />)}
 
 
-        {openTab === 'requests' && requestsArr.map(member => <Member type='request' user={user} member={member} groupId={groupId} />)}
+        {openTab === 'requests' && requestsArr.map(member => <Member key={member.id} type='request' user={user} member={member} groupId={groupId} />)}
 
 
         <p>I'm a {user}</p>
