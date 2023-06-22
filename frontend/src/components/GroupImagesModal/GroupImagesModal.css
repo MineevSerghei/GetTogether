@@ -1,0 +1,37 @@
+.img-manage {
+    max-width: 100px;
+}
+
+.images-manage-div {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+.image-manage-div {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    align-items: center;
+    justify-items: center;
+
+}
+
+.images-add-div {
+    border-left: 1px solid gray;
+    padding-left: 20px;
+}
+
+.images-modal-div {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.smaller {
+    height: 30px;
+    width: 100px;
+    border-radius: 5px;
+    font-size: .8rem;
+    margin: 20px
+}
