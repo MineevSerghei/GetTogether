@@ -6,6 +6,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     gap: 20px;
+    max-height: 50vh;
+    overflow: scroll;
 }
 
 .image-manage-div {
@@ -13,12 +15,21 @@
     grid-template-columns: 2fr 1fr 1fr;
     align-items: center;
     justify-items: center;
-
 }
 
 .images-add-div {
-    border-left: 1px solid gray;
+    /* border-left: 1px solid gray; */
+    border-top: 1px solid gray;
     padding-left: 20px;
+    display: grid;
+    grid-template-rows: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 2fr;
+    grid-template-areas:
+        "left right1"
+        "left right2"
+        "left right3";
+    align-items: center;
+
 }
 
 .images-modal-div {
@@ -33,5 +44,17 @@
     width: 100px;
     border-radius: 5px;
     font-size: .8rem;
-    margin: 20px
+    margin: 10px 0;
+}
+
+.add-image-p-tag {
+    grid-area: left;
+}
+
+.down-left {
+    grid-area: left;
+    align-self: end;
+    margin-bottom: 10px;
+    overflow-wrap: break-word;
+    white-space: pre-wrap;
 }
