@@ -11,8 +11,7 @@ const { checkIfGroupExists,
     validateEvent,
     validateMembershipChange,
     validateMembershipDelete } = require('../../utils/validation');
-
-import { singlePublicFileUpload, singleMulterUpload } from '../../awsS3';
+const { singlePublicFileUpload, singleMulterUpload } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -154,8 +153,22 @@ router.post('/', requireAuth, validateGroup, async (req, res) => {
 
 router.post('/:groupId/images', singleMulterUpload("image"), requireAuth, checkIfGroupExists, isOrganizer, validateImage, async (req, res) => {
 
+    if (!req.file) {
+        res.status(400);
+        return res.json({ errors: "Image was not provided" });
+    }
+
+    if (req.file.size > 1024 * 1024) {
+        res.status(400);
+        return res.json({ errors: "Image file size must not exceed 1MB" });
+    }
 
     const imageUrl = await singlePublicFileUpload(req.file);
+
+    if (!imageUrl) {
+        res.status(404);
+        return res.json({ errors: "Something was wrong with the image (possibly exceeded file size)" });
+    }
 
     const image = await req.group.createGroupImage({
         url: imageUrl,

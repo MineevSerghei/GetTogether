@@ -50,10 +50,6 @@ const validateGroup = [
 ];
 
 const validateImage = [
-    check('url')
-        .exists({ checkFalsy: true })
-        .isURL()
-        .withMessage('Valid URL is required'),
     check('preview')
         .exists()
         .isBoolean()

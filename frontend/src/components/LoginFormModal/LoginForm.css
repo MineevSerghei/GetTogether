@@ -17,6 +17,11 @@ body {
     margin: 20px
 }
 
+.submit-bttn:disabled {
+    background-color: gray;
+    pointer-events: none;
+}
+
 .submit-bttn:hover {
     cursor: pointer;
     background-color: rgb(197, 65, 65);

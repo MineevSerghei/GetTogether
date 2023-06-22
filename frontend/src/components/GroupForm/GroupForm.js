@@ -14,8 +14,9 @@ export default function GroupForm({ formType }) {
     const [about, setAbout] = useState('');
     const [type, setType] = useState('');
     const [isPrivate, setIsPrivate] = useState('');
-    const [imageUrl, setImageUrl] = useState('');
+    const [image, setImage] = useState(null);
     const [errors, setErrors] = useState({});
+    const [isLoading, setIsLoading] = useState(false);
 
     const sessionUser = useSelector((state) => state.session.user);
     const history = useHistory();
@@ -44,9 +45,16 @@ export default function GroupForm({ formType }) {
     if (formType === 'update' && sessionUser.id !== group.organizerId) return <Redirect to='/'></Redirect>;
 
 
+    const updateImage = e => {
+        const file = e.target.files[0];
+        if (file) setImage(file);
+    }
+
     const submit = async e => {
         e.preventDefault();
         setErrors({});
+
+        setIsLoading(true)
 
         const err = {};
 
@@ -57,17 +65,16 @@ export default function GroupForm({ formType }) {
         if (type !== 'In person' && type !== 'Online') err.type = 'Group Type is required';
         if (isPrivate !== 'false' && isPrivate !== 'true') err.isPrivate = 'Visibility Type is required';
 
-        if (formType === 'create')
-            if (!imageUrl.endsWith('.png') &&
-                !imageUrl.endsWith('.jpg') &&
-                !imageUrl.endsWith('.jpeg')) err.imageUrl = 'Image URL must end in .png, .jpg, or .jpeg';
-
+        if (formType === 'create') {
+            if (!image) err.image = 'Image is required';
+            if (image && image.size > 1024 * 1024) err.image = 'Image file size must be under 1 MB';
+        }
 
         if (Object.values(err).length > 0) {
             setErrors(err);
+            setIsLoading(false);
         }
         else {
-            // console.log('ARE YOU IN THE ELSE????');
             const city = location.slice(0, location.indexOf(','));
             const state = location.slice(location.indexOf(',') + 2);
             const groupData = {
@@ -82,15 +89,17 @@ export default function GroupForm({ formType }) {
 
             if (groupRes && groupRes.errors) {
                 setErrors({ ...groupRes.errors });
+                setIsLoading(false)
             } else {
 
                 if (formType === 'create') {
 
-                    const imageRes = await dispatch(addGroupImageThunk(groupRes.id, { preview: true, url: imageUrl }));
+                    const imageRes = await dispatch(addGroupImageThunk(groupRes.id, { preview: true, image: image }));
                     if (imageRes && imageRes.errors) {
-                        alert("The group has been created but the image url you provided didn't work. You can add images later!");
+                        alert(`The group has been created but the image you provided didn't work. You can add images later! Error: ${imageRes.errors}`);
                     }
                 }
+                setIsLoading(false);
                 history.push(`/groups/${groupRes.id}`)
 
             }
@@ -111,7 +120,7 @@ export default function GroupForm({ formType }) {
                     placeholder='City, STATE'
                     value={location}
                     onChange={e => setLocation(e.target.value)}
-                ></input><br></br>
+                ></input><span className='required-star'>*</span><br></br>
                 {errors.location && <span className='errors'>{errors.location}</span>}
                 {errors.city && <span className='errors'>{errors.city}</span>}
                 {errors.state && <span className='errors'>{errors.state}</span>}
@@ -125,7 +134,7 @@ export default function GroupForm({ formType }) {
                     placeholder='What is your group name?'
                     value={name}
                     onChange={e => setName(e.target.value)}
-                ></input><br></br>
+                ></input><span className='required-star'>*</span><br></br>
                 {errors.name && <span className='errors'>{errors.name}</span>}
             </div>
             <div className='input-section'>
@@ -140,7 +149,7 @@ export default function GroupForm({ formType }) {
                     placeholder='Please write at least 30 characters'
                     value={about}
                     onChange={e => setAbout(e.target.value)}
-                ></textarea><br></br>
+                ></textarea><span className='required-star'>*</span><br></br>
                 {errors.about && <span className='errors'>{errors.about}</span>}
             </div>
             <div className='input-section'>
@@ -151,7 +160,7 @@ export default function GroupForm({ formType }) {
                     <option value='' disabled>(select one)</option>
                     <option value='In person'>In person</option>
                     <option value='Online'>Online</option>
-                </select><br></br>
+                </select><span className='required-star'>*</span><br></br>
                 {errors.type && <span className='errors'>{errors.type}</span>}
                 <br></br>
                 <p>Is this group private or public?</p>
@@ -159,24 +168,25 @@ export default function GroupForm({ formType }) {
                     <option value='' disabled>(select one)</option>
                     <option value='true'>Private</option>
                     <option value='false'>Public</option>
-                </select><br></br>
+                </select><span className='required-star'>*</span><br></br>
                 {errors.isPrivate && <span className='errors'>{errors.isPrivate}</span>}
                 <br></br>
 
                 {formType === 'create' && <>
-                    <p>Please add an image url for your group below:</p>
+                    <p>Please add an image for your group below:</p>
                     <input
                         className='create-group-image-url'
-                        placeholder='Image Url'
-                        value={imageUrl}
-                        onChange={e => setImageUrl(e.target.value)}
-                    ></input><br></br>
-                    {errors.imageUrl && <span className='errors'>{errors.imageUrl}</span>}
+                        type='file'
+                        accept=".png,.jpg,.jpeg"
+                        onChange={updateImage}
+                    ></input><span className='required-star'>*</span><br></br>
+                    {errors.image && <span className='errors'>{errors.image}</span>}
                 </>
                 }
             </div>
             <div className='input-section'>
-                <button className='submit-bttn' type='Submit'>{formType === 'create' ? 'Create Group' : 'Update Group'}</button>
+                <button disabled={isLoading} className='submit-bttn' type='Submit'>{formType === 'create' ? 'Create Group' : 'Update Group'}</button>
+                {isLoading && <i className="fa-solid fa-spinner fa-spin-pulse"></i>}
             </div>
         </form >
     )

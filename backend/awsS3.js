@@ -84,7 +84,7 @@ const storage = multer.memoryStorage({
 });
 
 const singleMulterUpload = (nameOfKey) =>
-    multer({ storage: storage, limits: { fileSize: 1024 * 1024 } }).single(nameOfKey);
+    multer({ storage: storage }).single(nameOfKey);
 const multipleMulterUpload = (nameOfKey) =>
     multer({ storage: storage }).array(nameOfKey);
 

@@ -117,12 +117,20 @@ export const deleteGroupThunk = (id) => async dispatch => {
     }
 }
 
-export const addGroupImageThunk = (id, image) => async dispatch => {
+export const addGroupImageThunk = (id, data) => async dispatch => {
+
+
+    const formData = new FormData();
+    formData.append("image", data.image);
+    formData.append("preview", data.preview);
 
     try {
         const resImg = await csrfFetch(`/api/groups/${id}/images`, {
             method: 'POST',
-            body: JSON.stringify(image)
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
         });
 
         const imageData = await resImg.json();
@@ -132,7 +140,6 @@ export const addGroupImageThunk = (id, image) => async dispatch => {
         return imageData;
 
     } catch (e) {
-        // console.log(e)
         const errorRes = await e.json()
         return errorRes;
     }
