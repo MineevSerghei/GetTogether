@@ -58,3 +58,16 @@
     overflow-wrap: break-word;
     white-space: pre-wrap;
 }
+
+.confirm-delete-img {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 2px
+}
+
+.confirm-delete-p-tag {
+    font-size: .8rem;
+    margin: 1px;
+    color: brown;
+}

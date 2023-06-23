@@ -14,10 +14,6 @@ export default function GroupImagesModal({ images, groupId }) {
     // const [, forceRerender] = useState(1);
     const dispatch = useDispatch();
 
-    useEffect(() => {
-
-    }, [image])
-
     const updateImage = e => {
         setImage(e.target.files[0]);
     }
@@ -25,7 +21,7 @@ export default function GroupImagesModal({ images, groupId }) {
     const addImage = async () => {
 
         setIsLoading(true)
-        // setErrors({});
+        setErrors({});
         const err = {};
 
         if (!image) err.image = 'Image is required';
@@ -39,7 +35,10 @@ export default function GroupImagesModal({ images, groupId }) {
             if (imageRes && imageRes.errors) {
                 setErrors({ ...imageRes.errors });
             } else {
+                const input = document.getElementById('upload-input');
+                input.value = '';
                 setImage(null);
+                setPreview(false);
                 setIsLoading(false);
             }
         }
@@ -67,6 +66,7 @@ export default function GroupImagesModal({ images, groupId }) {
         <div className="images-add-div">
             <p className='add-image-p-tag'>Add image</p>
             <input
+                id='upload-input'
                 className='create-group-image-url'
                 type='file'
                 accept=".png,.jpg,.jpeg"
