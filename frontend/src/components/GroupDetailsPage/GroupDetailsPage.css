@@ -12,6 +12,14 @@
     max-width: 500px;
 }
 
+.carousel .control-next.control-arrow:before {
+    border-left: 8px solid #333 !important;
+}
+
+.carousel .control-prev.control-arrow:before {
+    border-right: 8px solid #333;
+}
+
 .events-list-groups {
     max-width: 80%;
 }

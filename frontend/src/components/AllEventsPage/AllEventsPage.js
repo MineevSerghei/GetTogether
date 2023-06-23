@@ -1,6 +1,7 @@
 import EventItem from "./EventItem";
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { getEventsThunk } from "../../store/events";
+import { searchEventsThunk } from "../../store/events";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './AllEventsPage.css';
@@ -30,7 +31,21 @@ export default function AllEventsPage() {
 
     useEffect(() => {
 
-        dispatch(getEventsThunk());
+        const findEvents = async () => {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('q');
+
+            const params = {};
+
+            if (name) {
+                params.name = name;
+            }
+
+            await dispatch(searchEventsThunk(params));
+        }
+
+        findEvents();
 
     }, [dispatch])
 

@@ -1,13 +1,30 @@
-import { NavLink, Link } from 'react-router-dom';
-import { useSelector } from 'react-redux';
+import { NavLink, Link, useHistory } from 'react-router-dom';
+import { useSelector, useDispatch } from 'react-redux';
 import ProfileButton from './ProfileButton';
 import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
+import { searchEventsThunk } from '../../store/events';
+
 import './Navigation.css';
+import { useState } from 'react';
 
 function Navigation({ isLoaded }) {
     const sessionUser = useSelector(state => state.session.user);
+    const [query, setQuery] = useState('');
+    const dispatch = useDispatch();
+    const history = useHistory();
+
+    const search = async () => {
+
+        if (query) {
+            await dispatch(searchEventsThunk({ name: query }));
+            history.push(`/events?q=${query}`);
+            setQuery('')
+        }
+
+    }
+
 
     return (
         <ul className='nav-links-ul'>
@@ -15,13 +32,14 @@ function Navigation({ isLoaded }) {
                 <NavLink className='home-bttn' exact to="/"><div>Get<br></br> Together</div></NavLink>
             </li>
             <li className='search-li'>
-                {/* <label for="site-search"></label> */}
                 <input
+                    onChange={e => setQuery(e.target.value)}
+                    value={query}
                     type="search"
                     id="search"
-                    placeholder='search for groups and events'
+                    placeholder='find events'
                     name="q"></input>
-                <button>Search</button>
+                <button onClick={search}>Search</button>
 
             </li>
             {!sessionUser && isLoaded &&
