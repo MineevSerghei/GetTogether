@@ -11,6 +11,24 @@ select {
     background-color: rgb(227, 248, 255);
 }
 
+#search {
+    width: 70%;
+    min-width: 100px;
+    height: 40px;
+    border-radius: 15px;
+    margin: 10px;
+    padding-left: 20px;
+    background-color: inherit;
+}
+
+.search-li {
+    width: 100%;
+    padding: 0 1vw;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
 
 .nav-links-ul {
     display: flex;

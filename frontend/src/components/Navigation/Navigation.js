@@ -14,6 +14,16 @@ function Navigation({ isLoaded }) {
             <li className='home-bttn-li'>
                 <NavLink className='home-bttn' exact to="/"><div>Get<br></br> Together</div></NavLink>
             </li>
+            <li className='search-li'>
+                {/* <label for="site-search"></label> */}
+                <input
+                    type="search"
+                    id="search"
+                    placeholder='search for groups and events'
+                    name="q"></input>
+                <button>Search</button>
+
+            </li>
             {!sessionUser && isLoaded &&
                 <>
                     <OpenModalMenuItem

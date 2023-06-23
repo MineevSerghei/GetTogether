@@ -9,6 +9,7 @@
 .details-img-container {
     display: flex;
     flex-direction: column;
+    max-width: 500px;
 }
 
 .events-list-groups {
@@ -21,14 +22,6 @@
     gap: 40px
 }
 
-.group-details-img {
-    max-width: 500px;
-    padding: 10px
-}
-
-.group-details-img:hover {
-    cursor: pointer;
-}
 
 .manage-bttn {
     background-color: rgb(85, 85, 85);

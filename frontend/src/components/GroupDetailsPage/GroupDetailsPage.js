@@ -2,12 +2,14 @@ import { useEffect, useState } from 'react';
 import { Link, useParams, useHistory } from 'react-router-dom'
 import { useSelector, useDispatch } from 'react-redux';
 import { getGroupThunk, requestMembershipThunk } from '../../store/groups';
+import { Carousel } from 'react-responsive-carousel';
 import LeaveGroupModal from './LeaveGroupModal';
 import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
 import MembersModal from '../MembersModal';
 import GroupImagesModal from '../GroupImagesModal';
+import "react-responsive-carousel/lib/styles/carousel.min.css";
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -104,18 +106,20 @@ export default function GroupDetailsPage() {
 
 
 
-    if (!group || !group.Organizer || +group.id !== +groupId) return null;
+    if (!group || !images || !group.Organizer || +group.id !== +groupId) return null;
 
     return (
         <div className='details-page'>
             <div className="group-details-container">
                 <div className='details-img-container'>
                     <Link to='/groups'> {"< All Groups"}</Link>
-                    <img
-                        onClick={changeImg}
-                        src={chooseImg()}
-                        className='group-details-img'
-                    ></img>
+                    <Carousel dynamicHeight={true} infiniteLoop={true}>
+                        {images.map(image => <div className='group-details-img-div'>
+                            <img
+                                src={image.url}
+                            ></img>
+                        </div>)}
+                    </Carousel>
                     {/* {images.length > 1 && <i onClick={changeImg} className="fa-solid fa-arrow-right next-image-icon"></i>} */}
 
                 </div>
