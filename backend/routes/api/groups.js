@@ -166,7 +166,7 @@ router.post('/:groupId/images', singleMulterUpload("image"), requireAuth, checkI
     const imageUrl = await singlePublicFileUpload(req.file);
 
     if (!imageUrl) {
-        res.status(404);
+        res.status(400);
         return res.json({ errors: "Something was wrong with the image (possibly exceeded file size)" });
     }
 
