@@ -21,6 +21,10 @@ export default function GroupDetailsPage() {
     const sessionUser = useSelector((state) => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
 
+    let images = null;
+    if (group && group.GroupImages)
+        images = Object.values(group.GroupImages);
+
     useEffect(() => {
         const getGroup = async () => {
             const res = await dispatch(getGroupThunk(groupId));
@@ -31,7 +35,7 @@ export default function GroupDetailsPage() {
     }, [dispatch])
 
     const changeImg = () => {
-        setImage((image + 1) % group.GroupImages.length)
+        setImage((image + 1) % images.length)
     }
 
     const updateGroup = () => {
@@ -95,7 +99,7 @@ export default function GroupDetailsPage() {
                 <div className='details-img-container'>
                     <Link to='/groups'> {"< All Groups"}</Link>
                     <img
-                        src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
+                        src={images.length > 0 ? images[image].url : ""}
                         onClick={changeImg}
                         className='group-details-img'
                     ></img>
@@ -112,7 +116,7 @@ export default function GroupDetailsPage() {
                             <OpenModalButton
                                 buttonText="Images"
                                 className="manage-bttn"
-                                modalComponent={<GroupImagesModal groupId={group.id} images={group.GroupImages} />} />
+                                modalComponent={<GroupImagesModal groupId={group.id} />} />
                             <OpenModalButton
                                 buttonText="Members"
                                 className="manage-bttn"

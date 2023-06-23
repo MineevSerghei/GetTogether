@@ -71,3 +71,13 @@
     margin: 1px;
     color: brown;
 }
+
+.img-remove {
+    color: brown;
+    padding: 3px
+}
+
+.img-remove:hover {
+    cursor: pointer;
+    color: red;
+}

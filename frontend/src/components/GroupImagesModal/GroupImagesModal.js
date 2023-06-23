@@ -3,16 +3,18 @@ import './GroupImagesModal.css';
 import GroupImageBox from './GroupImageBox';
 import { useState, useEffect } from 'react';
 import { addGroupImageThunk } from '../../store/groups';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 
-export default function GroupImagesModal({ images, groupId }) {
+export default function GroupImagesModal({ groupId }) {
 
     const [image, setImage] = useState(null);
     const [preview, setPreview] = useState(false);
     const [errors, setErrors] = useState({});
     const [isLoading, setIsLoading] = useState(false);
-    // const [, forceRerender] = useState(1);
     const dispatch = useDispatch();
+
+    const imagesObj = useSelector(state => state.groups.singleGroup.GroupImages);
+    const images = Object.values(imagesObj);
 
     const updateImage = e => {
         setImage(e.target.files[0]);
@@ -72,7 +74,7 @@ export default function GroupImagesModal({ images, groupId }) {
                 accept=".png,.jpg,.jpeg"
                 onChange={updateImage}
             ></input>
-            <label><input type='checkbox' chacked={preview} onChange={e => setPreview(e.target.checked)}></input> Set as preview image?</label>
+            <label><input type='checkbox' checked={preview} onChange={e => setPreview(e.target.checked)}></input> Set as preview image?</label>
             {errors.image && <span className='errors down-left'>{errors.image}</span>}
             <button disabled={isLoading} className='submit-bttn smaller' onClick={addImage}>{isLoading ? <i className="fa-solid fa-spinner fa-spin-pulse"></i> : 'Add Image'}</button>
 
