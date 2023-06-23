@@ -11,6 +11,7 @@ const { checkIfGroupExists,
     validateEvent,
     validateMembershipChange,
     validateMembershipDelete } = require('../../utils/validation');
+const { singlePublicFileUpload, singleMulterUpload, singlePublicFileDelete } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -134,14 +135,14 @@ router.get('/:groupId', async (req, res) => {
 });
 
 router.post('/', requireAuth, validateGroup, async (req, res) => {
-    const { name, about, type, private, city, state } = req.body;
+    const { name, about, type, private: isPrivate, city, state } = req.body;
 
     const group = await Group.create({
         organizerId: req.user.id,
         name,
         about,
         type,
-        private,
+        private: isPrivate,
         city,
         state,
     });
@@ -150,10 +151,27 @@ router.post('/', requireAuth, validateGroup, async (req, res) => {
     return res.json(group);
 });
 
-router.post('/:groupId/images', requireAuth, checkIfGroupExists, isOrganizer, validateImage, async (req, res) => {
+router.post('/:groupId/images', singleMulterUpload("image"), requireAuth, checkIfGroupExists, isOrganizer, validateImage, async (req, res) => {
+
+    if (!req.file) {
+        res.status(400);
+        return res.json({ errors: "Image was not provided" });
+    }
+
+    if (req.file.size > 1024 * 1024) {
+        res.status(400);
+        return res.json({ errors: "Image file size must not exceed 1MB" });
+    }
+
+    const imageUrl = await singlePublicFileUpload(req.file);
+
+    if (!imageUrl) {
+        res.status(400);
+        return res.json({ errors: "Something was wrong with the image (possibly exceeded file size)" });
+    }
 
     const image = await req.group.createGroupImage({
-        url: req.body.url,
+        url: imageUrl,
         preview: req.body.preview
     });
 
@@ -167,12 +185,12 @@ router.put('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, validateGr
 
     const group = req.group;
 
-    const { name, about, type, private, city, state } = req.body;
+    const { name, about, type, private: isPrivate, city, state } = req.body;
 
     group.name = name;
     group.about = about;
     group.type = type;
-    group.private = private;
+    group.private = isPrivate;
     group.city = city;
     group.state = state;
 
@@ -184,7 +202,20 @@ router.put('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, validateGr
 
 router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (req, res) => {
 
-    await req.group.destroy();
+    const group = await Group.findByPk(req.group.id, {
+        include: [
+            {
+                model: GroupImage,
+                attributes: ['id', 'url', 'preview']
+            }
+        ]
+    });
+
+    for (let image of group.GroupImages) {
+        await singlePublicFileDelete(image.url)
+    }
+
+    await group.destroy();
 
     return res.json({
         "message": "Successfully deleted",
@@ -258,15 +289,15 @@ router.post('/:groupId/events', requireAuth, checkIfGroupExists, isOrganizerOrCo
 
     const { name, type, capacity, price, description } = req.body;
 
-    let { venueId, private, startDate, endDate } = req.body;
+    let { venueId, private: isPrivate, startDate, endDate } = req.body;
 
     if (!venueId) venueId = null;
-    if (!private) private = false;
+    if (!isPrivate) isPrivate = false;
 
     startDate = new Date(startDate);
     endDate = new Date(endDate);
 
-    const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, private, startDate, endDate });
+    const event = await req.group.createEvent({ venueId, name, type, capacity, price, description, private: isPrivate, startDate, endDate });
 
     delete event.dataValues.createdAt;
     delete event.dataValues.updatedAt;

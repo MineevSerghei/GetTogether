@@ -64,12 +64,19 @@ export const createEventThunk = (event, groupId) => async dispatch => {
 
 }
 
-export const addEventImageThunk = (id, image) => async dispatch => {
+export const addEventImageThunk = (id, data) => async dispatch => {
+
+    const formData = new FormData();
+    formData.append("image", data.image);
+    formData.append("preview", data.preview);
 
     try {
         const resImg = await csrfFetch(`/api/events/${id}/images`, {
             method: 'POST',
-            body: JSON.stringify(image)
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
         });
 
         const imageData = await resImg.json();
@@ -109,7 +116,7 @@ export const getEventThunk = (id) => async dispatch => {
         const res = await csrfFetch(`/api/events/${id}`);
         const event = await res.json();
         dispatch(getEventAction(event));
-        return res;
+        return event;
     }
     catch (e) {
         if (e instanceof Response) return e;

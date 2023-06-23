@@ -6,6 +6,7 @@ const GET_MY_GROUPS = 'groups/GET_MY_GROUPS';
 const GET_ONE_GROUP = 'groups/GET_ONE_GROUP';
 const CREATE_GROUP = 'groups/CREATE_GROUP';
 const ADD_GROUP_IMAGE = 'groups/ADD_GROUP_IMAGE';
+const DELETE_GROUP_IMAGE = 'groups/DELETE_GROUP_IMAGE';
 const DELETE_GROUP = 'groups/DELETE_GROUP';
 const REQUEST_MEMBERSHIP = 'groups/REQUEST_MEMBERSHIP';
 const LEAVE_GROUP = 'groups/LEAVE_GROUP';
@@ -28,6 +29,13 @@ const addGroupImageAction = (image) => {
     return {
         type: ADD_GROUP_IMAGE,
         image
+    }
+}
+
+const deleteGroupImageAction = (imageId) => {
+    return {
+        type: DELETE_GROUP_IMAGE,
+        imageId
     }
 }
 
@@ -117,12 +125,20 @@ export const deleteGroupThunk = (id) => async dispatch => {
     }
 }
 
-export const addGroupImageThunk = (id, image) => async dispatch => {
+export const addGroupImageThunk = (id, data) => async dispatch => {
+
+
+    const formData = new FormData();
+    formData.append("image", data.image);
+    formData.append("preview", data.preview);
 
     try {
         const resImg = await csrfFetch(`/api/groups/${id}/images`, {
             method: 'POST',
-            body: JSON.stringify(image)
+            headers: {
+                "Content-Type": "multipart/form-data",
+            },
+            body: formData,
         });
 
         const imageData = await resImg.json();
@@ -132,12 +148,31 @@ export const addGroupImageThunk = (id, image) => async dispatch => {
         return imageData;
 
     } catch (e) {
-        // console.log(e)
         const errorRes = await e.json()
         return errorRes;
     }
 
 }
+
+export const deleteGroupImageThunk = (id) => async dispatch => {
+
+    try {
+        const res = await csrfFetch(`/api/group-images/${id}`, {
+            method: 'DELETE'
+        });
+
+        const message = await res.json();
+
+        dispatch(deleteGroupImageAction(id));
+
+        return message;
+
+    } catch (e) {
+        const errorRes = await e.json()
+        return errorRes;
+    }
+}
+
 
 export const createGroupThunk = (group) => async dispatch => {
 
@@ -155,8 +190,12 @@ export const createGroupThunk = (group) => async dispatch => {
 
     } catch (e) {
 
-        const errorRes = await e.json()
-        return errorRes;
+        if (e instanceof Response) {
+            const errorRes = await e.json()
+            return errorRes;
+        } else {
+            return e;
+        }
     }
 
 }
@@ -237,7 +276,7 @@ export const getMyGroupsThunk = () => async dispatch => {
 const initialState = {
     allGroups: {},
     myGroups: {},
-    singleGroup: { GroupImages: [] }
+    singleGroup: { GroupImages: {} }
 };
 
 const groupsReducer = (state = initialState, action) => {
@@ -256,19 +295,28 @@ const groupsReducer = (state = initialState, action) => {
             }
         case GET_ONE_GROUP:
             {
-                return { ...state, singleGroup: { ...state.singleGroup, ...action.group } };
+                const images = {}
+                for (let image of action.group.GroupImages) images[image.id] = image
+                const newGroup = { ...action.group, GroupImages: images }
+                return { ...state, singleGroup: newGroup };
             }
         case CREATE_GROUP:
             {
-                return { ...state, singleGroup: { ...state.singleGroup, ...action.group } };
+                return { ...state, singleGroup: { ...action.group } };
             }
         case ADD_GROUP_IMAGE:
             {
-                return { ...state, singleGroup: { ...state.singleGroup, GroupImages: [{ ...action.image }] } };
+                return { ...state, singleGroup: { ...state.singleGroup, GroupImages: { ...state.singleGroup.GroupImages, [action.image.id]: action.image } } };
+            }
+        case DELETE_GROUP_IMAGE:
+            {
+                const newState = { ...state, singleGroup: { ...state.singleGroup, GroupImages: { ...state.singleGroup.GroupImages } } };
+                delete newState.singleGroup.GroupImages[action.imageId];
+                return newState;
             }
         case DELETE_GROUP:
             {
-                const newState = { ...state, allGroups: { ...state.allGroups }, singleGroup: { GroupImages: [] } };
+                const newState = { ...state, allGroups: { ...state.allGroups }, singleGroup: { GroupImages: {} } };
                 delete newState.allGroups[action.id];
                 return newState;
             }

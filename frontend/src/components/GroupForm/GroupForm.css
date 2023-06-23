@@ -15,6 +15,7 @@
 .create-group-about {
     height: 70px;
     width: 300px;
+    resize: none;
 }
 
 .create-group-image-url {
@@ -27,4 +28,29 @@
 
 .teal {
     color: teal;
+}
+
+.required-star {
+    font-size: 1rem;
+    color: red;
+    text-align: start;
+    padding-left: 2px;
+}
+
+.create-group-image-url::file-selector-button {
+    background-color: rgb(85, 85, 85);
+    box-shadow: 1px 1px black;
+    color: rgb(251, 251, 249);
+}
+
+.create-group-image-url::file-selector-button:hover {
+    background-color: gray;
+    box-shadow: 1px 1px black;
+    cursor: pointer;
+}
+
+.create-group-image-url::file-selector-button:active {
+    position: relative;
+    top: 1px;
+    left: 1px;
 }

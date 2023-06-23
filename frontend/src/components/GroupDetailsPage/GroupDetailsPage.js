@@ -7,6 +7,7 @@ import EventItem from '../AllEventsPage/EventItem';
 import OpenModalButton from '../OpenModalButton';
 import DeleteGroupModal from '../DeleteGroupModal';
 import MembersModal from '../MembersModal';
+import GroupImagesModal from '../GroupImagesModal';
 import './GroupDetailsPage.css'
 
 export default function GroupDetailsPage() {
@@ -20,6 +21,10 @@ export default function GroupDetailsPage() {
     const sessionUser = useSelector((state) => state.session.user);
     const group = useSelector(state => state.groups.singleGroup);
 
+    let images = null;
+    if (group && group.GroupImages)
+        images = Object.values(group.GroupImages);
+
     useEffect(() => {
         const getGroup = async () => {
             const res = await dispatch(getGroupThunk(groupId));
@@ -29,8 +34,21 @@ export default function GroupDetailsPage() {
 
     }, [dispatch])
 
+    const chooseImg = () => {
+        if (images.length > 0) {
+            if (images[image]) {
+                return images[image].url
+            } else {
+                return images[0].url
+            }
+        } else {
+            return '';
+        }
+    }
+
+
     const changeImg = () => {
-        setImage((image + 1) % group.GroupImages.length)
+        setImage((image + 1) % images.length)
     }
 
     const updateGroup = () => {
@@ -84,8 +102,9 @@ export default function GroupDetailsPage() {
         )
     }
 
-    if (!group || !group.Organizer || +group.id !== +groupId) return null;
 
+
+    if (!group || !group.Organizer || +group.id !== +groupId) return null;
 
     return (
         <div className='details-page'>
@@ -93,10 +112,12 @@ export default function GroupDetailsPage() {
                 <div className='details-img-container'>
                     <Link to='/groups'> {"< All Groups"}</Link>
                     <img
-                        src={group.GroupImages.length > 0 ? group.GroupImages[image].url : ""}
                         onClick={changeImg}
+                        src={chooseImg()}
                         className='group-details-img'
                     ></img>
+                    {/* {images.length > 1 && <i onClick={changeImg} className="fa-solid fa-arrow-right next-image-icon"></i>} */}
+
                 </div>
                 <div>
                     <h2>{group.name}</h2>
@@ -107,16 +128,20 @@ export default function GroupDetailsPage() {
                         <button className='submit-bttn' onClick={sendRequest}>Join this group</button>}
                     {sessionUser && group.status === 'organizer' &&
                         <div className='manage-bttns-container'>
+                            <OpenModalButton
+                                buttonText="Images"
+                                className="manage-bttn"
+                                modalComponent={<GroupImagesModal groupId={group.id} />} />
+                            <OpenModalButton
+                                buttonText="Members"
+                                className="manage-bttn"
+                                modalComponent={<MembersModal user='organizer' groupId={group.id} />} />
                             <button className="manage-bttn" onClick={createEvent}>Create event</button>
                             <button className="manage-bttn" onClick={updateGroup}>Update</button>
                             <OpenModalButton
                                 buttonText="Delete"
                                 className="manage-bttn"
                                 modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
-                            <OpenModalButton
-                                buttonText="Members"
-                                className="manage-bttn"
-                                modalComponent={<MembersModal user='organizer' groupId={group.id} />} />
                         </div>}
                     {sessionUser && group.status === 'co-host' &&
                         <div className='manage-bttns-container'>

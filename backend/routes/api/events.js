@@ -3,6 +3,8 @@ const { requireAuth } = require('../../utils/auth');
 const { findNumOfAttendeesAndPreviewImg, pagination } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance, Membership, User, GroupImage } = require('../../db/models');
 const { Op } = require('sequelize');
+const { singlePublicFileUpload, singleMulterUpload, singlePublicFileDelete } = require('../../awsS3');
+
 
 const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
 
@@ -125,10 +127,27 @@ router.get('/:eventId', async (req, res) => {
 });
 
 // Add an Image to a Event based on the Event's id
-router.post('/:eventId/images', requireAuth, checkIfEventExists, isHostCohostOrAttendee, validateImage, async (req, res) => {
+router.post('/:eventId/images', singleMulterUpload("image"), requireAuth, checkIfEventExists, isHostCohostOrAttendee, validateImage, async (req, res) => {
+
+    if (!req.file) {
+        res.status(400);
+        return res.json({ errors: "Image was not provided" });
+    }
+
+    if (req.file.size > 1024 * 1024) {
+        res.status(400);
+        return res.json({ errors: "Image file size must not exceed 1MB" });
+    }
+
+    const imageUrl = await singlePublicFileUpload(req.file);
+
+    if (!imageUrl) {
+        res.status(400);
+        return res.json({ errors: "Something was wrong with the image (possibly exceeded file size)" });
+    }
 
     const image = await req.event.createEventImage({
-        url: req.body.url,
+        url: imageUrl,
         preview: req.body.preview
     });
 
@@ -163,6 +182,20 @@ router.put('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, va
 });
 
 router.delete('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, async (req, res) => {
+
+    const event = await Event.findByPk(req.event.id, {
+        include: [
+            {
+                model: EventImage,
+                attributes: ['id', 'url', 'preview']
+            }
+        ]
+    });
+
+    for (let image of event.EventImages) {
+        await singlePublicFileDelete(image.url)
+    }
+
     await req.event.destroy();
 
     return res.json({
