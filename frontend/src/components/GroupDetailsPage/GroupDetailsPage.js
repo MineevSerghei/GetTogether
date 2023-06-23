@@ -34,6 +34,19 @@ export default function GroupDetailsPage() {
 
     }, [dispatch])
 
+    const chooseImg = () => {
+        if (images.length > 0) {
+            if (images[image]) {
+                return images[image].url
+            } else {
+                return images[0].url
+            }
+        } else {
+            return '';
+        }
+    }
+
+
     const changeImg = () => {
         setImage((image + 1) % images.length)
     }
@@ -99,10 +112,12 @@ export default function GroupDetailsPage() {
                 <div className='details-img-container'>
                     <Link to='/groups'> {"< All Groups"}</Link>
                     <img
-                        src={images.length > 0 ? images[image].url : ""}
                         onClick={changeImg}
+                        src={chooseImg()}
                         className='group-details-img'
                     ></img>
+                    {/* {images.length > 1 && <i onClick={changeImg} className="fa-solid fa-arrow-right next-image-icon"></i>} */}
+
                 </div>
                 <div>
                     <h2>{group.name}</h2>

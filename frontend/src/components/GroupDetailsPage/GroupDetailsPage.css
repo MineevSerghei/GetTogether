@@ -26,6 +26,10 @@
     padding: 10px
 }
 
+.group-details-img:hover {
+    cursor: pointer;
+}
+
 .manage-bttn {
     background-color: rgb(85, 85, 85);
     box-shadow: 1px 1px black;
@@ -47,4 +51,22 @@
     position: relative;
     top: 1px;
     left: 1px;
+}
+
+.next-image-icon {
+    text-align: right;
+    color: rgb(95, 168, 95);
+    font-size: 1.4rem;
+    margin-right: 10px;
+    padding: 5px;
+}
+
+.next-image-icon:hover {
+    cursor: pointer;
+    color: rgb(0, 213, 0);
+}
+
+.next-image-icon:disabled {
+    color: gray;
+    pointer-events: none;
 }

@@ -46,15 +46,14 @@ export default function GroupForm({ formType }) {
 
 
     const updateImage = e => {
-        const file = e.target.files[0];
-        if (file) setImage(file);
+        setImage(e.target.files[0]);
     }
 
     const submit = async e => {
         e.preventDefault();
         setErrors({});
 
-        setIsLoading(true)
+        setIsLoading(true);
 
         const err = {};
 
