@@ -190,8 +190,12 @@ export const createGroupThunk = (group) => async dispatch => {
 
     } catch (e) {
 
-        const errorRes = await e.json()
-        return errorRes;
+        if (e instanceof Response) {
+            const errorRes = await e.json()
+            return errorRes;
+        } else {
+            return e;
+        }
     }
 
 }
@@ -298,10 +302,7 @@ const groupsReducer = (state = initialState, action) => {
             }
         case CREATE_GROUP:
             {
-                const images = {}
-                for (let image of action.group.GroupImages) images[image.id] = image
-                const newGroup = { ...action.group, GroupImages: images }
-                return { ...state, singleGroup: newGroup };
+                return { ...state, singleGroup: { ...action.group } };
             }
         case ADD_GROUP_IMAGE:
             {

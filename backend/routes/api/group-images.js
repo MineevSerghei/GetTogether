@@ -2,6 +2,7 @@ const express = require('express');
 const { requireAuth } = require('../../utils/auth');
 const { Group, GroupImage, Membership } = require('../../db/models');
 const { throwForbidden } = require('../../utils/roles');
+const { singlePublicFileDelete } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -12,7 +13,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
 
     if (imageId)
         image = await GroupImage.findByPk(imageId, {
-            attributes: ['id'],
+            attributes: ['id', 'url'],
             include: {
                 model: Group,
                 attributes: ['id', 'organizerId'],
@@ -38,6 +39,7 @@ router.delete('/:imageId', requireAuth, async (req, res, next) => {
     if (req.user.id === image.Group.organizerId
         || image.Group.Memberships.length) {
 
+        await singlePublicFileDelete(image.url);
         await image.destroy();
 
         return res.json({ message: "Successfully deleted" });

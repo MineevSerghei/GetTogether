@@ -3,7 +3,7 @@ const { requireAuth } = require('../../utils/auth');
 const { findNumOfAttendeesAndPreviewImg, pagination } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance, Membership, User, GroupImage } = require('../../db/models');
 const { Op } = require('sequelize');
-const { singlePublicFileUpload, singleMulterUpload } = require('../../awsS3');
+const { singlePublicFileUpload, singleMulterUpload, singlePublicFileDelete } = require('../../awsS3');
 
 
 const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
@@ -182,6 +182,20 @@ router.put('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, va
 });
 
 router.delete('/:eventId', requireAuth, checkIfEventExists, isOrganizerOrCoHost, async (req, res) => {
+
+    const event = await Event.findByPk(req.event.id, {
+        include: [
+            {
+                model: EventImage,
+                attributes: ['id', 'url', 'preview']
+            }
+        ]
+    });
+
+    for (let image of event.EventImages) {
+        await singlePublicFileDelete(image.url)
+    }
+
     await req.event.destroy();
 
     return res.json({

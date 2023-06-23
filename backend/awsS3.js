@@ -30,6 +30,24 @@ const singlePublicFileUpload = async (file) => {
     return result.Location;
 };
 
+const singlePublicFileDelete = async (url) => {
+
+    let indexOfSlash;
+    for (let i = url.length - 1; i > 0; i--) {
+        if (url[i] === '/') {
+            indexOfSlash = i;
+            break;
+        }
+    }
+    const key = url.slice(indexOfSlash + 1);
+
+    const params = { Bucket: NAME_OF_BUCKET, Key: key };
+
+    await s3.deleteObject(params).promise();
+
+    return 'Deleted image ' + key;
+}
+
 const multiplePublicFileUpload = async (files) => {
     return await Promise.all(
         files.map((file) => {
@@ -97,4 +115,5 @@ module.exports = {
     retrievePrivateFile,
     singleMulterUpload,
     multipleMulterUpload,
+    singlePublicFileDelete
 };

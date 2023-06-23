@@ -11,7 +11,7 @@ const { checkIfGroupExists,
     validateEvent,
     validateMembershipChange,
     validateMembershipDelete } = require('../../utils/validation');
-const { singlePublicFileUpload, singleMulterUpload } = require('../../awsS3');
+const { singlePublicFileUpload, singleMulterUpload, singlePublicFileDelete } = require('../../awsS3');
 
 const router = express.Router();
 
@@ -202,7 +202,20 @@ router.put('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, validateGr
 
 router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (req, res) => {
 
-    await req.group.destroy();
+    const group = await Group.findByPk(req.group.id, {
+        include: [
+            {
+                model: GroupImage,
+                attributes: ['id', 'url', 'preview']
+            }
+        ]
+    });
+
+    for (let image of group.GroupImages) {
+        await singlePublicFileDelete(image.url)
+    }
+
+    await group.destroy();
 
     return res.json({
         "message": "Successfully deleted",
