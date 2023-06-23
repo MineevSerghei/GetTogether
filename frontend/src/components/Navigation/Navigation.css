@@ -12,13 +12,42 @@ select {
 }
 
 #search {
+    z-index: 2;
     width: 70%;
     min-width: 100px;
     height: 40px;
     border-radius: 15px;
-    margin: 10px;
+    border-top-right-radius: 0px;
+    border-bottom-right-radius: 0px;
+
+    /* margin: 10px; */
     padding-left: 20px;
-    background-color: inherit;
+    background-color: rgb(251, 251, 249);
+}
+
+#search:focus {
+    outline: none;
+    border-color: hsla(220, 100%, 50%, 80%);
+}
+
+.search-bttn {
+    position: relative;
+    right: 25px;
+    z-index: 1;
+    height: 40px;
+    border-radius: 15px;
+    width: 80px;
+}
+
+.search-bttn:hover {
+    cursor: pointer;
+    background-color: rgb(187, 227, 187);
+}
+
+.search-icon {
+    position: relative;
+    left: 10px;
+    font-size: 1rem;
 }
 
 .search-li {

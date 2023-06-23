@@ -50,7 +50,7 @@ export default function AllEventsPage() {
     }, [dispatch])
 
     return (
-        (past.length > 0 || future.length > 0) && <div className="groups-page-container">
+        <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">

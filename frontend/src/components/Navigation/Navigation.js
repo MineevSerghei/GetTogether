@@ -22,9 +22,13 @@ function Navigation({ isLoaded }) {
             history.push(`/events?q=${query}`);
             setQuery('')
         }
-
     }
 
+    const handleKeyDown = e => {
+        if (e.keyCode === 13 || e.key === 'Enter') {
+            search();
+        }
+    }
 
     return (
         <ul className='nav-links-ul'>
@@ -34,12 +38,13 @@ function Navigation({ isLoaded }) {
             <li className='search-li'>
                 <input
                     onChange={e => setQuery(e.target.value)}
+                    onKeyDown={handleKeyDown}
                     value={query}
                     type="search"
                     id="search"
                     placeholder='find events'
                     name="q"></input>
-                <button onClick={search}>Search</button>
+                <button className='search-bttn' onClick={search}><i className="fa-solid fa-magnifying-glass search-icon"></i></button>
 
             </li>
             {!sessionUser && isLoaded &&
