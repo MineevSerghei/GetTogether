@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import './AllEventsPage.css';
 
 
-export default function AllEventsPage() {
+export default function AllEventsPage({ searchTerm, setSearchTerm }) {
 
     const dispatch = useDispatch();
 
@@ -35,11 +35,13 @@ export default function AllEventsPage() {
 
             const urlParams = new URLSearchParams(window.location.search);
             const name = urlParams.get('q');
-
             const params = {};
 
             if (name) {
                 params.name = name;
+                setSearchTerm(name);
+            } else {
+                setSearchTerm('');
             }
 
             await dispatch(searchEventsThunk(params));
@@ -57,12 +59,18 @@ export default function AllEventsPage() {
                         <h2 className="show-all-link-inactive">Events</h2>
                         <Link className="show-all-link-active" to='/groups'><h2>Groups</h2></Link>
                     </div>
-                    <p>Events in <span className="get-together-span">GetTogether</span></p>
+                    {searchTerm ? <p>Search results for: <span className="get-together-span">{searchTerm}</span></p>
+                        : <p>All Events in <span className="get-together-span">GetTogether</span></p>}
                 </div>
-                {future.map(e => (<EventItem key={e.id} event={e} />))}
-
-                {past.length > 0 && <h2>Past Events</h2>}
-                {past.map(e => (<EventItem key={e.id} event={e} />))}
+                <div className="event-group-items">
+                    {past.length <= 0 && future.length <= 0 ? <h4>No results found :(</h4> :
+                        <>
+                            {future.map(e => (<EventItem key={e.id} event={e} />))}
+                            {past.length > 0 && <h2>Past Events</h2>}
+                            {past.map(e => (<EventItem key={e.id} event={e} />))}
+                        </>
+                    }
+                </div>
             </div>
         </div>
     )

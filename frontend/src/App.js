@@ -16,13 +16,15 @@ import NotFound from "./components/NotFound";
 function App() {
   const dispatch = useDispatch();
   const [isLoaded, setIsLoaded] = useState(false);
+  const [searchTerm, setSearchTerm] = useState('')
+
   useEffect(() => {
     dispatch(sessionActions.restoreUser()).then(() => setIsLoaded(true));
   }, [dispatch]);
 
   return (
     <>
-      <Navigation isLoaded={isLoaded} />
+      <Navigation isLoaded={isLoaded} setSearchTerm={setSearchTerm} />
       {isLoaded &&
         <Switch>
           <Route exact path='/'>
@@ -53,7 +55,7 @@ function App() {
             <AllGroupsPage />
           </Route>
           <Route path='/events'>
-            <AllEventsPage />
+            <AllEventsPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
           </Route>
           <Route>
             <NotFound />

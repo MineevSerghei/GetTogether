@@ -10,7 +10,7 @@ import './AllGroupsPage.css';
 export default function AllGroupsPage() {
 
     const dispatch = useDispatch();
-    
+
     const groups = useSelector((state) => state.groups.allGroups);
 
     const groupsArr = Object.values(groups);
@@ -31,7 +31,9 @@ export default function AllGroupsPage() {
                     </div>
                     <p>Groups in <span className="get-together-span">GetTogether</span></p>
                 </div>
-                {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+                <div className="event-group-items">
+                    {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+                </div>
             </div>
         </div>
     )

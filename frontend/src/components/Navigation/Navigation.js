@@ -9,7 +9,7 @@ import { searchEventsThunk } from '../../store/events';
 import './Navigation.css';
 import { useState } from 'react';
 
-function Navigation({ isLoaded }) {
+function Navigation({ isLoaded, setSearchTerm }) {
     const sessionUser = useSelector(state => state.session.user);
     const [query, setQuery] = useState('');
     const dispatch = useDispatch();
@@ -19,8 +19,9 @@ function Navigation({ isLoaded }) {
 
         if (query) {
             await dispatch(searchEventsThunk({ name: query }));
+            setSearchTerm(query);
             history.push(`/events?q=${query}`);
-            setQuery('')
+            setQuery('');
         }
     }
 

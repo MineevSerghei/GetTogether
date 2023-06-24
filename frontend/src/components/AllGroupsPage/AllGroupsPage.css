@@ -5,6 +5,10 @@
     max-width: 100%;
 }
 
+.event-group-items {
+    margin-top: 110px;
+}
+
 .groups-container {
     display: flex;
     flex-direction: column;
@@ -28,6 +32,8 @@
 }
 
 .show-all-head {
+    position: absolute;
+    left: 25vw;
     display: flex;
     flex-direction: column;
     align-self: flex-start;
