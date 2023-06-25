@@ -12,6 +12,7 @@ import AllEventsPage from "./components/AllEventsPage";
 import EventDetailsPage from "./components/EventDetailsPage";
 import EventForm from "./components/EventForm";
 import NotFound from "./components/NotFound";
+import Footer from "./components/Footer";
 
 function App() {
   const dispatch = useDispatch();
@@ -25,43 +26,46 @@ function App() {
   return (
     <>
       <Navigation isLoaded={isLoaded} setSearchTerm={setSearchTerm} />
-      {isLoaded &&
-        <Switch>
-          <Route exact path='/'>
-            <LandingPage />
-          </Route>
-          <Route path='/groups/:groupId/update'>
-            <GroupForm formType='update' />
-          </Route>
-          <Route path='/groups/create'>
-            <GroupForm formType='create' />
-          </Route>
-          <Route path='/groups/:groupId/events/create'>
-            <EventForm formType='create' />
-          </Route>
-          <Route path='/groups/:groupId'>
-            <GroupDetailsPage />
-          </Route>
-          <Route path='/events/:eventId'>
-            <EventDetailsPage />
-          </Route>
-          <Route path='/my-groups'>
-            <MyGroupsPage />
-          </Route>
-          <Route path='/my-events'>
-            {/* <MyEventsPage /> */}
-          </Route>
-          <Route path='/groups'>
-            <AllGroupsPage />
-          </Route>
-          <Route path='/events'>
-            <AllEventsPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
-          </Route>
-          <Route>
-            <NotFound />
-          </Route>
-        </Switch>
-      }
+      <div id="content">
+        {isLoaded &&
+          <Switch>
+            <Route exact path='/'>
+              <LandingPage />
+            </Route>
+            <Route path='/groups/:groupId/update'>
+              <GroupForm formType='update' />
+            </Route>
+            <Route path='/groups/create'>
+              <GroupForm formType='create' />
+            </Route>
+            <Route path='/groups/:groupId/events/create'>
+              <EventForm formType='create' />
+            </Route>
+            <Route path='/groups/:groupId'>
+              <GroupDetailsPage />
+            </Route>
+            <Route path='/events/:eventId'>
+              <EventDetailsPage />
+            </Route>
+            <Route path='/my-groups'>
+              <MyGroupsPage />
+            </Route>
+            <Route path='/my-events'>
+              {/* <MyEventsPage /> */}
+            </Route>
+            <Route path='/groups'>
+              <AllGroupsPage />
+            </Route>
+            <Route path='/events'>
+              <AllEventsPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
+            </Route>
+            <Route>
+              <NotFound />
+            </Route>
+          </Switch>
+        }
+      </div>
+      <Footer />
     </>
   );
 }
