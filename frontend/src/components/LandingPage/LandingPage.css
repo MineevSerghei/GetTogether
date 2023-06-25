@@ -1,7 +1,7 @@
 .actions-container {
     display: flex;
     justify-content: space-around;
-    margin: 0 15%
+    margin: 0 15% 40px 15%
 }
 
 .title-sec-container {
@@ -24,7 +24,7 @@
 }
 
 .join-sec-container {
-    margin: 30px;
+    margin: 0 30px 30px 30px;
     display: flex;
     justify-content: center;
 }

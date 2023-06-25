@@ -5,6 +5,7 @@ import OpenModalMenuItem from './OpenModalMenuItem';
 import LoginFormModal from '../LoginFormModal';
 import SignupFormModal from '../SignupFormModal';
 import { searchEventsThunk } from '../../store/events';
+import { searchGroupsThunk } from '../../store/groups';
 
 import './Navigation.css';
 import { useState } from 'react';
@@ -19,9 +20,13 @@ function Navigation({ isLoaded, setSearchTerm }) {
     const search = async () => {
 
         if (query) {
-            await dispatch(searchEventsThunk({ name: query }));
+            if (searchTarget === 'events')
+                await dispatch(searchEventsThunk({ name: query }));
+            else
+                await dispatch(searchGroupsThunk({ name: query }));
+
             setSearchTerm(query);
-            history.push(`/events?q=${query}`);
+            history.push(`/${searchTarget}?q=${query}`);
             setQuery('');
         }
     }
@@ -44,7 +49,7 @@ function Navigation({ isLoaded, setSearchTerm }) {
                     value={query}
                     type="search"
                     id="search"
-                    placeholder='find events'
+                    placeholder={`find ${searchTarget}`}
                     name="q"></input>
                 <select id='search-target-select' value={searchTarget} onChange={e => setSearchTarget(e.target.value)}>
                     <option value='events'>Events</option>

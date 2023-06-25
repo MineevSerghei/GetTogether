@@ -1,6 +1,5 @@
 import EventItem from "./EventItem";
-import { useEffect, useState } from 'react';
-import { getEventsThunk } from "../../store/events";
+import { useEffect } from 'react';
 import { searchEventsThunk } from "../../store/events";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
@@ -56,14 +55,14 @@ export default function AllEventsPage({ searchTerm, setSearchTerm }) {
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
-                        <h2 className="show-all-link-inactive">Events</h2>
-                        <Link className="show-all-link-active" to='/groups'><h2>Groups</h2></Link>
+                        <h2 className="show-all-link-inactive">{searchTerm ? 'Events' : 'All Events'}</h2>
+                        <Link className="show-all-link-active" to='/groups'><h2>All Groups</h2></Link>
                     </div>
                     {searchTerm ? <p>Search results for: <span className="get-together-span">{searchTerm}</span></p>
                         : <p>All Events in <span className="get-together-span">GetTogether</span></p>}
                 </div>
                 <div className="event-group-items">
-                    {past.length <= 0 && future.length <= 0 ? <h4>No results found :(</h4> :
+                    {past.length <= 0 && future.length <= 0 ? <h4>No events found :(</h4> :
                         <>
                             {future.map(e => (<EventItem key={e.id} event={e} />))}
                             {past.length > 0 && <h2>Past Events</h2>}

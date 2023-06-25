@@ -19,6 +19,17 @@ const router = express.Router();
 // Get all Groups
 router.get('/', async (req, res) => {
 
+    let { name } = req.query;
+
+    const filters = { where: {} };
+
+    if (name) {
+
+        filters.where[Op.or] = [{ name: { [Op.substring]: name } },
+        { about: { [Op.substring]: name } }];
+
+    }
+
     const groups = await Group.findAll({
         include: {
             model: GroupImage,
@@ -28,7 +39,8 @@ router.get('/', async (req, res) => {
             },
             required: false,
             limit: 1
-        }
+        },
+        ...filters
     });
 
     const groupsRes = await findNumOfMembersAndPreviewImg(groups);

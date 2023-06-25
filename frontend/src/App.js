@@ -50,11 +50,8 @@ function App() {
             <Route path='/my-groups'>
               <MyGroupsPage />
             </Route>
-            <Route path='/my-events'>
-              {/* <MyEventsPage /> */}
-            </Route>
             <Route path='/groups'>
-              <AllGroupsPage />
+              <AllGroupsPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
             </Route>
             <Route path='/events'>
               <AllEventsPage searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
