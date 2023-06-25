@@ -1,4 +1,5 @@
 const express = require('express');
+const { environment } = require('../../config');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfAttendeesAndPreviewImg, pagination } = require('../../utils/objects');
 const { Event, Group, Venue, EventImage, Attendance, Membership, User, GroupImage } = require('../../db/models');
@@ -25,8 +26,14 @@ router.get('/', validateEventFilters, pagination, async (req, res) => {
         // filters.where.name = { [Op.substring]: name };
         // filters.where.description = { [Op.substring]: name };
 
-        filters.where[Op.or] = [{ name: { [Op.substring]: name } },
-        { description: { [Op.substring]: name } }];
+        if (environment === 'production') {
+            filters.where[Op.or] = [{ name: { [Op.iLike]: `%${name}%` } },
+            { description: { [Op.iLike]: `%${name}%` } }];
+        } else {
+            filters.where[Op.or] = [{ name: { [Op.substring]: name } },
+            { description: { [Op.substring]: name } }];
+        }
+
 
         // filters.where['[Op.or]'].push({ name: { [Op.substring]: name } })
         // filters.where['[Op.or]'].push({ description: { [Op.substring]: name } })

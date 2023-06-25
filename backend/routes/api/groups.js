@@ -1,4 +1,5 @@
 const express = require('express');
+const { environment } = require('../../config');
 const { requireAuth } = require('../../utils/auth');
 const { findNumOfMembersAndPreviewImg, findNumOfAttendeesAndPreviewImg } = require('../../utils/objects');
 const { Group, GroupImage, Membership, User, Venue, Event, EventImage, Attendance } = require('../../db/models');
@@ -25,8 +26,13 @@ router.get('/', async (req, res) => {
 
     if (name) {
 
-        filters.where[Op.or] = [{ name: { [Op.substring]: name } },
-        { about: { [Op.substring]: name } }];
+        if (environment === 'production') {
+            filters.where[Op.or] = [{ name: { [Op.iLike]: `%${name}%` } },
+            { about: { [Op.iLike]: `%${name}%` } }];
+        } else {
+            filters.where[Op.or] = [{ name: { [Op.substring]: name } },
+            { about: { [Op.substring]: name } }];
+        }
 
     }
 
