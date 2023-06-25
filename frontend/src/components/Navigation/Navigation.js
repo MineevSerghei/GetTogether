@@ -12,6 +12,7 @@ import { useState } from 'react';
 function Navigation({ isLoaded, setSearchTerm }) {
     const sessionUser = useSelector(state => state.session.user);
     const [query, setQuery] = useState('');
+    const [searchTarget, setSearchTarget] = useState('events');
     const dispatch = useDispatch();
     const history = useHistory();
 
@@ -45,6 +46,10 @@ function Navigation({ isLoaded, setSearchTerm }) {
                     id="search"
                     placeholder='find events'
                     name="q"></input>
+                <select id='search-target-select' value={searchTarget} onChange={e => setSearchTarget(e.target.value)}>
+                    <option value='events'>Events</option>
+                    <option value='groups'>Groups</option>
+                </select>
                 <button className='search-bttn' onClick={search}><i className="fa-solid fa-magnifying-glass search-icon"></i></button>
 
             </li>

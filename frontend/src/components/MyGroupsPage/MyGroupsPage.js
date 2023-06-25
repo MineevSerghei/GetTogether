@@ -30,7 +30,7 @@ export default function MyGroupsPage() {
                     <p>My Groups in <span className="get-together-span">GetTogether</span></p>
                 </div>
                 <div className="event-group-items">
-                    {groupsArr.length <= 0 ? <h2>You don't have any groups yet!</h2> : groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+                    {groupsArr.length <= 0 ? <h2>You are not a part of any groups yet..</h2> : groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
                 </div>
             </div>
         </div>
