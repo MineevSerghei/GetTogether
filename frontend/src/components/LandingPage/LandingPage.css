@@ -67,3 +67,8 @@
     color: teal;
     width: 200px;
 }
+
+#main-image {
+    /* height: 50vh; */
+    width: 35vw;
+}

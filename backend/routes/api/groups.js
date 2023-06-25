@@ -219,12 +219,28 @@ router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (
             {
                 model: GroupImage,
                 attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: Event,
+                attributes: ['id'],
+                include: [
+                    {
+                        model: EventImage,
+                        attributes: ['id', 'url', 'preview'],
+                    }
+                ]
             }
         ]
     });
 
     for (let image of group.GroupImages) {
         await singlePublicFileDelete(image.url)
+    }
+
+    for (let event of group.Events) {
+        for (let image of event.EventImages) {
+            await singlePublicFileDelete(image.url)
+        }
     }
 
     await group.destroy();

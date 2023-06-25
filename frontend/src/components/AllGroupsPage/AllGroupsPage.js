@@ -49,7 +49,7 @@ export default function AllGroupsPage({ searchTerm, setSearchTerm }) {
                 <div className="event-group-items">
                     {groupsArr.length <= 0 ? <h4>No groups found :(</h4> :
                         <>
-                            {groupsArr.map(g => (<GroupItem key={g.id} group={g} />))}
+                            {groupsArr.sort((a, b) => b.id - a.id).map(g => (<GroupItem key={g.id} group={g} />))}
                         </>
                     }
                 </div>

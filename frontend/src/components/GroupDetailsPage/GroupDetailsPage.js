@@ -130,7 +130,7 @@ export default function GroupDetailsPage() {
                     <p>{'Organized by ' + group.Organizer.firstName + ' ' + group.Organizer.lastName}</p>
                     {sessionUser && group.status === 'none' &&
                         <button className='submit-bttn' onClick={sendRequest}>Join this group</button>}
-                    {sessionUser && group.status === 'organizer' &&
+                    {sessionUser && group.status === 'organizer' && <>
                         <div className='manage-bttns-container'>
                             <OpenModalButton
                                 buttonText="Images"
@@ -140,26 +140,30 @@ export default function GroupDetailsPage() {
                                 buttonText="Members"
                                 className="manage-bttn"
                                 modalComponent={<MembersModal user='organizer' groupId={group.id} />} />
-                            <button className="manage-bttn" onClick={createEvent}>Create event</button>
                             <button className="manage-bttn" onClick={updateGroup}>Update</button>
                             <OpenModalButton
                                 buttonText="Delete"
                                 className="manage-bttn"
                                 modalComponent={<DeleteGroupModal groupId={group.id} target='group' />} />
-                        </div>}
+                        </div>
+                        <button className="submit-bttn smaller margin-top-10" onClick={createEvent}>Create event</button>
+                    </>}
                     {sessionUser && group.status === 'co-host' &&
-                        <div className='manage-bttns-container'>
-                            <button className="manage-bttn" onClick={createEvent}>Create event</button>
-                            <OpenModalButton
-                                buttonText="Leave Group"
-                                className="manage-bttn"
-                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
-                            <OpenModalButton
-                                buttonText="Members"
-                                className="manage-bttn"
-                                modalComponent={<MembersModal user='co-host' groupId={group.id} />} />
+                        <>
+                            <div className='manage-bttns-container'>
+                                <OpenModalButton
+                                    buttonText="Members"
+                                    className="manage-bttn"
+                                    modalComponent={<MembersModal user='co-host' groupId={group.id} />} />
+                                <OpenModalButton
+                                    buttonText="Leave Group"
+                                    className="manage-bttn"
+                                    modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
 
-                        </div>}
+                            </div>
+                            <button className="submit-bttn smaller margin-top-10" onClick={createEvent}>Create event</button>
+
+                        </>}
                     {sessionUser && group.status === 'pending' &&
                         <div className='manage-bttns-container'>
                             <h3>The join request was sent!</h3>
@@ -167,13 +171,13 @@ export default function GroupDetailsPage() {
                     {sessionUser && group.status === 'member' &&
                         <div className='manage-bttns-container'>
                             <OpenModalButton
-                                buttonText="Leave Group"
-                                className="manage-bttn"
-                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
-                            <OpenModalButton
                                 buttonText="Members"
                                 className="manage-bttn"
                                 modalComponent={<MembersModal user='member' groupId={group.id} />} />
+                            <OpenModalButton
+                                buttonText="Leave Group"
+                                className="manage-bttn"
+                                modalComponent={<LeaveGroupModal groupId={group.id} memberId={sessionUser.id} />} />
                         </div>}
                     {!sessionUser &&
                         <div className='manage-bttns-container'>
