@@ -258,6 +258,27 @@ export const getGroupsThunk = () => async dispatch => {
     }
 }
 
+export const searchGroupsThunk = (params) => async dispatch => {
+
+    const { name } = params;
+    let query = '/api/groups';
+    if (name) query += `?name=${name}`;
+
+
+    const res = await csrfFetch(query);
+    // console.log("res after fetch on groups thunk --->", res);
+
+    const groups = await res.json();
+    if (res.ok) {
+        // console.log("groups in res.ok on groups thunk --->", groups);
+        dispatch(getGroupsAction(groups.Groups));
+    }
+    else {
+        // console.log("res in else (errors) on groups thunk --->", res);
+        return res.errors;
+    }
+}
+
 export const getMyGroupsThunk = () => async dispatch => {
     const res = await csrfFetch('/api/groups/current');
     // console.log("res after fetch on groups thunk --->", res);

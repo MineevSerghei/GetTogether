@@ -48,7 +48,5 @@ export default function MembersModal({ user, groupId }) {
 
         {openTab === 'requests' && requestsArr.map(member => <Member key={member.id} type='request' user={user} member={member} groupId={groupId} />)}
 
-
-        <p>I'm a {user}</p>
     </div>
 }

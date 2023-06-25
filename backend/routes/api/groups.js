@@ -19,6 +19,17 @@ const router = express.Router();
 // Get all Groups
 router.get('/', async (req, res) => {
 
+    let { name } = req.query;
+
+    const filters = { where: {} };
+
+    if (name) {
+
+        filters.where[Op.or] = [{ name: { [Op.substring]: name } },
+        { about: { [Op.substring]: name } }];
+
+    }
+
     const groups = await Group.findAll({
         include: {
             model: GroupImage,
@@ -28,7 +39,8 @@ router.get('/', async (req, res) => {
             },
             required: false,
             limit: 1
-        }
+        },
+        ...filters
     });
 
     const groupsRes = await findNumOfMembersAndPreviewImg(groups);
@@ -207,12 +219,28 @@ router.delete('/:groupId', requireAuth, checkIfGroupExists, isOrganizer, async (
             {
                 model: GroupImage,
                 attributes: ['id', 'url', 'preview']
+            },
+            {
+                model: Event,
+                attributes: ['id'],
+                include: [
+                    {
+                        model: EventImage,
+                        attributes: ['id', 'url', 'preview'],
+                    }
+                ]
             }
         ]
     });
 
     for (let image of group.GroupImages) {
         await singlePublicFileDelete(image.url)
+    }
+
+    for (let event of group.Events) {
+        for (let image of event.EventImages) {
+            await singlePublicFileDelete(image.url)
+        }
     }
 
     await group.destroy();

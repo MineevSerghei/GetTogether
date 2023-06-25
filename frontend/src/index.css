@@ -12,3 +12,15 @@
     font-family: 'BalsamiqSans-Italic';
     src: local('BalsamiqSans-Italic'), url(./fonts/Balsamiq_Sans/BalsamiqSans-Italic.ttf) format('truetype');
 }
+
+#root {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    margin: 0;
+}
+
+#content {
+    flex: 1;
+}
+

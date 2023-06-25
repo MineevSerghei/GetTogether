@@ -48,7 +48,6 @@ function SignupFormModal() {
                     const data = await res.json();
                     if (data && data.errors) {
                         setErrors(data.errors);
-                        console.log('data---->>>', data)
                     }
                 });
         }
@@ -64,7 +63,7 @@ function SignupFormModal() {
             <h1 className="log-label">Sign Up</h1>
             <form className="signup-form form" onSubmit={handleSubmit}>
                 <label>
-                    Email
+                    Email <span className="required-star">*</span>
                     <input
                         type="text"
                         value={email}
@@ -74,7 +73,7 @@ function SignupFormModal() {
                 </label>
                 {errors.email && <p className="errors login-errors">{errors.email}</p>}
                 <label>
-                    Username
+                    Username <span className="required-star">*</span>
                     <input
                         type="text"
                         value={username}
@@ -84,7 +83,7 @@ function SignupFormModal() {
                 </label>
                 {errors.username && <p className="errors login-errors">{errors.username}</p>}
                 <label>
-                    First Name
+                    First Name <span className="required-star">*</span>
                     <input
                         type="text"
                         value={firstName}
@@ -94,7 +93,7 @@ function SignupFormModal() {
                 </label>
                 {errors.firstName && <p className="errors login-errors">{errors.firstName}</p>}
                 <label>
-                    Last Name
+                    Last Name <span className="required-star">*</span>
                     <input
                         type="text"
                         value={lastName}
@@ -104,7 +103,7 @@ function SignupFormModal() {
                 </label>
                 {errors.lastName && <p className="errors login-errors">{errors.lastName}</p>}
                 <label>
-                    Password
+                    Password <span className="required-star">*</span>
                     <input
                         type="password"
                         value={password}
@@ -114,7 +113,7 @@ function SignupFormModal() {
                 </label>
                 {errors.password && <p className="errors login-errors">{errors.password}</p>}
                 <label>
-                    Confirm Password
+                    Confirm Password <span className="required-star">*</span>
                     <input
                         type="password"
                         value={confirmPassword}

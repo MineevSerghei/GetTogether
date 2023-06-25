@@ -6,6 +6,7 @@ const GET_ONE_EVENT = 'events/GET_ONE_EVENT';
 const DELETE_EVENT = 'events/DELETE_EVENT';
 const CREATE_EVENT = 'events/CREATE_EVENT';
 const ADD_EVENT_IMAGE = 'events/ADD_EVENT_IMAGE';
+const SEARCH_EVENTS = 'events/SEARCH_EVENTS';
 
 const createEventAction = (event) => {
     return {
@@ -24,6 +25,13 @@ const addEventImageAction = (image) => {
 const getEventsAction = (events) => {
     return {
         type: GET_ALL_EVENTS,
+        events
+    }
+}
+
+const searchEventsAction = (events) => {
+    return {
+        type: SEARCH_EVENTS,
         events
     }
 }
@@ -138,6 +146,26 @@ export const getEventsThunk = () => async dispatch => {
     }
 }
 
+export const searchEventsThunk = (params) => async dispatch => {
+
+    const { name } = params;
+    let query = '/api/events';
+    if (name) query += `?name=${name}`;
+
+    const res = await csrfFetch(query);
+    // console.log("res after fetch on events thunk --->", res);
+
+    const events = await res.json();
+    if (res.ok) {
+        // console.log("events in res.ok on events thunk --->", events);
+        dispatch(searchEventsAction(events.Events));
+    }
+    else {
+        // console.log("res in else (errors) on events thunk --->", res);
+        return res.errors;
+    }
+}
+
 const initialState = {
     allEvents: {},
     singleEvent: { EventImages: [], Group: {} }
@@ -146,6 +174,12 @@ const initialState = {
 const eventsReducer = (state = initialState, action) => {
     switch (action.type) {
         case GET_ALL_EVENTS:
+            {
+                const eventsObj = {};
+                for (let event of action.events) eventsObj[event.id] = event;
+                return { ...state, allEvents: { ...eventsObj } };
+            }
+        case SEARCH_EVENTS:
             {
                 const eventsObj = {};
                 for (let event of action.events) eventsObj[event.id] = event;

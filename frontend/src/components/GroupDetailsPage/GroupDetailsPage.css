@@ -9,6 +9,15 @@
 .details-img-container {
     display: flex;
     flex-direction: column;
+    max-width: 500px;
+}
+
+.carousel .control-next.control-arrow:before {
+    border-left: 8px solid #333 !important;
+}
+
+.carousel .control-prev.control-arrow:before {
+    border-right: 8px solid #333;
 }
 
 .events-list-groups {
@@ -21,14 +30,6 @@
     gap: 40px
 }
 
-.group-details-img {
-    max-width: 500px;
-    padding: 10px
-}
-
-.group-details-img:hover {
-    cursor: pointer;
-}
 
 .manage-bttn {
     background-color: rgb(85, 85, 85);
@@ -69,4 +70,8 @@
 .next-image-icon:disabled {
     color: gray;
     pointer-events: none;
+}
+
+.margin-top-10 {
+    margin-top: 20px;
 }

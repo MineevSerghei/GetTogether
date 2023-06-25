@@ -4,11 +4,13 @@ const { findNumOfAttendeesAndPreviewImg, pagination } = require('../../utils/obj
 const { Event, Group, Venue, EventImage, Attendance, Membership, User, GroupImage } = require('../../db/models');
 const { Op } = require('sequelize');
 const { singlePublicFileUpload, singleMulterUpload, singlePublicFileDelete } = require('../../awsS3');
-
-
 const { isHostCohostOrAttendee, isOrganizerOrCoHost, throwForbidden } = require('../../utils/roles');
-
-const { checkIfEventExists, validateImage, validateEvent, validateAttendanceChange, validateAttendanceDelete, validateEventFilters } = require('../../utils/validation');
+const { checkIfEventExists,
+    validateImage,
+    validateEvent,
+    validateAttendanceChange,
+    validateAttendanceDelete,
+    validateEventFilters } = require('../../utils/validation');
 
 const router = express.Router();
 
@@ -20,7 +22,15 @@ router.get('/', validateEventFilters, pagination, async (req, res) => {
     const filters = { where: {} };
 
     if (name) {
-        filters.where.name = { [Op.substring]: name };
+        // filters.where.name = { [Op.substring]: name };
+        // filters.where.description = { [Op.substring]: name };
+
+        filters.where[Op.or] = [{ name: { [Op.substring]: name } },
+        { description: { [Op.substring]: name } }];
+
+        // filters.where['[Op.or]'].push({ name: { [Op.substring]: name } })
+        // filters.where['[Op.or]'].push({ description: { [Op.substring]: name } })
+
     }
 
     if (type) {

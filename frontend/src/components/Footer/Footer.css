@@ -1,0 +1,61 @@
+.footer {
+    width: 100%;
+    height: 100px;
+    padding: 10px;
+    box-sizing: border-box;
+    border-top: 1px grey solid;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+}
+
+.footer-icon {
+    color: #000;
+    font-size: 2.0rem;
+    grid-area: logo;
+}
+
+.footer-icon:hover {
+    color: gray;
+}
+
+.footer-mini-icon {
+    color: #000;
+    font-size: 1.5rem;
+}
+
+.footer-mini-icon:hover {
+    color: gray;
+}
+
+.developer-div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+
+.footer-name-link {
+    color: #000;
+}
+
+.footer-name-link:hover {
+    color: gray;
+}
+
+.github-link {
+    display: grid;
+    grid-template-areas:
+        "logo get get"
+        "logo together together";
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    column-gap: 10px;
+}
+
+#get {
+    grid-area: get;
+}
+
+#together {
+    grid-area: together;
+}

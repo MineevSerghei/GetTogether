@@ -1,12 +1,12 @@
 import EventItem from "./EventItem";
 import { useEffect } from 'react';
-import { getEventsThunk } from "../../store/events";
+import { searchEventsThunk } from "../../store/events";
 import { useDispatch, useSelector } from 'react-redux';
 import { Link } from 'react-router-dom';
 import './AllEventsPage.css';
 
 
-export default function AllEventsPage() {
+export default function AllEventsPage({ searchTerm, setSearchTerm }) {
 
     const dispatch = useDispatch();
 
@@ -30,24 +30,46 @@ export default function AllEventsPage() {
 
     useEffect(() => {
 
-        dispatch(getEventsThunk());
+        const findEvents = async () => {
+
+            const urlParams = new URLSearchParams(window.location.search);
+            const name = urlParams.get('q');
+            const params = {};
+
+            if (name) {
+                params.name = name;
+                setSearchTerm(name);
+            } else {
+                setSearchTerm('');
+            }
+
+            await dispatch(searchEventsThunk(params));
+        }
+
+        findEvents();
 
     }, [dispatch])
 
     return (
-        (past.length > 0 || future.length > 0) && <div className="groups-page-container">
+        <div className="groups-page-container">
             <div className="groups-container">
                 <div className="show-all-head">
                     <div className="show-all-header-links">
-                        <h2 className="show-all-link-inactive">Events</h2>
-                        <Link className="show-all-link-active" to='/groups'><h2>Groups</h2></Link>
+                        <h2 className="show-all-link-inactive">{searchTerm ? 'Events' : 'All Events'}</h2>
+                        <Link className="show-all-link-active" to='/groups'><h2>All Groups</h2></Link>
                     </div>
-                    <p>Events in <span className="get-together-span">GetTogether</span></p>
+                    {searchTerm ? <p>Search results for: <span className="get-together-span">{searchTerm}</span></p>
+                        : <p>All Events in <span className="get-together-span">GetTogether</span></p>}
                 </div>
-                {future.map(e => (<EventItem key={e.id} event={e} />))}
-
-                {past.length > 0 && <h2>Past Events</h2>}
-                {past.map(e => (<EventItem key={e.id} event={e} />))}
+                <div className="event-group-items">
+                    {past.length <= 0 && future.length <= 0 ? <h4>No events found :(</h4> :
+                        <>
+                            {future.map(e => (<EventItem key={e.id} event={e} />))}
+                            {past.length > 0 && <h2>Past Events</h2>}
+                            {past.map(e => (<EventItem key={e.id} event={e} />))}
+                        </>
+                    }
+                </div>
             </div>
         </div>
     )
