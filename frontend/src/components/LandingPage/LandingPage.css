@@ -7,6 +7,7 @@
 .title-sec-container {
     display: flex;
     justify-content: space-around;
+    align-items: center;
 }
 
 .subtitle-sec-container {
@@ -33,7 +34,7 @@
     display: flex;
     flex-direction: column;
     gap: 30px;
-    margin-top: 10%;
+    margin-top: 5%;
 }
 
 .title-img {
@@ -53,7 +54,7 @@
 }
 
 .landing-title {
-    padding: 0px 20px 20px 30px;
+    padding: 0px 20px 20px 70px;
     width: 100%;
 }
 
