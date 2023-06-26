@@ -57,10 +57,10 @@ const pagination = (req, res, next) => {
     size = parseInt(size, 10);
     page = parseInt(page, 10);
 
-    if (!size) size = 20;
+    if (!size) size = 30;
     if (!page) page = 1;
 
-    if (size > 20) size = 20;
+    if (size > 30) size = 30;
     if (page > 10) page = 10;
 
     if (size < 1) size = 1;

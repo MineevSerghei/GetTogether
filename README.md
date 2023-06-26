@@ -5,7 +5,7 @@ GetTogether is a clone of Meetup. on GetTogether, you can be a part of your grou
 <a href='https://get-together.onrender.com/' target='_blank'><img src="https://img.shields.io/badge/Live%20Demo-5fa85f?style=for-the-badge" /></a>
 
 ## Technologies used
-
+<div align='center'>
 <img src="https://img.shields.io/badge/JavaScript-323330?style=for-the-badge&logo=javascript&logoColor=F7DF1E" />
 <img src="https://img.shields.io/badge/Node.js-339933?style=for-the-badge&logo=nodedotjs&logoColor=white" />
 <img src="https://img.shields.io/badge/Express.js-000000?style=for-the-badge&logo=express&logoColor=white" />
@@ -18,6 +18,29 @@ GetTogether is a clone of Meetup. on GetTogether, you can be a part of your grou
 
 <img src="https://img.shields.io/badge/PostgreSQL-316192?style=for-the-badge&logo=postgresql&logoColor=white" />
 <img src="https://img.shields.io/badge/Render-323330?style=for-the-badge&logo=render&logoColor=#46E3B7" />
+</div>
+<br>
+
+## Landing Page:
+
+<img src="./react-app/public/gifs/gif1.gif" width="1000px">
+
+## Groups:
+
+<img src="./react-app/public/gifs/gif2.gif" width="1000px">
+
+## Events:
+
+<img src="./react-app/public/gifs/gif3.gif" width="1000px">
+
+## Memberships:
+
+<img src="./react-app/public/gifs/gif4.gif" width="1000px">
+
+## Images:
+
+
+## Search:
 
 <br>
 
