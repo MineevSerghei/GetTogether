@@ -1,7 +1,8 @@
 .members-modal-wrapper {
     padding: 1px 20px;
-    min-height: 50vh;
     min-width: 35vw;
+    height: 70vh;
+    overflow-y: scroll;
 }
 
 .hover:hover {
