@@ -23,24 +23,28 @@ GetTogether is a clone of Meetup. on GetTogether, you can be a part of your grou
 
 ## Landing Page:
 
-<img src="./react-app/public/gifs/gif1.gif" width="1000px">
+<img src="./assets/gifs/landing.gif" width="1000px">
 
 ## Groups:
 
-<img src="./react-app/public/gifs/gif2.gif" width="1000px">
+<img src="./assets/gifs/groups.gif" width="1000px">
 
-## Events:
-
-<img src="./react-app/public/gifs/gif3.gif" width="1000px">
 
 ## Memberships:
 
-<img src="./react-app/public/gifs/gif4.gif" width="1000px">
+<img src="./assets/gifs/memberships.gif" width="1000px">
 
 ## Images:
 
+<img src="./assets/gifs/images.gif" width="1000px">
+
+## Events:
+
+<img src="./assets/gifs/events.gif" width="1000px">
 
 ## Search:
+
+<img src="./assets/gifs/search.gif" width="1000px">
 
 <br>
 
